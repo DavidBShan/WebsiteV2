@@ -459,11 +459,6 @@ export default function Home() {
                     Writings
                   </Link>
                 </div>
-                <div className="text-sm"
-                  style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
-                >
-                  © {new Date().getFullYear()} David Shan
-                </div>
               </div>
             </footer>
           </div>
