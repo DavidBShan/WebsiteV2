@@ -9,23 +9,14 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    const isMobile =
-      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-      window.innerWidth < 640;
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = savedTheme ? savedTheme === "dark" : false;
+    setIsDarkMode(prefersDark);
 
-    if (isMobile) {
-      setIsDarkMode(true);
+    if (prefersDark) {
       document.documentElement.classList.add("dark");
     } else {
-      const savedTheme = localStorage.getItem("theme");
-      const prefersDark = savedTheme ? savedTheme === "dark" : false;
-      setIsDarkMode(prefersDark);
-
-      if (prefersDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
