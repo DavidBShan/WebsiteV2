@@ -252,7 +252,7 @@ export default function Home() {
           </div>
 
           <section className="animate-fade-in delay-400">
-            <p className="leading-relaxed text-sm sm:text-base" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+            <p className="leading-relaxed text-base sm:text-lg" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
               Hey, I'm Sritan. I'm currently tackling DevOps at{" "}
               <a
                 target="_blank"
@@ -281,7 +281,7 @@ export default function Home() {
           >
             <div>
               <h2
-                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
+                className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#e5e7eb" : "#374151"
@@ -296,9 +296,9 @@ export default function Home() {
                   gap: "0.75rem",
                 }}
               >
-                <li className="text-xs leading-relaxed animate-fade-in delay-900 w-full" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-relaxed animate-fade-in delay-900 w-full" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     01
@@ -325,9 +325,9 @@ export default function Home() {
                     , an AI-native workspace for DevOps.
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     02
@@ -346,9 +346,9 @@ export default function Home() {
                     surrounding software and infrastructure.
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     03
@@ -366,9 +366,9 @@ export default function Home() {
                     as a venture partner. Early-stage investing.
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     04
@@ -386,9 +386,9 @@ export default function Home() {
                     as a DevOps engineer.
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1700" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1700" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     05
@@ -412,7 +412,7 @@ export default function Home() {
 
             <div>
               <h2
-                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
+                className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#e5e7eb" : "#374151"
@@ -427,9 +427,9 @@ export default function Home() {
                   gap: "0.75rem",
                 }}
               >
-                <li className="text-xs leading-loose animate-fade-in delay-900" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-900" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     01
@@ -447,9 +447,9 @@ export default function Home() {
                     .
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     02
@@ -468,9 +468,9 @@ export default function Home() {
                     .
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     03
@@ -489,9 +489,9 @@ export default function Home() {
                     .
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     04
@@ -510,9 +510,9 @@ export default function Home() {
                     .
                   </p>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1700" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1700" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     05
@@ -545,7 +545,7 @@ export default function Home() {
 
             <div>
               <h2
-                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
+                className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#e5e7eb" : "#374151"
@@ -560,9 +560,9 @@ export default function Home() {
                   gap: "0.75rem",
                 }}
               >
-                <li className="text-xs leading-loose animate-fade-in delay-900" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-900" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     01
@@ -571,9 +571,9 @@ export default function Home() {
                     <p>Based in San Francisco, CA. Always down to chat.</p>
                   </div>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1100" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     02
@@ -588,9 +588,9 @@ export default function Home() {
                     </ol>
                   </div>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1300" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     03
@@ -604,9 +604,9 @@ export default function Home() {
                     </ol>
                   </div>
                 </li>
-                <li className="text-xs leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+                <li className="text-sm leading-loose animate-fade-in delay-1500" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
                   <div
-                    className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
+                    className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     04
