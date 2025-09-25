@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
+  --background: #f9fafb;
+  --foreground: #000000;
+}
+
+.dark {
   --background: #0a0a0a;
-  --foreground: #9ca3af;
+  --foreground: #d1d5db;
 }
 
 @theme inline {
@@ -16,8 +21,8 @@ html {
 }
 
 body {
-  background: #0a0a0a;
-  color: #9ca3af;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 * {
@@ -31,11 +36,25 @@ body {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 2px;
-  transition: colors 0.15s;
+  transition: none !important;
+}
+
+.href-text {
+  color: inherit;
 }
 
 .href-text:hover {
+  color: #000000;
+}
+
+.dark .href-text:hover {
   color: #fff;
+}
+
+/* Disable color transitions on all elements */
+p, li, div, span, a {
+  transition-property: opacity, transform !important;
+  transition-duration: 0s !important;
 }
 
 /* Animations */
@@ -52,32 +71,41 @@ body {
 
 .animate-fade-in {
   opacity: 0;
-  animation: fade-in 2s ease-out forwards;
+  animation: fade-in 800ms ease-out forwards;
+  animation-fill-mode: both;
+  /* Only animate opacity and transform, not color */
+  animation-composition: replace;
+}
+
+/* Ensure animated elements don't transition colors */
+.animate-fade-in,
+.animate-fade-in * {
+  transition-property: opacity, transform !important;
 }
 
 .delay-0 {
   animation-delay: 0ms;
 }
 .delay-400 {
-  animation-delay: 400ms;
+  animation-delay: 200ms;
 }
 .delay-700 {
-  animation-delay: 700ms;
+  animation-delay: 800ms;
 }
 .delay-900 {
   animation-delay: 900ms;
 }
 .delay-1100 {
-  animation-delay: 1100ms;
+  animation-delay: 1000ms;
 }
 .delay-1300 {
-  animation-delay: 1300ms;
+  animation-delay: 1100ms;
 }
 .delay-1500 {
-  animation-delay: 1500ms;
+  animation-delay: 1200ms;
 }
 .delay-1700 {
-  animation-delay: 1700ms;
+  animation-delay: 1300ms;
 }
 
 /* Font classes */
