@@ -554,11 +554,11 @@ export default function Home() {
                       01
                     </div>
                     <div>
-                      <p>Based in Toronto, ON. Always down to chat.</p>
+                      <p>Based in Toronto, ON. Would love to chat.</p>
                     </div>
                   </li>
                   <li
-                    className="text-sm leading-loose animate-fade-in delay-1100"
+                    className="text-sm leading-loose animate-fade-in delay-1500"
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
@@ -569,13 +569,13 @@ export default function Home() {
                     </div>
                     <div>
                       <p>
-                        Bullish on RL environments and DevOps for agent
-                        builders.
+                        Currently exploring browser agents and observability in
+                        the context of machine learning.
                       </p>
                     </div>
                   </li>
                   <li
-                    className="text-sm leading-loose animate-fade-in delay-1300"
+                    className="text-sm leading-loose animate-fade-in delay-1100"
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
@@ -586,9 +586,31 @@ export default function Home() {
                     </div>
                     <div>
                       <p>
-                        Favourite quote: "He who has a why to live can bear
-                        almost any how." - Friedrich Nietzsche
+                        Bullish on RL environments and DevOps for agent
+                        builders.
                       </p>
+                    </div>
+                  </li>
+                  <li
+                    className="text-sm leading-loose animate-fade-in delay-1500"
+                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+                  >
+                    <div
+                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      style={{ marginBottom: "0.25rem" }}
+                    >
+                      04
+                    </div>
+                    <div>
+                      <p className="mb-4">Favourite quotes:</p>
+                      <ol
+                        className="list-decimal list-inside space-y-3"
+                        style={{ marginLeft: "1rem" }}
+                      >
+                        <li>"He who has a why to live can bear almost any how." - Friedrich Nietzsche</li>
+                        <li>"The only real test of intelligence is if you get what you want out of life." - Naval Ravikant</li>
+                        <li>"It's hard to do a really good job on anything you don't think about in the shower." - Paul Graham</li>
+                      </ol>
                     </div>
                   </li>
                 </ul>
