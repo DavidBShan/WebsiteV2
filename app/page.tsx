@@ -80,165 +80,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div
-                  className="flex flex-wrap gap-5 sm:gap-5 outline-none"
-                  style={{ marginBottom: "1rem", marginTop: "0.5rem" }}
-                >
-                  <a
-                    href="https://github.com/davidbshan"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                    </svg>
-                    <span className="sr-only">GitHub</span>
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/davidbshan/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                      <rect x="2" y="9" width="4" height="12"></rect>
-                      <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                    <span className="sr-only">LinkedIn</span>
-                  </a>
-                  <a
-                    href="https://twitter.com/davidbshan"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                    </svg>
-                    <span className="sr-only">Twitter</span>
-                  </a>
-                  <a
-                    href="mailto:david@clado.ai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                      <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    <span className="sr-only">Email</span>
-                  </a>
-                  <a
-                    href="https://letterboxd.com/ChickenMcSwag/films/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect
-                        x="2"
-                        y="2"
-                        width="20"
-                        height="20"
-                        rx="2.18"
-                        ry="2.18"
-                      ></rect>
-                      <line x1="7" y1="2" x2="7" y2="22"></line>
-                      <line x1="17" y1="2" x2="17" y2="22"></line>
-                      <line x1="2" y1="12" x2="22" y2="12"></line>
-                      <line x1="2" y1="7" x2="7" y2="7"></line>
-                      <line x1="2" y1="17" x2="7" y2="17"></line>
-                      <line x1="17" y1="17" x2="22" y2="17"></line>
-                      <line x1="17" y1="7" x2="22" y2="7"></line>
-                    </svg>
-                    <span className="sr-only">Letterboxd</span>
-                  </a>
-                  <Link
-                    href="/writings"
-                    className="hover:opacity-80 p-1 -m-1"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-6 h-6 sm:w-5 sm:h-5"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                    <span className="sr-only">Writing</span>
-                  </Link>
-                </div>
               </div>
 
               {/* Age Progress Bar - subtle placement below social links */}
@@ -607,6 +448,69 @@ export default function Home() {
                 </ul>
               </div>
             </section>
+
+            <footer
+              className="border-t pt-6 mt-12 animate-fade-in delay-1600"
+              style={{ borderColor: isDarkMode ? "#1f2937" : "#e5e7eb" }}
+            >
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm"
+                  style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+                >
+                  <a
+                    href="https://twitter.com/davidbshan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Twitter
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/davidbshan/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    LinkedIn
+                  </a>
+                  <a
+                    href="https://github.com/davidbshan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href="mailto:david@clado.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Email
+                  </a>
+                  <a
+                    href="https://letterboxd.com/ChickenMcSwag/films/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Letterboxd
+                  </a>
+                  <Link
+                    href="/writings"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    Writings
+                  </Link>
+                </div>
+                <div className="text-sm"
+                  style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                >
+                  © {new Date().getFullYear()} David Shan
+                </div>
+              </div>
+            </footer>
           </div>
         </div>
       </main>
