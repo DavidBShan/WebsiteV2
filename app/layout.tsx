@@ -17,6 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "David Shan",
   description: "Website of David Shan - CTO of Clado",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
