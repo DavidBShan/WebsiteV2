@@ -6,7 +6,7 @@ import ThemeToggle3D from "./components/ThemeToggle3D";
 import AgeProgress from "./components/AgeProgress";
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const isMobile =
@@ -18,7 +18,7 @@ export default function Home() {
       document.documentElement.classList.add("dark");
     } else {
       const savedTheme = localStorage.getItem("theme");
-      const prefersDark = savedTheme ? savedTheme === "dark" : true;
+      const prefersDark = savedTheme ? savedTheme === "dark" : false;
       setIsDarkMode(prefersDark);
 
       if (prefersDark) {

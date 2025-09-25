@@ -7,9 +7,9 @@ import * as THREE from "three";
 import gsap from "gsap";
 
 const getInitialBgColor = () => {
-  if (typeof window === "undefined") return "#050510";
+  if (typeof window === "undefined") return "#87ceeb";
   const savedTheme = localStorage.getItem("theme");
-  const prefersDark = !savedTheme || savedTheme === "dark";
+  const prefersDark = savedTheme === "dark";
   return prefersDark ? "#050510" : "#87ceeb";
 };
 

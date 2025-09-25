@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Writings() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : true;
+    const prefersDark = savedTheme ? savedTheme === "dark" : false;
     setIsDarkMode(prefersDark);
 
     if (prefersDark) {
