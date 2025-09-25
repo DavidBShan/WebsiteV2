@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import ThemeToggle3D from "./components/ThemeToggle3D";
 import AgeProgress from "./components/AgeProgress";
 
@@ -181,10 +182,8 @@ export default function Home() {
                   </svg>
                   <span className="sr-only">Email</span>
                 </a>
-                <a
-                  href="https://medium.com/@sritan"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/writings"
                   className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}
                 >
@@ -204,7 +203,7 @@ export default function Home() {
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                   </svg>
                   <span className="sr-only">Writing</span>
-                </a>
+                </Link>
                 <a
                   href="https://letterboxd.com/sritan"
                   target="_blank"
