@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import ThemeToggle3D from "./components/ThemeToggle3D";
+import AgeProgress from "./components/AgeProgress";
 
 export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -36,50 +38,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Theme Toggle */}
-      <div className="fixed top-4 right-8 z-50">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          className="relative w-16 h-8 rounded-full bg-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-gray-600"
-          aria-label="Toggle theme"
-        >
-          <div
-            className={`absolute top-1 transition-transform duration-300 ease-in-out ${
-              isDarkMode ? "translate-x-8" : "translate-x-1"
-            }`}
-          >
-            <div className="relative w-6 h-6 rounded-full bg-white shadow-md flex items-center justify-center">
-              {/* Sun Icon */}
-              <svg
-                className={`absolute w-4 h-4 text-black transition-opacity duration-300 ${
-                  isDarkMode ? "opacity-0" : "opacity-100"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              
-              {/* Moon Icon */}
-              <svg
-                className={`absolute w-4 h-4 text-gray-700 transition-opacity duration-300 ${
-                  isDarkMode ? "opacity-100" : "opacity-0"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-              </svg>
-            </div>
-          </div>
-        </button>
-      </div>
-
       <main
         className="min-h-screen flex justify-center px-8"
         style={{ paddingTop: "60px", paddingBottom: "60px" }}
@@ -90,15 +48,32 @@ export default function Home() {
         >
           <div className="animate-fade-in delay-0">
             <div className="flex flex-col">
-              <h1
-                className="text-4xl font-black"
-                style={{ 
-                  marginBottom: "1.5rem",
-                  color: isDarkMode ? "#ffffff" : "#000000"
-                }}
-              >
-                Sritan Motati
-              </h1>
+              <div className="relative" style={{ marginBottom: "1.5rem" }}>
+                <h1
+                  className="text-4xl font-black"
+                  style={{ 
+                    color: isDarkMode ? "#ffffff" : "#000000"
+                  }}
+                >
+                  Sritan Motati
+                </h1>
+                {/* Theme Toggle - positioned absolutely */}
+                <div style={{ 
+                  position: "absolute",
+                  top: "0",
+                  right: "0",
+                  width: "88px", 
+                  height: "88px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none"
+                }}>
+                  <div style={{ pointerEvents: "auto" }}>
+                    <ThemeToggle3D isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+                  </div>
+                </div>
+              </div>
               <div
                 className="flex gap-5 outline-none"
                 style={{ marginBottom: "1rem" }}
@@ -260,6 +235,11 @@ export default function Home() {
                   <span className="sr-only">Letterboxd</span>
                 </a>
               </div>
+            </div>
+            
+            {/* Age Progress Bar - subtle placement below social links */}
+            <div style={{ marginTop: "0.75rem" }}>
+              <AgeProgress isDarkMode={isDarkMode} />
             </div>
           </div>
 
