@@ -1,103 +1,559 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main
+      className="min-h-screen flex justify-center px-8"
+      style={{ paddingTop: "60px", paddingBottom: "60px" }}
+    >
+      <div className="max-w-4xl w-full">
+        <div
+          className="text-gray-400"
+          style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+        >
+          <div className="animate-fade-in delay-0">
+            <div className="flex flex-col">
+              <h1
+                className="text-4xl font-black text-white"
+                style={{ marginBottom: "1.5rem" }}
+              >
+                Sritan Motati
+              </h1>
+              <div
+                className="flex gap-5 outline-none"
+                style={{ marginBottom: "1rem" }}
+              >
+                <a
+                  href="https://github.com/sritanmotati"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                  </svg>
+                  <span className="sr-only">GitHub</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/sritan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a
+                  href="https://twitter.com/sritanmotati"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                  </svg>
+                  <span className="sr-only">Twitter</span>
+                </a>
+                <a
+                  href="mailto:sritan@a37.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  <span className="sr-only">Email</span>
+                </a>
+                <a
+                  href="https://medium.com/@sritan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  <span className="sr-only">Writing</span>
+                </a>
+                <a
+                  href="https://letterboxd.com/sritan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="2"
+                      y="2"
+                      width="20"
+                      height="20"
+                      rx="2.18"
+                      ry="2.18"
+                    ></rect>
+                    <line x1="7" y1="2" x2="7" y2="22"></line>
+                    <line x1="17" y1="2" x2="17" y2="22"></line>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <line x1="2" y1="7" x2="7" y2="7"></line>
+                    <line x1="2" y1="17" x2="7" y2="17"></line>
+                    <line x1="17" y1="17" x2="22" y2="17"></line>
+                    <line x1="17" y1="7" x2="22" y2="7"></line>
+                  </svg>
+                  <span className="sr-only">Letterboxd</span>
+                </a>
+              </div>
+            </div>
+          </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <section className="animate-fade-in delay-400">
+            <p className="leading-loose text-base">
+              Hey, I'm Sritan. I'm currently tackling DevOps at{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="href-text"
+                href="https://a37.ai"
+              >
+                a37
+              </a>
+              . Previously studied at{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="href-text"
+                href="https://fisher.wharton.upenn.edu"
+              >
+                Penn M&T
+              </a>
+              . I'm excited about AI, product engineering, and infrastructure.
+            </p>
+          </section>
+
+          <section
+            className="grid grid-cols-1 md:grid-cols-3"
+            style={{ gap: "2rem", marginTop: "2rem" }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <div>
+              <h2
+                className="text-lg font-bold text-white animate-fade-in delay-700"
+                style={{ marginBottom: "0.75rem" }}
+              >
+                Experience
+              </h2>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <li className="text-xs leading-loose animate-fade-in delay-900">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    01
+                  </div>
+                  <p>
+                    Co-founded{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://a37.ai"
+                    >
+                      a37
+                    </a>{" "}
+                    to build{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://tryforge.ai"
+                    >
+                      Forge
+                    </a>
+                    , an AI-native workspace for DevOps.
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1100">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    02
+                  </div>
+                  <p>
+                    Led engineering at{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://www.forbes.com/sites/craigsmith/2023/09/05/teens-launch-125m-eye-scan-startup-to-detect-dementia/"
+                    >
+                      VytaL.ai
+                    </a>
+                    . Built lightweight gaze tracking algorithms and the
+                    surrounding software and infrastructure.
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1300">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    03
+                  </div>
+                  <p>
+                    Joined{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://contrary.com"
+                    >
+                      Contrary
+                    </a>{" "}
+                    as a venture partner. Early-stage investing.
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1500">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    04
+                  </div>
+                  <p>
+                    Maintained infrastructure for{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://pennlabs.org"
+                    >
+                      Penn Labs
+                    </a>{" "}
+                    as a DevOps engineer.
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1700">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    05
+                  </div>
+                  <p>
+                    Worked on applied AI research across many disciplines. See
+                    my{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://scholar.google.com/citations?user=QZNuPBQAAAAJ&hl=en"
+                    >
+                      Google Scholar
+                    </a>{" "}
+                    for more.
+                  </p>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2
+                className="text-lg font-bold text-white animate-fade-in delay-700"
+                style={{ marginBottom: "0.75rem" }}
+              >
+                Work
+              </h2>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <li className="text-xs leading-loose animate-fade-in delay-900">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    01
+                  </div>
+                  <p>
+                    Trained video foundation models for cataract surgery at the{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://ophai.hms.harvard.edu"
+                    >
+                      Harvard Ophthalmology AI Lab
+                    </a>
+                    .
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1100">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    02
+                  </div>
+                  <p>
+                    Explored few-shot omics translation with autoencoders at
+                    Stanford's{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://nalab.stanford.edu"
+                    >
+                      Aghaeepour Lab
+                    </a>
+                    .
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1300">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    03
+                  </div>
+                  <p>
+                    Designed physics-informed AI methods for acoustics
+                    simulations at the{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://www.nrl.navy.mil/itd/aic/"
+                    >
+                      Naval Research Laboratory
+                    </a>
+                    .
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1500">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    04
+                  </div>
+                  <p>
+                    Built methods for text-to-3D design, editing, and printing
+                    with diffusion. Won 1st at{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://isef.net/project/teca019t-diffusion-based-3d-art-generation"
+                    >
+                      ISEF
+                    </a>
+                    .
+                  </p>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1700">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    05
+                  </div>
+                  <p>
+                    Automated ear infection screening with a 3D-printed mobile
+                    otoscope. Presented at{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://isef.net/project/tmed042t-otitis-media-diagnosis-with-smartphones"
+                    >
+                      ISEF
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      href="https://dl.acm.org/doi/10.1007/978-3-031-47076-9_16"
+                    >
+                      MICCAI 2023
+                    </a>
+                    .
+                  </p>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2
+                className="text-lg font-bold text-white animate-fade-in delay-700"
+                style={{ marginBottom: "0.75rem" }}
+              >
+                Other
+              </h2>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <li className="text-xs leading-loose animate-fade-in delay-900">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    01
+                  </div>
+                  <div>
+                    <p>Based in San Francisco, CA. Always down to chat.</p>
+                  </div>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1100">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    02
+                  </div>
+                  <div>
+                    <p className="mb-4">Some of my favorite reads.</p>
+                    <ol className="list-decimal list-inside space-y-3 pl-4">
+                      <li>When Breath Becomes Air (Paul Kalanithi)</li>
+                      <li>Steve Jobs (Walter Isaacson)</li>
+                      <li>The Aeneid (Virgil)</li>
+                      <li>One Piece (Eiichiro Oda)</li>
+                    </ol>
+                  </div>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1300">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    03
+                  </div>
+                  <div>
+                    <p className="mb-4">Big fan of...</p>
+                    <ol className="list-decimal list-inside space-y-3 pl-4">
+                      <li>Cleveland Cavaliers</li>
+                      <li>Afrobeats and hip-hop</li>
+                      <li>Pushing to prod ;)</li>
+                    </ol>
+                  </div>
+                </li>
+                <li className="text-xs leading-loose animate-fade-in delay-1500">
+                  <div
+                    className="text-xs italic text-gray-500 font-mono"
+                    style={{ marginBottom: "0.25rem" }}
+                  >
+                    04
+                  </div>
+                  <div>
+                    <p>
+                      Other affiliations: TJHSST (prev. ran{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="href-text"
+                        href="https://tjmachinelearning.com"
+                      >
+                        ML Club
+                      </a>
+                      ),{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="href-text"
+                        href="https://www.zfellows.com"
+                      >
+                        Z Fellows
+                      </a>
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
