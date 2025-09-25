@@ -261,25 +261,26 @@ export default function Home() {
                 className="leading-relaxed text-base sm:text-lg"
                 style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
               >
-                Hey, I'm Sritan. I'm currently tackling DevOps at{" "}
+                Hey, I'm David. I'm currently the CTO at{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
                   className="href-text"
-                  href="https://a37.ai"
+                  href="https://clado.ai"
                 >
-                  a37
+                  Clado
                 </a>
-                . Previously studied at{" "}
+                . I'm excited about AI and deep tech, and I love thinking about
+                how to do{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
                   className="href-text"
-                  href="https://fisher.wharton.upenn.edu"
+                  href="https://paulgraham.com/greatwork.html"
                 >
-                  Penn M&T
+                  great work
                 </a>
-                . I'm excited about AI, product engineering, and infrastructure.
+                .
               </p>
             </section>
 
@@ -320,20 +321,11 @@ export default function Home() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://a37.ai"
+                        href="https://clado.ai"
                       >
-                        a37
+                        Clado
                       </a>{" "}
-                      to build{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://tryforge.ai"
-                      >
-                        Forge
-                      </a>
-                      , an AI-native workspace for DevOps.
+                      to build state of the art people search.
                     </p>
                   </li>
                   <li
@@ -347,17 +339,16 @@ export default function Home() {
                       02
                     </div>
                     <p>
-                      Led engineering at{" "}
+                      Led the agentic engineering team to develop MANTIS at{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://www.forbes.com/sites/craigsmith/2023/09/05/teens-launch-125m-eye-scan-startup-to-detect-dementia/"
+                        href="https://compbio.mit.edu/"
                       >
-                        VytaL.ai
-                      </a>
-                      . Built lightweight gaze tracking algorithms and the
-                      surrounding software and infrastructure.
+                        Kellis Lab
+                      </a>{" "}
+                      at MIT.
                     </p>
                   </li>
                   <li
@@ -371,16 +362,16 @@ export default function Home() {
                       03
                     </div>
                     <p>
-                      Joined{" "}
+                      Was the youngest intern ever at{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://contrary.com"
+                        href="https://www.geotab.com/"
                       >
-                        Contrary
-                      </a>{" "}
-                      as a venture partner. Early-stage investing.
+                        Geotab
+                      </a>
+                      , one of the biggest telematic companies in the world.
                     </p>
                   </li>
                   <li
@@ -394,16 +385,17 @@ export default function Home() {
                       04
                     </div>
                     <p>
-                      Maintained infrastructure for{" "}
+                      Developed Rigid Ramp Walker and Ruler Trick Simulation
+                      using{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://pennlabs.org"
+                        href="https://mujoco.org/"
                       >
-                        Penn Labs
+                        Mujoco
                       </a>{" "}
-                      as a DevOps engineer.
+                      and 4th-Degree Runge Kutta's method.
                     </p>
                   </li>
                   <li
@@ -417,17 +409,26 @@ export default function Home() {
                       05
                     </div>
                     <p>
-                      Worked on applied AI research across many disciplines. See
-                      my{" "}
+                      Published Big Data Research Papers to the STEM Fellowship
+                      Journal (
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://scholar.google.com/citations?user=QZNuPBQAAAAJ&hl=en"
+                        href="https://drive.google.com/file/d/1ev65mlwrfEN0kpjZVgCr-RcP9_9XaS-K/view"
                       >
-                        Google Scholar
-                      </a>{" "}
-                      for more.
+                        Manuscript 1
+                      </a>
+                      ,{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="href-text"
+                        href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
+                      >
+                        Manuscript 2
+                      </a>
+                      ).
                     </p>
                   </li>
                 </ul>
@@ -460,19 +461,17 @@ export default function Home() {
                     >
                       01
                     </div>
-                    <p>
-                      Trained video foundation models for cataract surgery at
-                      the{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://ophai.hms.harvard.edu"
+                    <div>
+                      <p className="mb-4">Favorite writings:</p>
+                      <ol
+                        className="list-decimal list-inside space-y-3"
+                        style={{ marginLeft: "1rem" }}
                       >
-                        Harvard Ophthalmology AI Lab
-                      </a>
-                      .
-                    </p>
+                        <li>Man's Search For Meaning (Viktor Frankl)</li>
+                        <li>The Almanack of Naval Ravikant (Eric Jorgenson)</li>
+                        <li>Zero To One (Peter Thiel)</li>
+                      </ol>
+                    </div>
                   </li>
                   <li
                     className="text-sm leading-loose animate-fade-in delay-1100"
@@ -484,19 +483,17 @@ export default function Home() {
                     >
                       02
                     </div>
-                    <p>
-                      Explored few-shot omics translation with autoencoders at
-                      Stanford's{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://nalab.stanford.edu"
+                    <div>
+                      <p className="mb-4">Favorite movies:</p>
+                      <ol
+                        className="list-decimal list-inside space-y-3"
+                        style={{ marginLeft: "1rem" }}
                       >
-                        Aghaeepour Lab
-                      </a>
-                      .
-                    </p>
+                        <li>Shawshank Redemption</li>
+                        <li>Good Will Hunting</li>
+                        <li>Forrest Gump</li>
+                      </ol>
+                    </div>
                   </li>
                   <li
                     className="text-sm leading-loose animate-fade-in delay-1300"
@@ -508,19 +505,7 @@ export default function Home() {
                     >
                       03
                     </div>
-                    <p>
-                      Designed physics-informed AI methods for acoustics
-                      simulations at the{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://www.nrl.navy.mil/itd/aic/"
-                      >
-                        Naval Research Laboratory
-                      </a>
-                      .
-                    </p>
+                    <p>Currently learning golf, guitar, and singing</p>
                   </li>
                   <li
                     className="text-sm leading-loose animate-fade-in delay-1500"
@@ -533,50 +518,9 @@ export default function Home() {
                       04
                     </div>
                     <p>
-                      Built methods for text-to-3D design, editing, and printing
-                      with diffusion. Won 1st at{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://isef.net/project/teca019t-diffusion-based-3d-art-generation"
-                      >
-                        ISEF
-                      </a>
-                      .
-                    </p>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1700"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      05
-                    </div>
-                    <p>
-                      Automated ear infection screening with a 3D-printed mobile
-                      otoscope. Presented at{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://isef.net/project/tmed042t-otitis-media-diagnosis-with-smartphones"
-                      >
-                        ISEF
-                      </a>{" "}
-                      and{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://dl.acm.org/doi/10.1007/978-3-031-47076-9_16"
-                      >
-                        MICCAI 2023
-                      </a>
-                      .
+                      Competed on Team Ontario Table Tennis and runner with
+                      finishes at the Haliburton 50K Ultramarathon, Haliburton
+                      26K, and Toronto Waterfront Marathon.
                     </p>
                   </li>
                 </ul>
@@ -610,7 +554,7 @@ export default function Home() {
                       01
                     </div>
                     <div>
-                      <p>Based in San Francisco, CA. Always down to chat.</p>
+                      <p>Based in Toronto, ON. Always down to chat.</p>
                     </div>
                   </li>
                   <li
@@ -624,16 +568,10 @@ export default function Home() {
                       02
                     </div>
                     <div>
-                      <p className="mb-4">Some of my favorite reads.</p>
-                      <ol
-                        className="list-decimal list-inside space-y-3"
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        <li>When Breath Becomes Air (Paul Kalanithi)</li>
-                        <li>Steve Jobs (Walter Isaacson)</li>
-                        <li>The Aeneid (Virgil)</li>
-                        <li>One Piece (Eiichiro Oda)</li>
-                      </ol>
+                      <p>
+                        Bullish on RL environments and DevOps for agent
+                        builders.
+                      </p>
                     </div>
                   </li>
                   <li
@@ -647,47 +585,9 @@ export default function Home() {
                       03
                     </div>
                     <div>
-                      <p className="mb-4">Big fan of...</p>
-                      <ol
-                        className="list-decimal list-inside space-y-3"
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        <li>Cleveland Cavaliers</li>
-                        <li>Afrobeats and hip-hop</li>
-                        <li>Pushing to prod ;)</li>
-                      </ol>
-                    </div>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1500"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      04
-                    </div>
-                    <div>
                       <p>
-                        Other affiliations: TJHSST (prev. ran{" "}
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="href-text"
-                          href="https://tjmachinelearning.com"
-                        >
-                          ML Club
-                        </a>
-                        ),{" "}
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="href-text"
-                          href="https://www.zfellows.com"
-                        >
-                          Z Fellows
-                        </a>
+                        Favourite quote: "He who has a why to live can bear
+                        almost any how." - Friedrich Nietzsche
                       </p>
                     </div>
                   </li>
