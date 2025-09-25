@@ -25,19 +25,16 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
         age--;
       }
       
-      // Calculate next birthday
       let nextBirthday = new Date(currentYear, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
       if (nextBirthday <= now) {
         nextBirthday = new Date(currentYear + 1, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
       }
       
-      // Calculate last birthday
       let lastBirthday = new Date(currentYear, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
       if (lastBirthday > now) {
         lastBirthday = new Date(currentYear - 1, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
       }
       
-      // Calculate progress through current year of life
       const totalDaysInYear = (nextBirthday.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24);
       const daysPassed = (now.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24);
       const progressPercentage = (daysPassed / totalDaysInYear) * 100;
@@ -62,8 +59,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       >
         Age {currentAge}
       </span>
-      
-      {/* Progress bar */}
+
       <div 
         className="w-16 sm:w-24 h-[2px] rounded-full overflow-hidden"
         style={{

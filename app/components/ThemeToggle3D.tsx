@@ -330,7 +330,6 @@ export default function ThemeToggle3D({ isDarkMode, toggleTheme }: ThemeToggle3D
               ? "0 0 40px rgba(136, 136, 255, 0.5), 0 0 80px rgba(136, 136, 255, 0.2)" 
               : "0 0 40px rgba(255, 221, 0, 0.5), 0 0 80px rgba(255, 136, 0, 0.2)"
             : "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-          border: `2px solid ${isDarkMode ? "rgba(136, 136, 255, 0.3)" : "rgba(255, 221, 0, 0.3)"}`,
           transform: isHovered ? `perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg) scale(1.1)` : "scale(1)",
         }}
         aria-label="Toggle theme"
