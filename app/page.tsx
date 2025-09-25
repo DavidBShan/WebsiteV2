@@ -102,17 +102,7 @@ export default function Home() {
                 >
                   Clado
                 </a>
-                . I'm excited about AI and deep tech, and I love thinking about
-                how to do{" "}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="href-text"
-                  href="https://paulgraham.com/greatwork.html"
-                >
-                  great work
-                </a>
-                .
+                . I'm excited about AI, infrastructure, and deep tech.
               </p>
             </section>
 
@@ -194,7 +184,7 @@ export default function Home() {
                       03
                     </div>
                     <p>
-                      Was the youngest intern ever at{" "}
+                      Interned at{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
@@ -203,7 +193,7 @@ export default function Home() {
                       >
                         Geotab
                       </a>
-                      , one of the biggest telematic companies in the world.
+                      to build telematics software.
                     </p>
                   </li>
                   <li
@@ -217,7 +207,7 @@ export default function Home() {
                       04
                     </div>
                     <p>
-                      Developed Rigid Ramp Walker and Ruler Trick Simulation
+                      Developed Rigid Ramp Walker and Ruler Trick Simulations
                       using{" "}
                       <a
                         target="_blank"
@@ -349,11 +339,12 @@ export default function Home() {
                     >
                       04
                     </div>
-                    <p>
-                      Competed on Team Ontario Table Tennis and runner with
-                      finishes at the Haliburton 50K Ultramarathon, Haliburton
-                      26K, and Toronto Waterfront Marathon.
-                    </p>
+                    <div>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li>Team Ontario Table Tennis competitor</li>
+                        <li>Completed Haliburton 26K & 50K Ultramarathon</li>
+                      </ul>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -386,20 +377,6 @@ export default function Home() {
                       01
                     </div>
                     <div>
-                      <p>Based in Toronto, ON. Would love to chat.</p>
-                    </div>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1500"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      02
-                    </div>
-                    <div>
                       <p>
                         Currently exploring browser agents and observability in
                         the context of machine learning.
@@ -414,35 +391,13 @@ export default function Home() {
                       className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                     >
-                      03
+                      02
                     </div>
                     <div>
                       <p>
                         Really excited about RL environments and DevOps for agent
                         builders.
                       </p>
-                    </div>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1500"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      04
-                    </div>
-                    <div>
-                      <p className="mb-4">Favourite quotes:</p>
-                      <ol
-                        className="list-decimal list-inside space-y-3"
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        <li>"He who has a why to live can bear almost any how." - Friedrich Nietzsche</li>
-                        <li>"The only real test of intelligence is if you get what you want out of life." - Naval Ravikant</li>
-                        <li>"It's hard to do a really good job on anything you don't think about in the shower." - Paul Graham</li>
-                      </ol>
                     </div>
                   </li>
                 </ul>
