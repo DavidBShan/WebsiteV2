@@ -88,7 +88,7 @@ export default function Home() {
                 style={{ marginBottom: "1rem", marginTop: "0.5rem" }}
               >
                 <a
-                  href="https://github.com/sritanmotati"
+                  href="https://github.com/davidbshan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-80 p-1 -m-1"
@@ -111,7 +111,7 @@ export default function Home() {
                   <span className="sr-only">GitHub</span>
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/sritan/"
+                  href="https://www.linkedin.com/in/davidbshan/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-80 p-1 -m-1"
@@ -136,7 +136,7 @@ export default function Home() {
                   <span className="sr-only">LinkedIn</span>
                 </a>
                 <a
-                  href="https://twitter.com/sritanmotati"
+                  href="https://twitter.com/davidbshan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-80 p-1 -m-1"
@@ -159,7 +159,7 @@ export default function Home() {
                   <span className="sr-only">Twitter</span>
                 </a>
                 <a
-                  href="mailto:sritan@a37.ai"
+                  href="mailto:david@clado.ai"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-80 p-1 -m-1"
@@ -205,7 +205,7 @@ export default function Home() {
                   <span className="sr-only">Writing</span>
                 </Link>
                 <a
-                  href="https://letterboxd.com/sritan"
+                  href="https://letterboxd.com/ChickenMcSwag/films/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:opacity-80 p-1 -m-1"
