@@ -8,16 +8,21 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : true;
-    setIsDarkMode(prefersDark);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 640;
     
-    // Apply theme to document
-    if (prefersDark) {
+    if (isMobile) {
+      setIsDarkMode(true);
       document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      const savedTheme = localStorage.getItem("theme");
+      const prefersDark = savedTheme ? savedTheme === "dark" : true;
+      setIsDarkMode(prefersDark);
+      
+      if (prefersDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
   }, []);
 
@@ -25,10 +30,8 @@ export default function Home() {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);
     
-    // Save preference
     localStorage.setItem("theme", newTheme ? "dark" : "light");
     
-    // Apply theme
     if (newTheme) {
       document.documentElement.classList.add("dark");
     } else {
@@ -39,26 +42,31 @@ export default function Home() {
   return (
     <>
       <main
-        className="min-h-screen flex justify-center px-8"
-        style={{ paddingTop: "60px", paddingBottom: "60px" }}
+        className="min-h-screen flex justify-center overflow-x-hidden"
+        style={{ 
+          paddingTop: "30px", 
+          paddingBottom: "30px", 
+          paddingLeft: "24px", 
+          paddingRight: "24px" 
+        }}
       >
         <div className="max-w-4xl w-full">
         <div
-          style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+          className="flex flex-col gap-6"
         >
           <div className="animate-fade-in delay-0">
             <div className="flex flex-col">
               <div className="relative" style={{ marginBottom: "1.5rem" }}>
                 <h1
-                  className="text-4xl font-black"
+                  className="text-3xl sm:text-4xl font-black"
                   style={{ 
                     color: isDarkMode ? "#ffffff" : "#000000"
                   }}
                 >
                   Sritan Motati
                 </h1>
-                {/* Theme Toggle - positioned absolutely */}
-                <div className="fadeIn" style={{ 
+                {/* Theme Toggle - positioned absolutely, hidden on mobile */}
+                <div className="hidden sm:block fadeIn" style={{ 
                   position: "absolute",
                   top: "0",
                   right: "0",
@@ -75,14 +83,14 @@ export default function Home() {
                 </div>
               </div>
               <div
-                className="flex gap-5 outline-none"
-                style={{ marginBottom: "1rem" }}
+                className="flex flex-wrap gap-5 sm:gap-5 outline-none"
+                style={{ marginBottom: "1rem", marginTop: "0.5rem" }}
               >
                 <a
                   href="https://github.com/sritanmotati"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -92,7 +100,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +113,7 @@ export default function Home() {
                   href="https://www.linkedin.com/in/sritan/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -115,7 +123,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +138,7 @@ export default function Home() {
                   href="https://twitter.com/sritanmotati"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -140,7 +148,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +161,7 @@ export default function Home() {
                   href="mailto:sritan@a37.ai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -163,7 +171,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +185,7 @@ export default function Home() {
                   href="https://medium.com/@sritan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -187,7 +195,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +209,7 @@ export default function Home() {
                   href="https://letterboxd.com/sritan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80"
+                  className="hover:opacity-80 p-1 -m-1"
                   style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}
                 >
                   <svg
@@ -211,7 +219,7 @@ export default function Home() {
                     viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-6 h-6 sm:w-5 sm:h-5"
                     height="1em"
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
@@ -244,7 +252,7 @@ export default function Home() {
           </div>
 
           <section className="animate-fade-in delay-400">
-            <p className="leading-loose text-base" style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}>
+            <p className="leading-relaxed text-sm sm:text-base" style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}>
               Hey, I'm Sritan. I'm currently tackling DevOps at{" "}
               <a
                 target="_blank"
@@ -268,12 +276,12 @@ export default function Home() {
           </section>
 
           <section
-            className="grid grid-cols-1 md:grid-cols-3"
-            style={{ gap: "2rem", marginTop: "2rem" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+            style={{ marginTop: "1.5rem" }}
           >
             <div>
               <h2
-                className="text-lg font-bold animate-fade-in delay-700"
+                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#ffffff" : "#000000"
@@ -288,14 +296,14 @@ export default function Home() {
                   gap: "0.75rem",
                 }}
               >
-                <li className="text-xs leading-loose animate-fade-in delay-900" style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}>
+                <li className="text-xs leading-relaxed animate-fade-in delay-900 w-full" style={{ color: isDarkMode ? '#d1d5db' : '#000000' }}>
                   <div
                     className="text-xs italic text-gray-500 dark:text-gray-500 font-mono"
                     style={{ marginBottom: "0.25rem" }}
                   >
                     01
                   </div>
-                  <p>
+                  <p className="break-words">
                     Co-founded{" "}
                     <a
                       target="_blank"
@@ -404,7 +412,7 @@ export default function Home() {
 
             <div>
               <h2
-                className="text-lg font-bold animate-fade-in delay-700"
+                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#ffffff" : "#000000"
@@ -537,7 +545,7 @@ export default function Home() {
 
             <div>
               <h2
-                className="text-lg font-bold animate-fade-in delay-700"
+                className="text-base sm:text-lg font-bold animate-fade-in delay-700"
                 style={{ 
                   marginBottom: "0.75rem",
                   color: isDarkMode ? "#ffffff" : "#000000"

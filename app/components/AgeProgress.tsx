@@ -53,7 +53,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-3">
+    <div className="inline-flex items-center gap-2 sm:gap-3">
       <span 
         className="text-xs"
         style={{ 
@@ -65,7 +65,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       
       {/* Progress bar */}
       <div 
-        className="w-24 h-[2px] rounded-full overflow-hidden"
+        className="w-16 sm:w-24 h-[2px] rounded-full overflow-hidden"
         style={{
           backgroundColor: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
         }}
