@@ -58,7 +58,7 @@ export default function Home() {
                   Sritan Motati
                 </h1>
                 {/* Theme Toggle - positioned absolutely */}
-                <div style={{ 
+                <div className="fadeIn" style={{ 
                   position: "absolute",
                   top: "0",
                   right: "0",

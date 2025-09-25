@@ -6,6 +6,13 @@ import { PerspectiveCamera, Float } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 
+const getInitialBgColor = () => {
+  if (typeof window === 'undefined') return "#050510";
+  const savedTheme = localStorage.getItem("theme");
+  const prefersDark = !savedTheme || savedTheme === "dark";
+  return prefersDark ? "#050510" : "#87ceeb";
+};
+
 interface ParticlesProps {
   isDark: boolean;
   mousePosition: { x: number; y: number };
@@ -217,17 +224,18 @@ interface SceneProps {
 }
 
 function Scene({ isDark, isTransitioning, isHovered, mousePosition }: SceneProps) {
-  const { gl } = useThree();
+  const { gl, scene } = useThree();
 
   useEffect(() => {
-    // Animate background color change
+    // Set the scene background color immediately
     const targetColor = isDark ? "#050510" : "#87ceeb";
-    gsap.to(gl.domElement.parentElement?.style ?? {}, {
-      backgroundColor: targetColor,
-      duration: 0.6,
-      ease: "power2.inOut",
-    });
-  }, [isDark, gl]);
+    scene.background = new THREE.Color(targetColor);
+    
+    // Also animate the parent element background for smooth transition
+    if (gl.domElement.parentElement) {
+      gl.domElement.parentElement.style.backgroundColor = targetColor;
+    }
+  }, [isDark, gl, scene]);
 
   return (
     <>
@@ -271,6 +279,7 @@ export default function ThemeToggle3D({ isDarkMode, toggleTheme }: ThemeToggle3D
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLButtonElement>(null);
+  const initialBgColor = getInitialBgColor();
 
   useEffect(() => {
     // Check if device might struggle with 3D
@@ -300,7 +309,7 @@ export default function ThemeToggle3D({ isDarkMode, toggleTheme }: ThemeToggle3D
   // Fallback to simple toggle for mobile/low-end devices
   if (!showCanvas) {
     return (
-      <div className="inline-block">
+      <div className="inline-block fadeIn">
         <button
           type="button"
           onClick={toggleTheme}
@@ -359,7 +368,7 @@ export default function ThemeToggle3D({ isDarkMode, toggleTheme }: ThemeToggle3D
         onMouseMove={handleMouseMove}
         className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:scale-110 transform-origin-center"
         style={{ 
-          backgroundColor: isDarkMode ? "#050510" : "#87ceeb",
+          backgroundColor: initialBgColor,
           boxShadow: isHovered 
             ? isDarkMode 
               ? "0 0 40px rgba(136, 136, 255, 0.5), 0 0 80px rgba(136, 136, 255, 0.2)" 
@@ -387,8 +396,22 @@ export default function ThemeToggle3D({ isDarkMode, toggleTheme }: ThemeToggle3D
         
         <Canvas
           camera={{ position: [0, 0, 5], fov: 50 }}
-          style={{ width: "100%", height: "100%" }}
-          gl={{ antialias: true, alpha: true }}
+          style={{ 
+            width: "100%", 
+            height: "100%",
+            background: initialBgColor
+          }}
+          gl={{ 
+            antialias: true, 
+            alpha: false,
+            powerPreference: "high-performance"
+          }}
+          onCreated={({ gl, scene }) => {
+            // Set initial clear color and scene background immediately
+            const color = new THREE.Color(initialBgColor);
+            gl.setClearColor(color, 1);
+            scene.background = color;
+          }}
         >
           <Scene 
             isDark={isDarkMode} 

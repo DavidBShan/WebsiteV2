@@ -51,13 +51,11 @@ body {
   color: #fff;
 }
 
-/* Disable color transitions on all elements */
 p, li, div, span, a {
   transition-property: opacity, transform !important;
   transition-duration: 0s !important;
 }
 
-/* Animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -108,12 +106,10 @@ p, li, div, span, a {
   animation-delay: 1300ms;
 }
 
-/* Font classes */
 .font-mono {
   font-family: var(--font-jetbrains);
 }
 
-/* Screen reader only */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -124,4 +120,23 @@ p, li, div, span, a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeInAlt 800ms ease-out forwards;
+  animation-fill-mode: both;
+  animation-composition: replace;
+  animation-delay: 250ms;
+}
+
+@keyframes fadeInAlt {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
