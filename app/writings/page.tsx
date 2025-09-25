@@ -10,7 +10,7 @@ export default function Writings() {
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = savedTheme ? savedTheme === "dark" : true;
     setIsDarkMode(prefersDark);
-    
+
     if (prefersDark) {
       document.documentElement.classList.add("dark");
     } else {
@@ -21,20 +21,20 @@ export default function Writings() {
   return (
     <main
       className="min-h-screen flex justify-center overflow-x-hidden"
-      style={{ 
-        paddingTop: "30px", 
-        paddingBottom: "30px", 
-        paddingLeft: "24px", 
-        paddingRight: "24px" 
+      style={{
+        paddingTop: "30px",
+        paddingBottom: "30px",
+        paddingLeft: "24px",
+        paddingRight: "24px",
       }}
     >
       <div className="max-w-4xl w-full">
         <div className="flex flex-col gap-6">
           {/* Back link */}
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity animate-fade-in delay-0"
-            style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}
+            style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
           >
             <svg
               stroke="currentColor"
@@ -55,9 +55,9 @@ export default function Writings() {
           <div className="animate-fade-in delay-0">
             <h1
               className="text-3xl sm:text-4xl font-black"
-              style={{ 
+              style={{
                 color: isDarkMode ? "#e5e7eb" : "#374151",
-                marginBottom: "1.5rem"
+                marginBottom: "1.5rem",
               }}
             >
               Writings
@@ -66,7 +66,10 @@ export default function Writings() {
 
           {/* Coming soon message */}
           <section className="animate-fade-in delay-400">
-            <p className="leading-relaxed text-base sm:text-lg" style={{ color: isDarkMode ? '#9ca3af' : '#4b5563' }}>
+            <p
+              className="leading-relaxed text-base sm:text-lg"
+              style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+            >
               Coming soon...
             </p>
           </section>

@@ -56,7 +56,11 @@ body {
   color: #e5e7eb;
 }
 
-p, li, div, span, a {
+p,
+li,
+div,
+span,
+a {
   transition-property: opacity, transform !important;
   transition-duration: 0s !important;
 }
@@ -73,7 +77,8 @@ p, li, div, span, a {
 }
 
 /* Prevent text overflow on mobile */
-p, li {
+p,
+li {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -86,16 +91,16 @@ p, li {
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
-  
+
   section {
     width: 100%;
   }
-  
+
   /* Ensure list items don't overflow */
   ul {
     width: 100%;
   }
-  
+
   li {
     width: 100%;
   }

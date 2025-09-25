@@ -16,57 +16,81 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
     const calculateAge = () => {
       const now = new Date();
       const currentYear = now.getFullYear();
-      
+
       // Calculate current age
       let age = currentYear - BIRTH_DATE.getFullYear();
       const monthDiff = now.getMonth() - BIRTH_DATE.getMonth();
-      
-      if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < BIRTH_DATE.getDate())) {
+
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && now.getDate() < BIRTH_DATE.getDate())
+      ) {
         age--;
       }
-      
-      let nextBirthday = new Date(currentYear, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
+
+      let nextBirthday = new Date(
+        currentYear,
+        BIRTH_DATE.getMonth(),
+        BIRTH_DATE.getDate(),
+      );
       if (nextBirthday <= now) {
-        nextBirthday = new Date(currentYear + 1, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
+        nextBirthday = new Date(
+          currentYear + 1,
+          BIRTH_DATE.getMonth(),
+          BIRTH_DATE.getDate(),
+        );
       }
-      
-      let lastBirthday = new Date(currentYear, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
+
+      let lastBirthday = new Date(
+        currentYear,
+        BIRTH_DATE.getMonth(),
+        BIRTH_DATE.getDate(),
+      );
       if (lastBirthday > now) {
-        lastBirthday = new Date(currentYear - 1, BIRTH_DATE.getMonth(), BIRTH_DATE.getDate());
+        lastBirthday = new Date(
+          currentYear - 1,
+          BIRTH_DATE.getMonth(),
+          BIRTH_DATE.getDate(),
+        );
       }
-      
-      const totalDaysInYear = (nextBirthday.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24);
-      const daysPassed = (now.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24);
+
+      const totalDaysInYear =
+        (nextBirthday.getTime() - lastBirthday.getTime()) /
+        (1000 * 60 * 60 * 24);
+      const daysPassed =
+        (now.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24);
       const progressPercentage = (daysPassed / totalDaysInYear) * 100;
-      
+
       setCurrentAge(age);
       setProgress(progressPercentage);
     };
 
     calculateAge();
     const interval = setInterval(calculateAge, 1000 * 60 * 60); // Update every hour
-    
+
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="inline-flex items-center gap-2 sm:gap-3">
-      <span 
+      <span
         className="text-xs"
-        style={{ 
-          color: isDarkMode ? '#6b7280' : '#9ca3af',
+        style={{
+          color: isDarkMode ? "#6b7280" : "#9ca3af",
         }}
       >
         Age {currentAge}
       </span>
 
-      <div 
+      <div
         className="w-16 sm:w-24 h-[2px] rounded-full overflow-hidden"
         style={{
-          backgroundColor: isDarkMode ? "rgba(156, 163, 175, 0.2)" : "rgba(75, 85, 99, 0.15)",
+          backgroundColor: isDarkMode
+            ? "rgba(156, 163, 175, 0.2)"
+            : "rgba(75, 85, 99, 0.15)",
         }}
       >
-        <div 
+        <div
           className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
             width: `${progress}%`,
