@@ -577,7 +577,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p>
-                        Bullish on RL environments and DevOps for agent
+                        Really excited about RL environments and DevOps for agent
                         builders.
                       </p>
                     </div>
