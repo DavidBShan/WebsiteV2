@@ -15,9 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sritan Motati",
+  title: "David Shan",
   description:
-    "Personal portfolio of Sritan Motati - DevOps engineer, AI researcher, and product builder.",
+    "Website of David Shan - CTO of Clado",
 };
 
 export default function RootLayout({

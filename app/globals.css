@@ -2,12 +2,12 @@
 
 :root {
   --background: #f9fafb;
-  --foreground: #000000;
+  --foreground: #4b5563;
 }
 
 .dark {
   --background: #0a0a0a;
-  --foreground: #d1d5db;
+  --foreground: #9ca3af;
 }
 
 @theme inline {
@@ -47,11 +47,11 @@ body {
 }
 
 .href-text:hover {
-  color: #000000;
+  color: #374151;
 }
 
 .dark .href-text:hover {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 p, li, div, span, a {

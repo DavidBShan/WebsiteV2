@@ -57,7 +57,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       <span 
         className="text-xs"
         style={{ 
-          color: isDarkMode ? '#9ca3af' : '#6b7280',
+          color: isDarkMode ? '#6b7280' : '#9ca3af',
         }}
       >
         Age {currentAge}
@@ -67,14 +67,14 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       <div 
         className="w-16 sm:w-24 h-[2px] rounded-full overflow-hidden"
         style={{
-          backgroundColor: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)",
+          backgroundColor: isDarkMode ? "rgba(156, 163, 175, 0.2)" : "rgba(75, 85, 99, 0.15)",
         }}
       >
         <div 
           className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
             width: `${progress}%`,
-            backgroundColor: isDarkMode ? "#6b7280" : "#9ca3af",
+            backgroundColor: isDarkMode ? "#4b5563" : "#9ca3af",
           }}
         />
       </div>
