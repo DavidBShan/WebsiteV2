@@ -92,7 +92,7 @@ export default function Home() {
                 className="leading-relaxed text-base sm:text-lg"
                 style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
               >
-                Currently CTO @{" "}
+                CTO @{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -101,7 +101,7 @@ export default function Home() {
                 >
                   Clado
                 </a>
-                . I'm excited about AI, infrastructure, and deep tech.
+                . Excited about AI, infrastructure, deep tech.
               </p>
             </section>
 
@@ -137,8 +137,8 @@ export default function Home() {
                       01
                     </div>
                     <p className="break-words">
-                      Co-founded{" "}
-                      <a
+                      Building state of the art people search at{" "}
+                      {" "}<a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
@@ -146,7 +146,7 @@ export default function Home() {
                       >
                         Clado
                       </a>{" "}
-                      to build state of the art people search.
+                      .
                     </p>
                   </li>
                   <li
@@ -160,16 +160,14 @@ export default function Home() {
                       02
                     </div>
                     <p>
-                      Led the agentic engineering team to develop MANTIS at{" "}
-                      <a
+                      Researched agentic engineering at MIT with <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
                         href="https://compbio.mit.edu/"
                       >
-                        Kellis Lab
-                      </a>{" "}
-                      at MIT.
+                        Professor Manolis Kellis
+                      </a>.
                     </p>
                   </li>
                   <li
@@ -192,64 +190,7 @@ export default function Home() {
                       >
                         Geotab
                       </a>
-                      to build telematics software.
-                    </p>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1500"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      04
-                    </div>
-                    <p>
-                      Developed Rigid Ramp Walker and Ruler Trick Simulations
-                      using{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://mujoco.org/"
-                      >
-                        Mujoco
-                      </a>{" "}
-                      and 4th-Degree Runge Kutta's method.
-                    </p>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1700"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      05
-                    </div>
-                    <p>
-                      Published Big Data Research Papers to the STEM Fellowship
-                      Journal (
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://drive.google.com/file/d/1ev65mlwrfEN0kpjZVgCr-RcP9_9XaS-K/view"
-                      >
-                        Manuscript 1
-                      </a>
-                      ,{" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="href-text"
-                        href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
-                      >
-                        Manuscript 2
-                      </a>
-                      ).
+                      {" "}to build telematics software.
                     </p>
                   </li>
                 </ul>
@@ -340,8 +281,8 @@ export default function Home() {
                     </div>
                     <div>
                       <ul className="list-disc list-inside space-y-1">
-                        <li>Team Ontario Table Tennis competitor</li>
-                        <li>Completed Haliburton 26K & 50K Ultramarathon</li>
+                        <li>Team Ontario Table Tennis</li>
+                        <li>Haliburton 26K, Toronto Waterfront Marathon, and 50K Ultramarathon</li>
                       </ul>
                     </div>
                   </li>
@@ -377,25 +318,8 @@ export default function Home() {
                     </div>
                     <div>
                       <p>
-                        Currently exploring browser agents and observability in
+                        Exploring browser agents and observability in
                         the context of machine learning.
-                      </p>
-                    </div>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1100"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                    >
-                      02
-                    </div>
-                    <div>
-                      <p>
-                        Really excited about RL environments and DevOps for agent
-                        builders.
                       </p>
                     </div>
                   </li>
