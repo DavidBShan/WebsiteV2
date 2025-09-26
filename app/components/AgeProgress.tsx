@@ -98,6 +98,15 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
           }}
         />
       </div>
+
+      <span
+        className="text-xs"
+        style={{
+          color: isDarkMode ? "#6b7280" : "#9ca3af",
+        }}
+      >
+        Age {currentAge + 1}
+      </span>
     </div>
   );
 }

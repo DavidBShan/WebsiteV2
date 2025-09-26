@@ -7,10 +7,10 @@ import * as THREE from "three";
 import gsap from "gsap";
 
 const getInitialBgColor = () => {
-  if (typeof window === "undefined") return "#87ceeb";
+  if (typeof window === "undefined") return "#BFDAF7";
   const savedTheme = localStorage.getItem("theme");
   const prefersDark = savedTheme === "dark";
-  return prefersDark ? "#050510" : "#87ceeb";
+  return prefersDark ? "#050510" : "#BFDAF7";
 };
 
 interface ParticlesProps {
@@ -424,7 +424,7 @@ function Scene({
 
   useEffect(() => {
     // Set the scene background color immediately
-    const targetColor = isDark ? "#050510" : "#87ceeb";
+    const targetColor = isDark ? "#050510" : "#BFDAF7";
     scene.background = new THREE.Color(targetColor);
 
     // Also animate the parent element background for smooth transition
