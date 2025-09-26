@@ -117,7 +117,7 @@ export default function Home() {
                     color: isDarkMode ? "#e5e7eb" : "#374151",
                   }}
                 >
-                  Experience
+                  Work
                 </h2>
                 <ul
                   style={{
@@ -297,7 +297,7 @@ export default function Home() {
                     color: isDarkMode ? "#e5e7eb" : "#374151",
                   }}
                 >
-                  Other
+                  Misc
                 </h2>
                 <ul
                   style={{
