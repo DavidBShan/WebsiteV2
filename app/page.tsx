@@ -38,7 +38,7 @@ export default function Home() {
       <main
         className="min-h-screen flex justify-center overflow-x-hidden"
         style={{
-          paddingTop: "30px",
+          paddingTop: "50px",
           paddingBottom: "30px",
           paddingLeft: "24px",
           paddingRight: "24px",
@@ -48,7 +48,7 @@ export default function Home() {
           <div className="flex flex-col gap-6">
             <div className="animate-fade-in delay-0">
               <div className="flex flex-col">
-                <div className="relative" style={{ marginBottom: "1.5rem" }}>
+                <div className="relative" style={{ marginBottom: "1rem" }}>
                   <h1
                     className="text-3xl sm:text-4xl font-black"
                     style={{
@@ -57,6 +57,10 @@ export default function Home() {
                   >
                     David Shan
                   </h1>
+                  {/* Age Progress Bar - subtle placement below name */}
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <AgeProgress isDarkMode={isDarkMode} />
+                  </div>
                   {/* Theme Toggle - positioned absolutely, hidden on mobile */}
                   <div
                     className="hidden sm:block fadeIn"
@@ -81,14 +85,9 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
-              {/* Age Progress Bar - subtle placement below social links */}
-              <div style={{ marginTop: "0.75rem" }}>
-                <AgeProgress isDarkMode={isDarkMode} />
-              </div>
             </div>
 
-            <section className="animate-fade-in delay-400">
+            <section className="animate-fade-in delay-400" style={{ marginTop: "-1.25rem", marginBottom: "-1.25rem" }}>
               <p
                 className="leading-relaxed text-base sm:text-lg"
                 style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
