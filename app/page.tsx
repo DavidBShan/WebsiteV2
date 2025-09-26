@@ -93,7 +93,7 @@ export default function Home() {
                 className="leading-relaxed text-base sm:text-lg"
                 style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
               >
-                Hey, I'm David. I'm currently the CTO at{" "}
+                Currently CTO @{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
