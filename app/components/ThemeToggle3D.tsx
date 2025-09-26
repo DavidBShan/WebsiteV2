@@ -84,6 +84,262 @@ function Particles({ isDark, mousePosition }: ParticlesProps) {
   );
 }
 
+// Sun component with corona effect
+function Sun({ isHovered }: { isHovered: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const coronaRef = useRef<THREE.Mesh>(null);
+  const sunMeshRef = useRef<THREE.Mesh>(null);
+  const [coronaGeometry] = useState(() => new THREE.IcosahedronGeometry(0.98, 12));
+  
+  // Create corona noise effect
+  useEffect(() => {
+    if (coronaGeometry) {
+      const positions = coronaGeometry.attributes.position as THREE.BufferAttribute;
+      positions.usage = THREE.DynamicDrawUsage;
+    }
+  }, [coronaGeometry]);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = -state.clock.elapsedTime * 0.1;
+    }
+    
+    if (coronaRef.current && coronaGeometry) {
+      const positions = coronaGeometry.attributes.position;
+      const len = positions.count;
+      const time = state.clock.elapsedTime;
+      
+      for (let i = 0; i < len; i++) {
+        const x = positions.getX(i);
+        const y = positions.getY(i);
+        const z = positions.getZ(i);
+        
+        const noise = Math.sin(x * 3 + time) * Math.cos(y * 3 + time) * Math.sin(z * 3 + time);
+        const scale = 1 + noise * 0.08;
+        
+        const length = Math.sqrt(x * x + y * y + z * z);
+        positions.setXYZ(
+          i,
+          (x / length) * scale,
+          (y / length) * scale,
+          (z / length) * scale
+        );
+      }
+      positions.needsUpdate = true;
+    }
+    
+    if (sunMeshRef.current) {
+      sunMeshRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+    }
+  });
+  
+  return (
+    <group ref={groupRef}>
+      {/* Main sun body */}
+      <mesh ref={sunMeshRef}>
+        <icosahedronGeometry args={[1, 12]} />
+        <meshBasicMaterial 
+          color="#ffd700"
+        />
+      </mesh>
+      
+      {/* Sun rim effect */}
+      <mesh scale={[1.01, 1.01, 1.01]}>
+        <icosahedronGeometry args={[1, 12]} />
+        <shaderMaterial
+          uniforms={{
+            color1: { value: new THREE.Color(0xffff99) },
+            color2: { value: new THREE.Color(0x000000) },
+            fresnelBias: { value: 0.2 },
+            fresnelScale: { value: 1.5 },
+            fresnelPower: { value: 4.0 },
+          }}
+          vertexShader={`
+            uniform float fresnelBias;
+            uniform float fresnelScale;
+            uniform float fresnelPower;
+            varying float vReflectionFactor;
+            
+            void main() {
+              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+              vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+              vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
+              vec3 I = worldPosition.xyz - cameraPosition;
+              vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
+              gl_Position = projectionMatrix * mvPosition;
+            }
+          `}
+          fragmentShader={`
+            uniform vec3 color1;
+            uniform vec3 color2;
+            varying float vReflectionFactor;
+            
+            void main() {
+              float f = clamp(vReflectionFactor, 0.0, 1.0);
+              gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
+            }
+          `}
+          transparent
+          blending={THREE.AdditiveBlending}
+          side={THREE.FrontSide}
+        />
+      </mesh>
+      
+      {/* Corona (pulsing effect) */}
+      <mesh ref={coronaRef} geometry={coronaGeometry}>
+        <meshBasicMaterial
+          color="#ff4400"
+          transparent
+          opacity={0.3}
+          side={THREE.BackSide}
+        />
+      </mesh>
+      
+      {/* Glow effect */}
+      <mesh scale={isHovered ? [1.15, 1.15, 1.15] : [1.1, 1.1, 1.1]}>
+        <icosahedronGeometry args={[1, 12]} />
+        <shaderMaterial
+          uniforms={{
+            color1: { value: new THREE.Color(0x000000) },
+            color2: { value: new THREE.Color(0xff0000) },
+            fresnelBias: { value: 0.2 },
+            fresnelScale: { value: 1.5 },
+            fresnelPower: { value: 4.0 },
+          }}
+          vertexShader={`
+            uniform float fresnelBias;
+            uniform float fresnelScale;
+            uniform float fresnelPower;
+            varying float vReflectionFactor;
+            
+            void main() {
+              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+              vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+              vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
+              vec3 I = worldPosition.xyz - cameraPosition;
+              vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
+              gl_Position = projectionMatrix * mvPosition;
+            }
+          `}
+          fragmentShader={`
+            uniform vec3 color1;
+            uniform vec3 color2;
+            varying float vReflectionFactor;
+            
+            void main() {
+              float f = clamp(vReflectionFactor, 0.0, 1.0);
+              gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
+            }
+          `}
+          transparent
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
+      
+      {/* Point light from sun */}
+      <pointLight
+        color="#ffff99"
+        intensity={2}
+        distance={10}
+        decay={2}
+      />
+    </group>
+  );
+}
+
+// Moon component with craters
+function Moon({ isHovered }: { isHovered: boolean }) {
+  const moonRef = useRef<THREE.Mesh>(null);
+  const [moonGeometry] = useState(() => {
+    const geometry = new THREE.IcosahedronGeometry(1, 16);
+    const positions = geometry.attributes.position;
+    const len = positions.count;
+    
+    // Create multiple crater-like deformations for realistic lunar surface
+    for (let i = 0; i < len; i++) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      const z = positions.getZ(i);
+      
+      // Normalize to get surface position
+      const length = Math.sqrt(x * x + y * y + z * z);
+      const nx = x / length;
+      const ny = y / length;
+      const nz = z / length;
+      
+      // Add surface noise for roughness
+      const noise = 
+        Math.sin(nx * 15) * Math.cos(ny * 15) * Math.sin(nz * 15) * 0.02 +
+        Math.sin(nx * 30) * Math.cos(ny * 30) * Math.sin(nz * 30) * 0.01;
+      
+      // Create multiple crater depressions of varying sizes
+      let craterDepth = 0;
+      
+      // Large craters
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.5) ** 2 + (ny - 0.3) ** 2 + (nz - 0.1) ** 2) * 4) * 0.12;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.4) ** 2 + (ny + 0.2) ** 2 + (nz - 0.3) ** 2) * 5) * 0.1;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.1) ** 2 + (ny - 0.6) ** 2 + (nz + 0.2) ** 2) * 5) * 0.08;
+      
+      // Medium craters
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.3) ** 2 + (ny - 0.5) ** 2 + (nz + 0.4) ** 2) * 8) * 0.05;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.6) ** 2 + (ny + 0.1) ** 2 + (nz - 0.2) ** 2) * 9) * 0.04;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.2) ** 2 + (ny + 0.4) ** 2 + (nz + 0.5) ** 2) * 10) * 0.04;
+      
+      // Small craters
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.3) ** 2 + (ny + 0.5) ** 2 + (nz - 0.4) ** 2) * 15) * 0.03;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.6) ** 2 + (ny - 0.3) ** 2 + (nz + 0.1) ** 2) * 18) * 0.025;
+      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.4) ** 2 + (ny - 0.2) ** 2 + (nz + 0.6) ** 2) * 20) * 0.02;
+      
+      // Apply deformation (1 is normal surface, less than 1 creates depressions)
+      const deformation = 1 - craterDepth + noise;
+      
+      positions.setXYZ(
+        i,
+        nx * deformation,
+        ny * deformation,
+        nz * deformation
+      );
+    }
+    
+    geometry.computeVertexNormals();
+    return geometry;
+  });
+  
+  useFrame((state) => {
+    if (moonRef.current) {
+      // Slow rotation to show off the craters
+      moonRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+      moonRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.005) * 0.05;
+    }
+  });
+  
+  return (
+    <group>
+      {/* Main moon body with craters - realistic gray color */}
+      <mesh ref={moonRef} geometry={moonGeometry}>
+        <meshStandardMaterial
+          color="#c0c0c0"  // Light gray (like real moon)
+          roughness={0.9}   // Rough but not completely matte
+          metalness={0.1}   // Tiny bit of reflection
+          emissive="#a0a0b0"  // Self-illuminated gray-blue
+          emissiveIntensity={0.4}  // Strong enough to be visible in dark
+        />
+      </mesh>
+      
+      {/* Moon glow for visibility */}
+      <mesh scale={isHovered ? [1.08, 1.08, 1.08] : [1.05, 1.05, 1.05]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshBasicMaterial
+          color="#9999cc"  // Soft blue-gray glow
+          transparent
+          opacity={0.15}
+          side={THREE.BackSide}
+        />
+      </mesh>
+    </group>
+  );
+}
+
 interface CelestialBodyProps {
   isDark: boolean;
   isTransitioning: boolean;
@@ -97,39 +353,12 @@ function CelestialBody({
   isHovered,
   mousePosition,
 }: CelestialBodyProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
-
-  // Create sun material with emissive properties
-  const sunMaterial = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: "#ffd700",
-        emissive: "#ff8800",
-        emissiveIntensity: 0.5,
-        metalness: 0.3,
-        roughness: 0.4,
-      }),
-    [],
-  );
-
-  // Create moon material with bumps
-  const moonMaterial = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: "#e8e8e8",
-        emissive: "#4444ff",
-        emissiveIntensity: 0.1,
-        metalness: 0.1,
-        roughness: 0.9,
-      }),
-    [],
-  );
+  const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
-    if (meshRef.current) {
+    if (groupRef.current) {
       // Animate the transition
-      gsap.to(meshRef.current.scale, {
+      gsap.to(groupRef.current.scale, {
         x: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
         y: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
         z: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
@@ -139,8 +368,8 @@ function CelestialBody({
 
       // Rotate during transition
       if (isTransitioning) {
-        gsap.to(meshRef.current.rotation, {
-          y: meshRef.current.rotation.y + Math.PI * 2,
+        gsap.to(groupRef.current.rotation, {
+          y: groupRef.current.rotation.y + Math.PI * 2,
           duration: 0.6,
           ease: "power2.inOut",
         });
@@ -149,71 +378,32 @@ function CelestialBody({
   }, [isTransitioning, isHovered]);
 
   useFrame((state) => {
-    if (meshRef.current) {
+    if (groupRef.current) {
       // Gentle floating animation
-      meshRef.current.position.y =
+      groupRef.current.position.y =
         Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
 
       // React to mouse movement when hovered
       if (isHovered) {
-        meshRef.current.position.x = mousePosition.x * 0.3;
-        meshRef.current.position.y += mousePosition.y * 0.3;
+        groupRef.current.position.x = mousePosition.x * 0.3;
+        groupRef.current.position.y += mousePosition.y * 0.3;
       } else {
-        meshRef.current.position.x *= 0.95; // Smoothly return to center
-      }
-
-      // Slow rotation
-      if (!isTransitioning) {
-        meshRef.current.rotation.y += 0.005;
-      }
-    }
-
-    if (glowRef.current) {
-      glowRef.current.rotation.z = state.clock.elapsedTime * 0.5;
-      if (isHovered) {
-        glowRef.current.scale.setScalar(1.8);
-      } else {
-        glowRef.current.scale.setScalar(1.5);
+        groupRef.current.position.x *= 0.95; // Smoothly return to center
       }
     }
   });
 
   return (
-    <>
-      {/* Main celestial body */}
-      <Float
-        speed={2}
-        rotationIntensity={0.5}
-        floatIntensity={0.3}
-        floatingRange={[-0.1, 0.1]}
-      >
-        <mesh ref={meshRef} material={isDark ? moonMaterial : sunMaterial}>
-          <sphereGeometry args={[1, 32, 32]} />
-        </mesh>
-      </Float>
-
-      {/* Glow effect */}
-      <mesh ref={glowRef} scale={[1.5, 1.5, 1.5]}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color={isDark ? "#6666ff" : "#ffaa00"}
-          transparent={true}
-          opacity={isHovered ? 0.2 : 0.1}
-          side={THREE.BackSide}
-        />
-      </mesh>
-
-      {/* Additional glow layer */}
-      <mesh scale={isHovered ? [2.5, 2.5, 2.5] : [2, 2, 2]}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color={isDark ? "#4444ff" : "#ff8800"}
-          transparent={true}
-          opacity={0.05}
-          side={THREE.BackSide}
-        />
-      </mesh>
-    </>
+    <Float
+      speed={2}
+      rotationIntensity={0.5}
+      floatIntensity={0.3}
+      floatingRange={[-0.1, 0.1]}
+    >
+      <group ref={groupRef}>
+        {isDark ? <Moon isHovered={isHovered} /> : <Sun isHovered={isHovered} />}
+      </group>
+    </Float>
   );
 }
 
@@ -248,16 +438,11 @@ function Scene({
       <PerspectiveCamera makeDefault position={[0, 0, 5]} />
 
       {/* Lighting */}
-      <ambientLight intensity={isDark ? 0.1 : 0.3} />
+      <ambientLight intensity={isDark ? 0.15 : 0.2} />
       <directionalLight
         position={[5, 5, 5]}
-        intensity={isDark ? 0.2 : 0.8}
-        color={isDark ? "#9999ff" : "#ffffff"}
-      />
-      <pointLight
-        position={[0, 0, 0]}
-        intensity={isDark ? 0.5 : 1.5}
-        color={isDark ? "#8888ff" : "#ffdd00"}
+        intensity={isDark ? 0.3 : 0.3}
+        color={isDark ? "#b0b0ff" : "#ffffff"}
       />
 
       {/* Celestial body (Sun/Moon) */}
