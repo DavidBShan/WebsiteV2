@@ -76,7 +76,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       <span
         className="text-xs"
         style={{
-          color: isDarkMode ? "#6b7280" : "#9ca3af",
+          color: isDarkMode ? "#9ca3af" : "#6b7280",
         }}
       >
         Age {currentAge}
@@ -84,6 +84,11 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
 
       <div
         className="w-16 sm:w-24 h-[2px] rounded-full overflow-hidden"
+        role="progressbar"
+        aria-valuenow={Math.round(progress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Progress to age ${currentAge + 1}: ${Math.round(progress)}%`}
         style={{
           backgroundColor: isDarkMode
             ? "rgba(156, 163, 175, 0.2)"
@@ -94,7 +99,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
           className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
             width: `${progress}%`,
-            backgroundColor: isDarkMode ? "#4b5563" : "#9ca3af",
+            backgroundColor: isDarkMode ? "#9ca3af" : "#6b7280",
           }}
         />
       </div>
@@ -102,7 +107,7 @@ export default function AgeProgress({ isDarkMode }: AgeProgressProps) {
       <span
         className="text-xs"
         style={{
-          color: isDarkMode ? "#6b7280" : "#9ca3af",
+          color: isDarkMode ? "#9ca3af" : "#6b7280",
         }}
       >
         Age {currentAge + 1}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
-import ThemeToggle3D from "./components/ThemeToggle3D";
 import AgeProgress from "./components/AgeProgress";
+
+const ThemeToggle3D = lazy(() => import("./components/ThemeToggle3D"));
 
 export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -77,10 +78,12 @@ export default function Home() {
                     }}
                   >
                     <div style={{ pointerEvents: "auto" }}>
-                      <ThemeToggle3D
-                        isDarkMode={isDarkMode}
-                        toggleTheme={toggleTheme}
-                      />
+                      <Suspense fallback={<div style={{ width: "80px", height: "80px" }} />}>
+                        <ThemeToggle3D
+                          isDarkMode={isDarkMode}
+                          toggleTheme={toggleTheme}
+                        />
+                      </Suspense>
                     </div>
                   </div>
                 </div>
@@ -98,6 +101,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="href-text"
                   href="https://clado.ai"
+                  aria-label="Visit Clado website"
                 >
                   Clado
                 </a>
@@ -131,8 +135,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       01
                     </div>
@@ -143,6 +148,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="href-text"
                         href="https://clado.ai"
+                        aria-label="Visit Clado website"
                       >
                         Clado
                       </a>{" "}
@@ -154,8 +160,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       02
                     </div>
@@ -165,6 +172,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="href-text"
                         href="https://compbio.mit.edu/"
+                        aria-label="Visit Professor Manolis Kellis at MIT"
                       >
                         Professor Manolis Kellis
                       </a>.
@@ -175,8 +183,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       03
                     </div>
@@ -187,6 +196,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="href-text"
                         href="https://www.geotab.com/"
+                        aria-label="Visit Geotab website"
                       >
                         Geotab
                       </a>
@@ -218,8 +228,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       01
                     </div>
@@ -240,8 +251,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       02
                     </div>
@@ -262,8 +274,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       03
                     </div>
@@ -274,8 +287,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       04
                     </div>
@@ -311,8 +325,9 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-500 dark:text-gray-500 font-mono"
+                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
                     >
                       01
                     </div>
@@ -340,6 +355,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Visit David Shan on Twitter"
                   >
                     Twitter
                   </a>
@@ -348,6 +364,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Visit David Shan on LinkedIn"
                   >
                     LinkedIn
                   </a>
@@ -356,14 +373,14 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Visit David Shan on GitHub"
                   >
                     GitHub
                   </a>
                   <a
                     href="mailto:david@clado.ai"
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Email David Shan"
                   >
                     Email
                   </a>
@@ -372,12 +389,14 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Visit David Shan on Letterboxd"
                   >
                     Letterboxd
                   </a>
                   <Link
                     href="/writings"
                     className="hover:opacity-70 transition-opacity"
+                    aria-label="Read David Shan's writings"
                   >
                     Writings
                   </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera, Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -18,9 +18,9 @@ interface ParticlesProps {
   mousePosition: { x: number; y: number };
 }
 
-function Particles({ isDark, mousePosition }: ParticlesProps) {
+const Particles = React.memo(function Particles({ isDark, mousePosition }: ParticlesProps) {
   const meshRef = useRef<THREE.Points>(null);
-  const particleCount = isDark ? 200 : 80;
+  const particleCount = isDark ? 100 : 50;
 
   const [positions, colors] = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -52,7 +52,13 @@ function Particles({ isDark, mousePosition }: ParticlesProps) {
     return [positions, colors];
   }, [particleCount, isDark]);
 
+  // Throttle updates - only update every other frame
+  const frameCountRef = useRef(0);
+  
   useFrame((state) => {
+    frameCountRef.current++;
+    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
+    
     if (meshRef.current) {
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
       meshRef.current.rotation.x =
@@ -82,14 +88,15 @@ function Particles({ isDark, mousePosition }: ParticlesProps) {
       />
     </points>
   );
-}
+});
 
-// Sun component with corona effect
-function Sun({ isHovered }: { isHovered: boolean }) {
+// Sun component with corona effect - Memoized for performance
+const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const coronaRef = useRef<THREE.Mesh>(null);
   const sunMeshRef = useRef<THREE.Mesh>(null);
-  const [coronaGeometry] = useState(() => new THREE.IcosahedronGeometry(0.98, 12));
+  // Reduced geometry detail from 12 to 6 for better performance
+  const [coronaGeometry] = useState(() => new THREE.IcosahedronGeometry(0.98, 6));
   
   // Create corona noise effect
   useEffect(() => {
@@ -99,23 +106,31 @@ function Sun({ isHovered }: { isHovered: boolean }) {
     }
   }, [coronaGeometry]);
   
+  // Throttle corona updates to every 3rd frame
+  const frameCountRef = useRef(0);
+  
   useFrame((state) => {
+    frameCountRef.current++;
+    const shouldUpdateCorona = frameCountRef.current % 3 === 0;
+    
     if (groupRef.current) {
       groupRef.current.rotation.y = -state.clock.elapsedTime * 0.1;
     }
     
-    if (coronaRef.current && coronaGeometry) {
+    // Only update corona every 3rd frame
+    if (shouldUpdateCorona && coronaRef.current && coronaGeometry) {
       const positions = coronaGeometry.attributes.position;
       const len = positions.count;
       const time = state.clock.elapsedTime;
       
-      for (let i = 0; i < len; i++) {
+      // Simplified noise calculation
+      for (let i = 0; i < len; i += 2) { // Process every other vertex
         const x = positions.getX(i);
         const y = positions.getY(i);
         const z = positions.getZ(i);
         
-        const noise = Math.sin(x * 3 + time) * Math.cos(y * 3 + time) * Math.sin(z * 3 + time);
-        const scale = 1 + noise * 0.08;
+        const noise = Math.sin(x * 3 + time) * Math.cos(y * 3 + time);
+        const scale = 1 + noise * 0.06;
         
         const length = Math.sqrt(x * x + y * y + z * z);
         positions.setXYZ(
@@ -137,7 +152,7 @@ function Sun({ isHovered }: { isHovered: boolean }) {
     <group ref={groupRef}>
       {/* Main sun body */}
       <mesh ref={sunMeshRef}>
-        <icosahedronGeometry args={[1, 12]} />
+        <icosahedronGeometry args={[1, 6]} />
         <meshBasicMaterial 
           color="#ffd700"
         />
@@ -145,7 +160,7 @@ function Sun({ isHovered }: { isHovered: boolean }) {
       
       {/* Sun rim effect */}
       <mesh scale={[1.01, 1.01, 1.01]}>
-        <icosahedronGeometry args={[1, 12]} />
+        <icosahedronGeometry args={[1, 6]} />
         <shaderMaterial
           uniforms={{
             color1: { value: new THREE.Color(0xffff99) },
@@ -197,7 +212,7 @@ function Sun({ isHovered }: { isHovered: boolean }) {
       
       {/* Glow effect */}
       <mesh scale={isHovered ? [1.15, 1.15, 1.15] : [1.1, 1.1, 1.1]}>
-        <icosahedronGeometry args={[1, 12]} />
+        <icosahedronGeometry args={[1, 6]} />
         <shaderMaterial
           uniforms={{
             color1: { value: new THREE.Color(0x000000) },
@@ -245,13 +260,13 @@ function Sun({ isHovered }: { isHovered: boolean }) {
       />
     </group>
   );
-}
+});
 
-// Moon component with craters
-function Moon({ isHovered }: { isHovered: boolean }) {
+// Moon component with craters - Memoized for performance
+const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
   const moonRef = useRef<THREE.Mesh>(null);
   const [moonGeometry] = useState(() => {
-    const geometry = new THREE.IcosahedronGeometry(1, 16);
+    const geometry = new THREE.IcosahedronGeometry(1, 8);
     const positions = geometry.attributes.position;
     const len = positions.count;
     
@@ -305,7 +320,13 @@ function Moon({ isHovered }: { isHovered: boolean }) {
     return geometry;
   });
   
+  // Throttle updates - only update every other frame
+  const frameCountRef = useRef(0);
+  
   useFrame((state) => {
+    frameCountRef.current++;
+    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
+    
     if (moonRef.current) {
       // Slow rotation to show off the craters
       moonRef.current.rotation.y = state.clock.elapsedTime * 0.01;
@@ -328,7 +349,7 @@ function Moon({ isHovered }: { isHovered: boolean }) {
       
       {/* Moon glow for visibility */}
       <mesh scale={isHovered ? [1.08, 1.08, 1.08] : [1.05, 1.05, 1.05]}>
-        <sphereGeometry args={[1, 32, 32]} />
+        <sphereGeometry args={[1, 16, 16]} />
         <meshBasicMaterial
           color="#9999cc"  // Soft blue-gray glow
           transparent
@@ -338,7 +359,7 @@ function Moon({ isHovered }: { isHovered: boolean }) {
       </mesh>
     </group>
   );
-}
+});
 
 interface CelestialBodyProps {
   isDark: boolean;
@@ -347,7 +368,8 @@ interface CelestialBodyProps {
   mousePosition: { x: number; y: number };
 }
 
-function CelestialBody({
+// Memoize CelestialBody to prevent unnecessary re-renders
+const CelestialBody = React.memo(function CelestialBody({
   isDark,
   isTransitioning,
   isHovered,
@@ -377,7 +399,13 @@ function CelestialBody({
     }
   }, [isTransitioning, isHovered]);
 
+  // Throttle updates - only update every other frame
+  const frameCountRef = useRef(0);
+  
   useFrame((state) => {
+    frameCountRef.current++;
+    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
+    
     if (groupRef.current) {
       // Gentle floating animation
       groupRef.current.position.y =
@@ -405,7 +433,7 @@ function CelestialBody({
       </group>
     </Float>
   );
-}
+});
 
 interface SceneProps {
   isDark: boolean;
@@ -414,7 +442,8 @@ interface SceneProps {
   mousePosition: { x: number; y: number };
 }
 
-function Scene({
+// Memoize Scene component to prevent unnecessary re-renders
+const Scene = React.memo(function Scene({
   isDark,
   isTransitioning,
   isHovered,
@@ -457,7 +486,7 @@ function Scene({
       <Particles isDark={isDark} mousePosition={mousePosition} />
     </>
   );
-}
+});
 
 interface ThemeToggle3DProps {
   isDarkMode: boolean;
@@ -556,10 +585,12 @@ export default function ThemeToggle3D({
             background: initialBgColor,
           }}
           gl={{
-            antialias: true,
+            antialias: false, // Disable for better performance
             alpha: false,
             powerPreference: "high-performance",
           }}
+          // Limit device pixel ratio for better performance
+          dpr={[1, 1.5]}
           onCreated={({ gl, scene }) => {
             // Set initial clear color and scene background immediately
             const color = new THREE.Color(initialBgColor);
