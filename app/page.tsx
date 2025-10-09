@@ -135,7 +135,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -160,7 +160,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -183,7 +183,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -228,7 +228,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -251,7 +251,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -274,7 +274,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -287,7 +287,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
@@ -325,7 +325,7 @@ export default function Home() {
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
-                      className="text-sm italic text-gray-600 dark:text-gray-400 font-mono"
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
