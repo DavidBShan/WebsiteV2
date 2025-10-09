@@ -53,7 +53,7 @@ export default function Home() {
                   <h1
                     className="text-3xl sm:text-4xl font-black"
                     style={{
-                      color: isDarkMode ? "#e5e7eb" : "#374151",
+                      color: isDarkMode ? "#e5e7eb" : "#111827",
                     }}
                   >
                     David Shan
@@ -118,7 +118,7 @@ export default function Home() {
                   className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                   style={{
                     marginBottom: "0.75rem",
-                    color: isDarkMode ? "#e5e7eb" : "#374151",
+                    color: isDarkMode ? "#e5e7eb" : "#1f2937",
                   }}
                 >
                   Work
@@ -211,7 +211,7 @@ export default function Home() {
                   className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                   style={{
                     marginBottom: "0.75rem",
-                    color: isDarkMode ? "#e5e7eb" : "#374151",
+                    color: isDarkMode ? "#e5e7eb" : "#1f2937",
                   }}
                 >
                   Interests
@@ -308,7 +308,7 @@ export default function Home() {
                   className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
                   style={{
                     marginBottom: "0.75rem",
-                    color: isDarkMode ? "#e5e7eb" : "#374151",
+                    color: isDarkMode ? "#e5e7eb" : "#1f2937",
                   }}
                 >
                   Misc
