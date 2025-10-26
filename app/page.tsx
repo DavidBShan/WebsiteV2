@@ -423,15 +423,6 @@ export default function Home() {
                   >
                     Writings
                   </Link>
-                  <a
-                    href="/resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                    aria-label="View David Shan's resume"
-                  >
-                    Resume
-                  </a>
                 </div>
               </div>
             </footer>
