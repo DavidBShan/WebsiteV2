@@ -338,6 +338,29 @@ export default function Home() {
                       </p>
                     </div>
                   </li>
+                  <li
+                    className="text-sm leading-loose animate-fade-in delay-1100"
+                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+                  >
+                    <div
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
+                      style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
+                    >
+                      02
+                    </div>
+                    <div>
+                      <p className="mb-4">I also do a bit of angel investing on the side:</p>
+                      <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                        <li>
+                          <span className="font-medium">i. Matrix Biotech (Pre-seed)</span>
+                          <div className="text-xs mt-1" style={{ marginLeft: "0.75rem" }}>
+                            At-home DNA health testing
+                          </div>
+                        </li>
+                      </ul>
+                      </div>
+                  </li>
                 </ul>
               </div>
             </section>
@@ -400,6 +423,15 @@ export default function Home() {
                   >
                     Writings
                   </Link>
+                  <a
+                    href="/resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                    aria-label="View David Shan's resume"
+                  >
+                    Resume
+                  </a>
                 </div>
               </div>
             </footer>
