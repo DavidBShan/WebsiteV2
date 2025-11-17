@@ -353,9 +353,15 @@ export default function Home() {
                       <p className="mb-4">I also do a bit of angel investing on the side:</p>
                       <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
                         <li>
-                          <span className="font-medium">i. Matrix Biotech (Pre-seed)</span>
+                          <span className="font-medium">i. <a href="https://www.linkedin.com/company/matrixbio/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Matrix Biotech</a> (Pre-seed)</span>
                           <div className="text-xs mt-1" style={{ marginLeft: "0.75rem" }}>
                             At-home DNA health testing
+                          </div>
+                        </li>
+                        <li>
+                          <span className="font-medium">ii. <a href="https://www.imagineai.me/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Imagine AI</a> (Seed)</span>
+                          <div className="text-xs mt-1" style={{ marginLeft: "0.75rem" }}>
+                            Your AI Clone for B2B Content
                           </div>
                         </li>
                       </ul>
