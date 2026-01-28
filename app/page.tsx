@@ -142,7 +142,7 @@ export default function Home() {
                       01
                     </div>
                     <p className="break-words">
-                      Building state of the art people search at{" "}
+                      Training state of the art small language models at{" "}
                       {" "}<a
                         target="_blank"
                         rel="noopener noreferrer"
@@ -280,7 +280,7 @@ export default function Home() {
                     >
                       03
                     </div>
-                    <p>Currently learning golf, guitar, piloting, and singing</p>
+                    <p>Currently learning golf, tennis, guitar, and piloting</p>
                   </li>
                   <li
                     className="text-sm leading-loose animate-fade-in delay-1500"
