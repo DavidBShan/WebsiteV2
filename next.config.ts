@@ -8,9 +8,7 @@ const nextConfig: NextConfig = {
   compress: true,
 
   productionBrowserSourceMaps: false,
-  
-  swcMinify: true,
-  
+
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000,

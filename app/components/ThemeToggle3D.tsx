@@ -20,55 +20,81 @@ interface ParticlesProps {
 
 const Particles = React.memo(function Particles({ isDark, mousePosition }: ParticlesProps) {
   const meshRef = useRef<THREE.Points>(null);
-  const particleCount = isDark ? 100 : 50;
+  const particleCount = isDark ? 120 : 60;
+  const originalColorsRef = useRef<Float32Array | null>(null);
+  const twinkleSpeedsRef = useRef<Float32Array>(new Float32Array(0));
 
   const [positions, colors] = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
+    const speeds = new Float32Array(particleCount);
+    originalColorsRef.current = null; // reset so we re-copy on next frame
 
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
-      // Create a sphere distribution
       const radius = 3 + Math.random() * 7;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
 
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3]     = radius * Math.sin(phi) * Math.cos(theta);
       positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       positions[i3 + 2] = radius * Math.cos(phi);
 
-      // Colors
+      speeds[i] = 0.5 + Math.random() * 2.5;
+
       if (isDark) {
-        colors[i3] = 0.8 + Math.random() * 0.2; // R
-        colors[i3 + 1] = 0.8 + Math.random() * 0.2; // G
-        colors[i3 + 2] = 1; // B
+        // Stars: varied blue-white, warm white, yellow-white tones
+        const starType = Math.random();
+        if (starType < 0.3) {
+          colors[i3] = 0.7; colors[i3 + 1] = 0.8; colors[i3 + 2] = 1.0; // blue-white
+        } else if (starType < 0.6) {
+          colors[i3] = 1.0; colors[i3 + 1] = 1.0; colors[i3 + 2] = 0.9; // warm white
+        } else {
+          colors[i3] = 1.0; colors[i3 + 1] = 0.9; colors[i3 + 2] = 0.6; // yellow
+        }
       } else {
-        colors[i3] = 1; // R
-        colors[i3 + 1] = 0.8 + Math.random() * 0.2; // G
-        colors[i3 + 2] = 0.2 + Math.random() * 0.3; // B
+        // Sun motes: warm golden sparkles
+        colors[i3]     = 1.0;
+        colors[i3 + 1] = 0.85 + Math.random() * 0.15;
+        colors[i3 + 2] = 0.1  + Math.random() * 0.3;
       }
     }
 
+    twinkleSpeedsRef.current = speeds;
     return [positions, colors];
   }, [particleCount, isDark]);
 
-  // Throttle updates - only update every other frame
   const frameCountRef = useRef(0);
-  
+
   useFrame((state) => {
     frameCountRef.current++;
-    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
-    
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
-      meshRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.01) * 0.2;
+    if (frameCountRef.current % 2 !== 0) return;
 
-      // React to mouse position
-      const targetX = mousePosition.x * 0.2;
-      const targetY = -mousePosition.y * 0.2;
-      meshRef.current.rotation.x += targetY * 0.1;
-      meshRef.current.rotation.y += targetX * 0.1;
+    if (!meshRef.current) return;
+
+    meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+    meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.2;
+
+    const targetX = mousePosition.x * 0.2;
+    const targetY = -mousePosition.y * 0.2;
+    meshRef.current.rotation.x += targetY * 0.1;
+    meshRef.current.rotation.y += targetX * 0.1;
+
+    // Twinkling effect for dark-mode stars
+    if (isDark) {
+      if (!originalColorsRef.current) {
+        originalColorsRef.current = new Float32Array(colors);
+      }
+      const colorAttr = meshRef.current.geometry.attributes.color as THREE.BufferAttribute;
+      const t = state.clock.elapsedTime;
+      const speeds = twinkleSpeedsRef.current;
+      const orig = originalColorsRef.current;
+      for (let i = 0; i < particleCount; i++) {
+        const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * speeds[i] + i * 1.7));
+        const i3 = i * 3;
+        colorAttr.setXYZ(i, orig[i3] * twinkle, orig[i3 + 1] * twinkle, orig[i3 + 2] * twinkle);
+      }
+      colorAttr.needsUpdate = true;
     }
   });
 
@@ -79,10 +105,10 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={isDark ? 0.05 : 0.04}
+        size={isDark ? 0.06 : 0.04}
         sizeAttenuation={true}
         transparent={true}
-        opacity={isDark ? 0.9 : 0.6}
+        opacity={isDark ? 0.95 : 0.6}
         vertexColors={true}
         blending={THREE.AdditiveBlending}
       />
@@ -90,75 +116,168 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
   );
 });
 
-// Sun component with corona effect - Memoized for performance
+// Rotating sun rays
+const SunRays = React.memo(function SunRays({ isHovered }: { isHovered: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const rayCount = 12;
+
+  const rays = useMemo(() =>
+    Array.from({ length: rayCount }, (_, i) => {
+      const angle = (i / rayCount) * Math.PI * 2;
+      const length = 0.25 + (i % 3 === 0 ? 0.25 : 0.1);
+      const width = 0.025 + (i % 3 === 0 ? 0.015 : 0.005);
+      return { angle, length, width };
+    }), []);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.z = state.clock.elapsedTime * 0.18;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {rays.map((ray, i) => (
+        <mesh
+          key={i}
+          position={[
+            Math.cos(ray.angle) * (1.12 + ray.length / 2),
+            Math.sin(ray.angle) * (1.12 + ray.length / 2),
+            0,
+          ]}
+          rotation={[0, 0, ray.angle + Math.PI / 2]}
+        >
+          <planeGeometry args={[ray.width, ray.length]} />
+          <meshBasicMaterial
+            color="#ffe566"
+            transparent
+            opacity={isHovered ? 0.85 : 0.55}
+            blending={THREE.AdditiveBlending}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+});
+
+// Sun component with gradient body shader, rays, and corona
 const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const coronaRef = useRef<THREE.Mesh>(null);
-  const sunMeshRef = useRef<THREE.Mesh>(null);
-  // Reduced geometry detail from 12 to 6 for better performance
+  const sunBodyRef = useRef<THREE.Mesh>(null);
   const [coronaGeometry] = useState(() => new THREE.IcosahedronGeometry(0.98, 6));
-  
-  // Create corona noise effect
+
   useEffect(() => {
     if (coronaGeometry) {
       const positions = coronaGeometry.attributes.position as THREE.BufferAttribute;
       positions.usage = THREE.DynamicDrawUsage;
     }
   }, [coronaGeometry]);
-  
-  // Throttle corona updates to every 3rd frame
+
+  const sunBodyUniforms = useMemo(() => ({ time: { value: 0 } }), []);
+
   const frameCountRef = useRef(0);
-  
+
   useFrame((state) => {
     frameCountRef.current++;
     const shouldUpdateCorona = frameCountRef.current % 3 === 0;
-    
+
     if (groupRef.current) {
       groupRef.current.rotation.y = -state.clock.elapsedTime * 0.1;
     }
-    
-    // Only update corona every 3rd frame
+
+    // Update time uniform for body gradient animation
+    sunBodyUniforms.time.value = state.clock.elapsedTime;
+
+    // Corona noise — all vertices for smoother result
     if (shouldUpdateCorona && coronaRef.current && coronaGeometry) {
       const positions = coronaGeometry.attributes.position;
       const len = positions.count;
       const time = state.clock.elapsedTime;
-      
-      // Simplified noise calculation
-      for (let i = 0; i < len; i += 2) { // Process every other vertex
+
+      for (let i = 0; i < len; i++) {
         const x = positions.getX(i);
         const y = positions.getY(i);
         const z = positions.getZ(i);
-        
-        const noise = Math.sin(x * 3 + time) * Math.cos(y * 3 + time);
-        const scale = 1 + noise * 0.06;
-        
+
+        const noise =
+          Math.sin(x * 4 + time * 1.5) * Math.cos(y * 4 + time) * 0.07 +
+          Math.sin(y * 6 + time * 0.8) * Math.cos(z * 6 + time * 1.2) * 0.04;
+        const scale = 1 + noise;
+
         const length = Math.sqrt(x * x + y * y + z * z);
-        positions.setXYZ(
-          i,
-          (x / length) * scale,
-          (y / length) * scale,
-          (z / length) * scale
-        );
+        positions.setXYZ(i, (x / length) * scale, (y / length) * scale, (z / length) * scale);
       }
       positions.needsUpdate = true;
     }
-    
-    if (sunMeshRef.current) {
-      sunMeshRef.current.rotation.y = state.clock.elapsedTime * 0.05;
-    }
   });
-  
+
+  const fresnelVert = `
+    uniform float fresnelBias;
+    uniform float fresnelScale;
+    uniform float fresnelPower;
+    varying float vReflectionFactor;
+    void main() {
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+      vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
+      vec3 I = worldPosition.xyz - cameraPosition;
+      vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `;
+  const fresnelFrag = `
+    uniform vec3 color1;
+    uniform vec3 color2;
+    uniform float alpha;
+    varying float vReflectionFactor;
+    void main() {
+      float f = clamp(vReflectionFactor, 0.0, 1.0);
+      gl_FragColor = vec4(mix(color2, color1, vec3(f)), f * alpha);
+    }
+  `;
+
   return (
     <group ref={groupRef}>
-      {/* Main sun body */}
-      <mesh ref={sunMeshRef}>
+      {/* Main sun body — hot white centre → yellow → orange edge */}
+      <mesh ref={sunBodyRef}>
         <icosahedronGeometry args={[1, 6]} />
-        <meshBasicMaterial 
-          color="#ffd700"
+        <shaderMaterial
+          uniforms={sunBodyUniforms}
+          vertexShader={`
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            void main() {
+              vNormal = normalize(normalMatrix * normal);
+              vPosition = position;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `}
+          fragmentShader={`
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            uniform float time;
+            void main() {
+              float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
+              vec3 centerColor = vec3(1.0,  1.0,  0.95);
+              vec3 midColor    = vec3(1.0,  0.85, 0.1);
+              vec3 edgeColor   = vec3(1.0,  0.38, 0.04);
+              vec3 color = mix(centerColor, midColor, rim);
+              color = mix(color, edgeColor, rim * rim);
+              // Subtle animated surface variation
+              float v = sin(vPosition.x * 9.0 + time) * cos(vPosition.y * 9.0 + time * 0.7) * 0.04;
+              color = clamp(color + v, 0.0, 1.0);
+              gl_FragColor = vec4(color, 1.0);
+            }
+          `}
         />
       </mesh>
-      
-      {/* Sun rim effect */}
+
+      {/* Rotating rays */}
+      <SunRays isHovered={isHovered} />
+
+      {/* Rim / edge brightening */}
       <mesh scale={[1.01, 1.01, 1.01]}>
         <icosahedronGeometry args={[1, 6]} />
         <shaderMaterial
@@ -168,195 +287,195 @@ const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
             fresnelBias: { value: 0.2 },
             fresnelScale: { value: 1.5 },
             fresnelPower: { value: 4.0 },
+            alpha: { value: 1.0 },
           }}
-          vertexShader={`
-            uniform float fresnelBias;
-            uniform float fresnelScale;
-            uniform float fresnelPower;
-            varying float vReflectionFactor;
-            
-            void main() {
-              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-              vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-              vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
-              vec3 I = worldPosition.xyz - cameraPosition;
-              vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `}
-          fragmentShader={`
-            uniform vec3 color1;
-            uniform vec3 color2;
-            varying float vReflectionFactor;
-            
-            void main() {
-              float f = clamp(vReflectionFactor, 0.0, 1.0);
-              gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
-            }
-          `}
+          vertexShader={fresnelVert}
+          fragmentShader={fresnelFrag}
           transparent
           blending={THREE.AdditiveBlending}
           side={THREE.FrontSide}
         />
       </mesh>
-      
-      {/* Corona (pulsing effect) */}
+
+      {/* Corona (animated pulsing shell) */}
       <mesh ref={coronaRef} geometry={coronaGeometry}>
-        <meshBasicMaterial
-          color="#ff4400"
-          transparent
-          opacity={0.3}
-          side={THREE.BackSide}
-        />
+        <meshBasicMaterial color="#ff6600" transparent opacity={0.35} side={THREE.BackSide} />
       </mesh>
-      
-      {/* Glow effect */}
-      <mesh scale={isHovered ? [1.15, 1.15, 1.15] : [1.1, 1.1, 1.1]}>
-        <icosahedronGeometry args={[1, 6]} />
+
+      {/* Outer glow */}
+      <mesh scale={isHovered ? [1.32, 1.32, 1.32] : [1.22, 1.22, 1.22]}>
+        <icosahedronGeometry args={[1, 4]} />
         <shaderMaterial
           uniforms={{
             color1: { value: new THREE.Color(0x000000) },
-            color2: { value: new THREE.Color(0xff0000) },
-            fresnelBias: { value: 0.2 },
-            fresnelScale: { value: 1.5 },
-            fresnelPower: { value: 4.0 },
+            color2: { value: new THREE.Color(0xff7700) },
+            fresnelBias: { value: 0.1 },
+            fresnelScale: { value: 1.2 },
+            fresnelPower: { value: 3.5 },
+            alpha: { value: 0.7 },
           }}
-          vertexShader={`
-            uniform float fresnelBias;
-            uniform float fresnelScale;
-            uniform float fresnelPower;
-            varying float vReflectionFactor;
-            
-            void main() {
-              vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-              vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-              vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
-              vec3 I = worldPosition.xyz - cameraPosition;
-              vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `}
-          fragmentShader={`
-            uniform vec3 color1;
-            uniform vec3 color2;
-            varying float vReflectionFactor;
-            
-            void main() {
-              float f = clamp(vReflectionFactor, 0.0, 1.0);
-              gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
-            }
-          `}
+          vertexShader={fresnelVert}
+          fragmentShader={fresnelFrag}
           transparent
           blending={THREE.AdditiveBlending}
         />
       </mesh>
-      
-      {/* Point light from sun */}
-      <pointLight
-        color="#ffff99"
-        intensity={2}
-        distance={10}
-        decay={2}
-      />
+
+      <pointLight color="#ffff99" intensity={2} distance={10} decay={2} />
     </group>
   );
 });
 
-// Moon component with craters - Memoized for performance
+// Moon component with terminator shader, crater geometry, and atmospheric glow
 const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
   const moonRef = useRef<THREE.Mesh>(null);
+
   const [moonGeometry] = useState(() => {
     const geometry = new THREE.IcosahedronGeometry(1, 8);
     const positions = geometry.attributes.position;
     const len = positions.count;
-    
-    // Create multiple crater-like deformations for realistic lunar surface
+
     for (let i = 0; i < len; i++) {
       const x = positions.getX(i);
       const y = positions.getY(i);
       const z = positions.getZ(i);
-      
-      // Normalize to get surface position
+
       const length = Math.sqrt(x * x + y * y + z * z);
       const nx = x / length;
       const ny = y / length;
       const nz = z / length;
-      
-      // Add surface noise for roughness
-      const noise = 
+
+      const noise =
         Math.sin(nx * 15) * Math.cos(ny * 15) * Math.sin(nz * 15) * 0.02 +
         Math.sin(nx * 30) * Math.cos(ny * 30) * Math.sin(nz * 30) * 0.01;
-      
-      // Create multiple crater depressions of varying sizes
+
       let craterDepth = 0;
-      
-      // Large craters
       craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.5) ** 2 + (ny - 0.3) ** 2 + (nz - 0.1) ** 2) * 4) * 0.12;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.4) ** 2 + (ny + 0.2) ** 2 + (nz - 0.3) ** 2) * 5) * 0.1;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.1) ** 2 + (ny - 0.6) ** 2 + (nz + 0.2) ** 2) * 5) * 0.08;
-      
-      // Medium craters
       craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.3) ** 2 + (ny - 0.5) ** 2 + (nz + 0.4) ** 2) * 8) * 0.05;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.6) ** 2 + (ny + 0.1) ** 2 + (nz - 0.2) ** 2) * 9) * 0.04;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.2) ** 2 + (ny + 0.4) ** 2 + (nz + 0.5) ** 2) * 10) * 0.04;
-      
-      // Small craters
       craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.3) ** 2 + (ny + 0.5) ** 2 + (nz - 0.4) ** 2) * 15) * 0.03;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.6) ** 2 + (ny - 0.3) ** 2 + (nz + 0.1) ** 2) * 18) * 0.025;
       craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.4) ** 2 + (ny - 0.2) ** 2 + (nz + 0.6) ** 2) * 20) * 0.02;
-      
-      // Apply deformation (1 is normal surface, less than 1 creates depressions)
+
       const deformation = 1 - craterDepth + noise;
-      
-      positions.setXYZ(
-        i,
-        nx * deformation,
-        ny * deformation,
-        nz * deformation
-      );
+      positions.setXYZ(i, nx * deformation, ny * deformation, nz * deformation);
     }
-    
+
     geometry.computeVertexNormals();
     return geometry;
   });
-  
-  // Throttle updates - only update every other frame
+
+  const moonUniforms = useMemo(() => ({
+    lightDir: { value: new THREE.Vector3(1.5, 0.8, 1.0).normalize() },
+  }), []);
+
   const frameCountRef = useRef(0);
-  
+
   useFrame((state) => {
     frameCountRef.current++;
-    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
-    
+    if (frameCountRef.current % 2 !== 0) return;
+
     if (moonRef.current) {
-      // Slow rotation to show off the craters
-      moonRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+      moonRef.current.rotation.y = state.clock.elapsedTime * 0.08;
       moonRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.005) * 0.05;
     }
   });
-  
+
+  const fresnelVert = `
+    uniform float fresnelBias;
+    uniform float fresnelScale;
+    uniform float fresnelPower;
+    varying float vReflectionFactor;
+    void main() {
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+      vec3 worldNormal = normalize(mat3(modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz) * normal);
+      vec3 I = worldPosition.xyz - cameraPosition;
+      vReflectionFactor = fresnelBias + fresnelScale * pow(1.0 + dot(normalize(I), worldNormal), fresnelPower);
+      gl_Position = projectionMatrix * mvPosition;
+    }
+  `;
+
   return (
     <group>
-      {/* Main moon body with craters - realistic gray color */}
+      {/* Moon body with terminator + earthshine rim */}
       <mesh ref={moonRef} geometry={moonGeometry}>
-        <meshStandardMaterial
-          color="#c0c0c0"  // Light gray (like real moon)
-          roughness={0.9}   // Rough but not completely matte
-          metalness={0.1}   // Tiny bit of reflection
-          emissive="#a0a0b0"  // Self-illuminated gray-blue
-          emissiveIntensity={0.4}  // Strong enough to be visible in dark
+        <shaderMaterial
+          uniforms={moonUniforms}
+          vertexShader={`
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            void main() {
+              vNormal = normalize(normalMatrix * normal);
+              vPosition = position;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `}
+          fragmentShader={`
+            uniform vec3 lightDir;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            void main() {
+              float diffuse = max(0.0, dot(vNormal, lightDir));
+
+              // Sharp terminator line between lit and dark hemisphere
+              float terminator = smoothstep(-0.12, 0.18, dot(vNormal, lightDir));
+
+              vec3 darkSide  = vec3(0.05, 0.05, 0.09);
+              vec3 lightSide = vec3(0.72, 0.69, 0.65);
+              vec3 highlight = vec3(0.92, 0.90, 0.86);
+
+              vec3 color = mix(darkSide, lightSide, terminator);
+              // Specular-ish highlight on lit side
+              color = mix(color, highlight, diffuse * diffuse * 0.28);
+
+              // Micro surface noise to hint at craters
+              float noise = sin(vPosition.x * 22.0) * cos(vPosition.y * 22.0) * sin(vPosition.z * 22.0) * 0.025;
+              color += noise;
+
+              // Earthshine: blue-gray rim glow on the dark limb
+              float rim = 1.0 - max(0.0, dot(vNormal, vec3(0.0, 0.0, 1.0)));
+              vec3 rimColor = vec3(0.25, 0.32, 0.55);
+              color += rimColor * pow(rim, 3.5) * 0.3 * (1.0 - terminator);
+
+              gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+            }
+          `}
         />
       </mesh>
-      
-      {/* Moon glow for visibility */}
-      <mesh scale={isHovered ? [1.08, 1.08, 1.08] : [1.05, 1.05, 1.05]}>
+
+      {/* Atmospheric glow — Fresnel blue-purple haze */}
+      <mesh scale={isHovered ? [1.11, 1.11, 1.11] : [1.07, 1.07, 1.07]}>
         <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color="#9999cc"  // Soft blue-gray glow
+        <shaderMaterial
+          uniforms={{
+            color1: { value: new THREE.Color(0x000000) },
+            color2: { value: new THREE.Color(0x3344aa) },
+            fresnelBias: { value: 0.05 },
+            fresnelScale: { value: 1.0 },
+            fresnelPower: { value: 3.0 },
+          }}
+          vertexShader={fresnelVert}
+          fragmentShader={`
+            uniform vec3 color1;
+            uniform vec3 color2;
+            varying float vReflectionFactor;
+            void main() {
+              float f = clamp(vReflectionFactor, 0.0, 1.0);
+              gl_FragColor = vec4(mix(color2, color1, vec3(f)), f * 0.5);
+            }
+          `}
           transparent
-          opacity={0.15}
+          blending={THREE.AdditiveBlending}
           side={THREE.BackSide}
         />
       </mesh>
+
+      {/* Directional light from the "sun" side to illuminate craters */}
+      <directionalLight position={[3, 1.5, 2]} intensity={1.4} color="#e8e0d0" />
     </group>
   );
 });
@@ -368,7 +487,6 @@ interface CelestialBodyProps {
   mousePosition: { x: number; y: number };
 }
 
-// Memoize CelestialBody to prevent unnecessary re-renders
 const CelestialBody = React.memo(function CelestialBody({
   isDark,
   isTransitioning,
@@ -379,7 +497,6 @@ const CelestialBody = React.memo(function CelestialBody({
 
   useEffect(() => {
     if (groupRef.current) {
-      // Animate the transition
       gsap.to(groupRef.current.scale, {
         x: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
         y: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
@@ -388,7 +505,6 @@ const CelestialBody = React.memo(function CelestialBody({
         ease: "power2.inOut",
       });
 
-      // Rotate during transition
       if (isTransitioning) {
         gsap.to(groupRef.current.rotation, {
           y: groupRef.current.rotation.y + Math.PI * 2,
@@ -399,35 +515,26 @@ const CelestialBody = React.memo(function CelestialBody({
     }
   }, [isTransitioning, isHovered]);
 
-  // Throttle updates - only update every other frame
   const frameCountRef = useRef(0);
-  
+
   useFrame((state) => {
     frameCountRef.current++;
-    if (frameCountRef.current % 2 !== 0) return; // Skip every other frame
-    
-    if (groupRef.current) {
-      // Gentle floating animation
-      groupRef.current.position.y =
-        Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+    if (frameCountRef.current % 2 !== 0) return;
 
-      // React to mouse movement when hovered
+    if (groupRef.current) {
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+
       if (isHovered) {
         groupRef.current.position.x = mousePosition.x * 0.3;
         groupRef.current.position.y += mousePosition.y * 0.3;
       } else {
-        groupRef.current.position.x *= 0.95; // Smoothly return to center
+        groupRef.current.position.x *= 0.95;
       }
     }
   });
 
   return (
-    <Float
-      speed={2}
-      rotationIntensity={0.5}
-      floatIntensity={0.3}
-      floatingRange={[-0.1, 0.1]}
-    >
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.3} floatingRange={[-0.1, 0.1]}>
       <group ref={groupRef}>
         {isDark ? <Moon isHovered={isHovered} /> : <Sun isHovered={isHovered} />}
       </group>
@@ -442,7 +549,6 @@ interface SceneProps {
   mousePosition: { x: number; y: number };
 }
 
-// Memoize Scene component to prevent unnecessary re-renders
 const Scene = React.memo(function Scene({
   isDark,
   isTransitioning,
@@ -452,11 +558,8 @@ const Scene = React.memo(function Scene({
   const { gl, scene } = useThree();
 
   useEffect(() => {
-    // Set the scene background color immediately
     const targetColor = isDark ? "#050510" : "#BFDAF7";
     scene.background = new THREE.Color(targetColor);
-
-    // Also animate the parent element background for smooth transition
     if (gl.domElement.parentElement) {
       gl.domElement.parentElement.style.backgroundColor = targetColor;
     }
@@ -466,7 +569,6 @@ const Scene = React.memo(function Scene({
     <>
       <PerspectiveCamera makeDefault position={[0, 0, 5]} />
 
-      {/* Lighting */}
       <ambientLight intensity={isDark ? 0.15 : 0.2} />
       <directionalLight
         position={[5, 5, 5]}
@@ -474,7 +576,6 @@ const Scene = React.memo(function Scene({
         color={isDark ? "#b0b0ff" : "#ffffff"}
       />
 
-      {/* Celestial body (Sun/Moon) */}
       <CelestialBody
         isDark={isDark}
         isTransitioning={isTransitioning}
@@ -482,7 +583,6 @@ const Scene = React.memo(function Scene({
         mousePosition={mousePosition}
       />
 
-      {/* Particle system */}
       <Particles isDark={isDark} mousePosition={mousePosition} />
     </>
   );
@@ -505,15 +605,11 @@ export default function ThemeToggle3D({
   const initialBgColor = getInitialBgColor();
 
   useEffect(() => {
-    // Check if device might struggle with 3D
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const isLowEnd = navigator.hardwareConcurrency
       ? navigator.hardwareConcurrency <= 2
       : false;
-
-    if (isMobile || isLowEnd) {
-      setShowCanvas(false);
-    }
+    if (isMobile || isLowEnd) setShowCanvas(false);
   }, []);
 
   const handleClick = () => {
@@ -531,9 +627,7 @@ export default function ThemeToggle3D({
     }
   };
 
-  if (!showCanvas) {
-    return null;
-  }
+  if (!showCanvas) return null;
 
   return (
     <div className="inline-block group">
@@ -550,11 +644,7 @@ export default function ThemeToggle3D({
         className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:scale-110 transform-origin-center"
         style={{
           backgroundColor: initialBgColor,
-          boxShadow: isHovered
-            ? isDarkMode
-              ? "0 0 40px rgba(136, 136, 255, 0.5), 0 0 80px rgba(136, 136, 255, 0.2)"
-              : "0 0 40px rgba(255, 221, 0, 0.5), 0 0 80px rgba(255, 136, 0, 0.2)"
-            : "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           transform: isHovered
             ? `perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg) scale(1.1)`
             : "scale(1)",
@@ -570,8 +660,7 @@ export default function ThemeToggle3D({
               : "conic-gradient(from 0deg, #ffdd00, #ffaa00, #ff8800, #ffaa00, #ffdd00)",
             animation: isHovered ? "spin 3s linear infinite" : "none",
             padding: "2px",
-            WebkitMask:
-              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "exclude",
             maskComposite: "exclude",
           }}
@@ -579,20 +668,10 @@ export default function ThemeToggle3D({
 
         <Canvas
           camera={{ position: [0, 0, 5], fov: 50 }}
-          style={{
-            width: "100%",
-            height: "100%",
-            background: initialBgColor,
-          }}
-          gl={{
-            antialias: false, // Disable for better performance
-            alpha: false,
-            powerPreference: "high-performance",
-          }}
-          // Limit device pixel ratio for better performance
+          style={{ width: "100%", height: "100%", background: initialBgColor }}
+          gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
           dpr={[1, 1.5]}
           onCreated={({ gl, scene }) => {
-            // Set initial clear color and scene background immediately
             const color = new THREE.Color(initialBgColor);
             gl.setClearColor(color, 1);
             scene.background = color;
@@ -606,7 +685,7 @@ export default function ThemeToggle3D({
           />
         </Canvas>
 
-        {/* Subtle hint text */}
+        {/* Label */}
         <div className="absolute bottom-0 left-0 right-0 text-center pb-1 pointer-events-none">
           <span
             className={`text-[8px] font-bold tracking-wider animate-pulse ${
@@ -618,11 +697,10 @@ export default function ThemeToggle3D({
         </div>
       </button>
 
-      {/* Add spinning animation to globals.css if needed */}
       <style jsx>{`
         @keyframes spin {
           from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          to   { transform: rotate(360deg); }
         }
       `}</style>
     </div>

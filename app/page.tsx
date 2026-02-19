@@ -297,6 +297,7 @@ export default function Home() {
                       <ul className="list-disc list-inside space-y-1">
                         <li>Team Ontario Table Tennis</li>
                         <li>Haliburton 26K, Toronto Waterfront Marathon, and 50K Ultramarathon</li>
+                        <li>CSIA Level 2 Ski Instructor</li>
                       </ul>
                     </div>
                   </li>
