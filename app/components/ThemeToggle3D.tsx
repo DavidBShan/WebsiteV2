@@ -687,13 +687,6 @@ export default function ThemeToggle3D({
 
         {/* Label */}
         <div className="absolute bottom-0 left-0 right-0 text-center pb-1 pointer-events-none">
-          <span
-            className={`text-[8px] font-bold tracking-wider animate-pulse ${
-              isDarkMode ? "text-white/70" : "text-gray-700/80"
-            }`}
-          >
-            {isDarkMode ? "NIGHT" : "DAY"}
-          </span>
         </div>
       </button>
 
