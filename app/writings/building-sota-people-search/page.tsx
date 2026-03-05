@@ -121,6 +121,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               MVP
             </h2>
+            <img src="https://i.imgur.com/F8AyB4n.png" alt="MVP" className="w-full rounded-lg" />
             <p>
               The initial version of Linkd was built using a combination of Voyage embeddings and FAISS with a simple thresholding system. For small datasets (~1,000 profiles per school), the search quality was acceptable. However, as we scaled to larger datasets, two key issues emerged. First, the cost of generating and storing embeddings grew linearly with the number of profiles crawled, quickly becoming unsustainable. Second, even a 4,028-dimensional embedding wasn't expressive enough to fully represent a person's professional background. A single vector simply couldn't capture the richness of multiple roles, skills, and experiences.
             </p>
@@ -135,6 +136,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Database + Agent
             </h2>
+            <img src="https://i.imgur.com/jNztE7u.png" alt="Database + Agent" className="w-full rounded-lg" />
             <p>
               Afterward, we experimented with a prompt-to-SQL architecture by loading our data into BigQuery. The goal was to let an LLM interpret natural language queries and translate them into SQL, enabling structured filtering across hundreds of millions of profiles. To make this work, we built an agent swarm capable of handling high concurrency, scraping additional context from the web, and evaluating candidate relevance against user-defined criteria. We used Asyncio to orchestrate thousands of concurrent requests, while Firecrawl handled large-scale web enrichment for profiles with urls.
             </p>
@@ -152,6 +154,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Data Pipeline
             </h2>
+            <img src="https://i.imgur.com/SnjKirt.png" alt="Data Pipeline" className="w-full rounded-lg" />
             <p>
               During the transition to OpenSearch, we made the decision to expand our dataset from 200 million profiles to over 800 million. This presented a significant engineering challenge: any ingestion pipeline would now need to be at least four times faster, or the team would be blocked for days without fresh data to test. To maintain iteration velocity, we set an ambitious goal, to design a pipeline that would complete in one day.
             </p>
@@ -169,6 +172,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Stage 1: Parallel Data Ingestion to MySQL
             </h3>
+            <img src="https://i.imgur.com/vbfnHDn.png" alt="Step 1: Parallel Data Ingestion to MySQL" className="w-full rounded-lg" />
             <p>
               We split the ingestion into two parallel streams - people and companies - each optimized differently:
             </p>
@@ -304,6 +308,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Thoughts on Embeddings
             </h2>
+            <img src="https://i.imgur.com/6d1HVoU.png" alt="Embeddings" className="w-full rounded-lg" />
             <p>
               Throughout this process, we kept revisiting the idea of embeddings since they had always seemed promising for improving semantic matching and relevance. Our earlier experiments, however, revealed a major limitation: a single embedding per profile wasn't expressive enough to represent all of a person's professional information. Profiles are inherently very complicated and compressing all that into one 4,000-dimensional vector loses too much nuance.
             </p>
@@ -319,6 +324,7 @@ export default function BuildingSOTAPeopleSearch() {
             <p>
               Qwen's Matryoshka embedding design made it especially attractive for our use case, we were able to truncate embeddings to 512 dimensions, significantly reducing storage and memory usage without a major loss in semantic signal. In total, the distributed Runpod + NGINX cluster delivered the throughput we needed to handle hundreds of millions of profiles efficiently, at a fraction of the cost of hosted APIs.
             </p>
+            <img src="https://i.imgur.com/QPQ4yBF.png" alt="Embeddings Architecture" className="w-full rounded-lg" />
             <p>
               Despite the efficient setup, the results were underwhelming. The reduced dimensionality led to significant loss in granularity, and the smaller model struggled to capture deeper relational signals (e.g., role hierarchy, company prestige, or temporal job transitions).
             </p>
@@ -336,6 +342,7 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Conclusion & What's Next
             </h2>
+            <img src="https://i.imgur.com/3Hk4rVL.png" alt="Conclusion" className="w-full rounded-lg" />
             <p>
               Building Clado's people search engine has been a constant cycle of iteration: from small, school-level databases to a globally distributed 8 TB OpenSearch index and a 25 TB MySQL data warehouse powering more than 800 million profiles and 30 million companies. Each stage revealed new bottlenecks: not just in compute or storage, but in how data freshness, semantic depth, and infrastructure coordination ultimately determine real-world search quality.
             </p>
