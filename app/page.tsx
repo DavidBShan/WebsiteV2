@@ -365,6 +365,12 @@ export default function Home() {
                             Your AI Clone for B2B Content
                           </div>
                         </li>
+                        <li>
+                          <span className="font-medium">iii. <a href="https://traverse.so/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Traverse</a> (Seed)</span>
+                          <div className="text-xs mt-1" style={{ marginLeft: "0.75rem" }}>
+                            RL environments for frontier AI labs
+                          </div>
+                        </li>
                       </ul>
                       </div>
                   </li>

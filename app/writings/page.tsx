@@ -64,14 +64,49 @@ export default function Writings() {
             </h1>
           </div>
 
-          {/* Coming soon message */}
+          {/* Blog posts */}
           <section className="animate-fade-in delay-400">
-            <p
-              className="leading-relaxed text-base sm:text-lg"
-              style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+            <ul
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.5rem",
+              }}
             >
-              Coming soon...
-            </p>
+              <li>
+                <Link
+                  href="/writings/building-sota-people-search"
+                  className="block group"
+                >
+                  <div
+                    className="text-xs font-mono"
+                    style={{
+                      color: isDarkMode ? "#6b7280" : "#9ca3af",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    October 29, 2025
+                  </div>
+                  <h2
+                    className="text-lg sm:text-xl font-bold group-hover:opacity-70 transition-opacity"
+                    style={{
+                      color: isDarkMode ? "#e5e7eb" : "#1f2937",
+                    }}
+                  >
+                    Building SOTA People Search
+                  </h2>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{
+                      color: isDarkMode ? "#9ca3af" : "#4b5563",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Scaling from per-school databases of ~10k profiles to a unified architecture indexing 800M+ people and 30M companies worldwide.
+                  </p>
+                </Link>
+              </li>
+            </ul>
           </section>
         </div>
       </div>
