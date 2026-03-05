@@ -354,7 +354,7 @@ export default function Home() {
                       <p className="mb-4">I also do a bit of angel investing on the side:</p>
                       <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
                         <li>
-                          <span className="font-medium">i. <a href="https://www.linkedin.com/company/matrixbio/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Matrix Biotech</a> (Pre-seed)</span>
+                          <span className="font-medium">i. <a href="https://www.trymatrix.bio/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Matrix Biotech</a> (Pre-seed)</span>
                           <div className="text-xs mt-1" style={{ marginLeft: "0.75rem" }}>
                             At-home DNA health testing
                           </div>
