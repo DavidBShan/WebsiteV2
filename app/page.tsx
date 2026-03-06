@@ -436,6 +436,13 @@ export default function Home() {
                   >
                     Writings
                   </Link>
+                  <Link
+                    href="/reading"
+                    className="hover:opacity-70 transition-opacity"
+                    aria-label="View David Shan's reading list"
+                  >
+                    Reading
+                  </Link>
                 </div>
               </div>
             </footer>
