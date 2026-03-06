@@ -77,7 +77,7 @@ export default function Reading() {
         paddingRight: "24px",
       }}
     >
-      <div className="max-w-4xl w-full">
+      <div className="max-w-6xl w-full">
         <div className="flex flex-col gap-6">
           {/* Back link */}
           <Link
@@ -114,7 +114,7 @@ export default function Reading() {
             </h1>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-8 md:gap-12">
             {/* Currently Reading */}
             <section className="animate-fade-in delay-400">
               <h2
@@ -127,14 +127,25 @@ export default function Reading() {
                 className="space-y-3"
                 style={{ color: textColor }}
               >
-                {currentlyReading.map((book) => (
-                  <li key={book.title}>
-                    <div className="text-sm sm:text-base">{book.title}</div>
-                    <div
-                      className="text-xs"
-                      style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                {currentlyReading.map((book, i) => (
+                  <li key={book.title} className="flex gap-3">
+                    <span
+                      className="font-mono text-xs shrink-0"
+                      style={{
+                        color: isDarkMode ? "#6b7280" : "#9ca3af",
+                        marginTop: "0.2rem",
+                      }}
                     >
-                      {book.author}
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <div className="text-sm sm:text-base">{book.title}</div>
+                      <div
+                        className="text-xs"
+                        style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                      >
+                        {book.author}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -159,36 +170,62 @@ export default function Reading() {
               >
                 In no particular order
               </p>
-              <ul
-                className="space-y-3"
-                style={{ color: textColor }}
-              >
-                {finished.map((book, i) => (
-                  <li key={book.title}>
-                    <div className="text-sm sm:text-base">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16">
+                <ul
+                  className="space-y-3"
+                  style={{ color: textColor }}
+                >
+                  {finished.slice(0, Math.ceil(finished.length / 2)).map((book, i) => (
+                    <li key={book.title} className="flex gap-3">
                       <span
-                        className="font-mono text-xs"
+                        className="font-mono text-xs shrink-0"
                         style={{
                           color: isDarkMode ? "#6b7280" : "#9ca3af",
-                          marginRight: "0.75rem",
+                          marginTop: "0.2rem",
                         }}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      {book.title}
-                    </div>
-                    <div
-                      className="text-xs"
-                      style={{
-                        color: isDarkMode ? "#6b7280" : "#9ca3af",
-                        marginLeft: "2rem",
-                      }}
-                    >
-                      {book.author}
-                    </div>
-                  </li>
-                ))}
-              </ul>
+                      <div>
+                        <div className="text-sm sm:text-base">{book.title}</div>
+                        <div
+                          className="text-xs"
+                          style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                        >
+                          {book.author}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <ul
+                  className="space-y-3"
+                  style={{ color: textColor }}
+                >
+                  {finished.slice(Math.ceil(finished.length / 2)).map((book, i) => (
+                    <li key={book.title} className="flex gap-3">
+                      <span
+                        className="font-mono text-xs shrink-0"
+                        style={{
+                          color: isDarkMode ? "#6b7280" : "#9ca3af",
+                          marginTop: "0.2rem",
+                        }}
+                      >
+                        {String(Math.ceil(finished.length / 2) + i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <div className="text-sm sm:text-base">{book.title}</div>
+                        <div
+                          className="text-xs"
+                          style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                        >
+                          {book.author}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </section>
           </div>
         </div>
