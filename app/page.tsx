@@ -443,6 +443,20 @@ export default function Home() {
                   >
                     Reading
                   </Link>
+                  <span
+                    className="hover:opacity-70 transition-opacity cursor-default relative group"
+                  >
+                    Life
+                    <span
+                      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
+                      style={{
+                        backgroundColor: isDarkMode ? "#374151" : "#1f2937",
+                        color: "#fff",
+                      }}
+                    >
+                      Vlogs coming soon :)
+                    </span>
+                  </span>
                 </div>
               </div>
             </footer>
