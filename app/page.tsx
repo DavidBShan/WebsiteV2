@@ -448,7 +448,7 @@ export default function Home() {
                   >
                     Life
                     <span
-                      className="absolute top-full left-0 mt-2 px-4 py-2 text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-sm"
+                      className="absolute top-full left-0 mt-2 px-8 py-4 text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-sm"
                       style={{
                         backgroundColor: isDarkMode ? "#111827" : "#000000",
                         color: "#fff",
