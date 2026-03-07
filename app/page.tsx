@@ -443,20 +443,13 @@ export default function Home() {
                   >
                     Reading
                   </Link>
-                  <span
-                    className="hover:opacity-70 transition-opacity cursor-default relative group"
+                  <Link
+                    href="/life"
+                    className="hover:opacity-70 transition-opacity"
+                    aria-label="View David Shan's life vlogs"
                   >
                     Life
-                    <span
-                      className="absolute top-full left-0 mt-2 px-8 py-4 text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-sm"
-                      style={{
-                        backgroundColor: isDarkMode ? "#111827" : "#000000",
-                        color: "#fff",
-                      }}
-                    >
-                      Vlogs coming soon :)
-                    </span>
-                  </span>
+                  </Link>
                 </div>
               </div>
             </footer>
