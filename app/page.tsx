@@ -448,9 +448,9 @@ export default function Home() {
                   >
                     Life
                     <span
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1.5 text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-sm"
+                      className="absolute top-full left-0 mt-2 px-4 py-2 text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-sm"
                       style={{
-                        backgroundColor: isDarkMode ? "#374151" : "#1f2937",
+                        backgroundColor: isDarkMode ? "#111827" : "#000000",
                         color: "#fff",
                       }}
                     >
