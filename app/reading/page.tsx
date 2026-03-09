@@ -9,8 +9,6 @@ const currentlyReading = [
   { title: "The Republic", author: "Plato" },
   { title: "The Hunchback of Notre Dame", author: "Victor Hugo" },
   { title: "Steve Jobs", author: "Walter Isaacson" },
-  { title: "I, Robot", author: "Isaac Asimov" },
-  { title: "Metamorphosis", author: "Franz Kafka" },
 ];
 
 const finished = [
@@ -48,6 +46,8 @@ const finished = [
   { title: "12 Rules for Life", author: "Jordan Peterson" },
   { title: "Beyond Good and Evil", author: "Friedrich Nietzsche" },
   { title: "Brave New World", author: "Aldous Huxley" },
+  { title: "I, Robot", author: "Isaac Asimov" },
+  { title: "Metamorphosis", author: "Franz Kafka" },
 ];
 
 export default function Reading() {
