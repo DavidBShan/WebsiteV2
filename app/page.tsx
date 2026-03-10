@@ -39,7 +39,7 @@ export default function Home() {
       <main
         className="min-h-screen flex justify-center overflow-x-hidden"
         style={{
-          paddingTop: "50px",
+          paddingTop: "120px",
           paddingBottom: "30px",
           paddingLeft: "24px",
           paddingRight: "24px",
