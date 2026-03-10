@@ -142,7 +142,7 @@ export default function Home() {
                       01
                     </div>
                     <p className="break-words">
-                      Building product native models at{" "}
+                      Training product native models at{" "}
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
