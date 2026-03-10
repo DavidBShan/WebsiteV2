@@ -335,24 +335,6 @@ export default function Home() {
                       01
                     </div>
                     <div>
-                      <p>
-                        Exploring browser agents and observability in
-                        the context of machine learning.
-                      </p>
-                    </div>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1100"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                      role="presentation"
-                    >
-                      02
-                    </div>
-                    <div>
                       <p className="mb-4">I also do a bit of angel investing on the side:</p>
                       <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
                         <li>
