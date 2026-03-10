@@ -358,6 +358,35 @@ export default function Home() {
                       </ul>
                       </div>
                   </li>
+                  <li
+                    className="text-sm leading-loose animate-fade-in delay-1100"
+                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+                  >
+                    <div
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
+                      style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
+                    >
+                      02
+                    </div>
+                    <div>
+                      <p className="mb-4">Some cool things I built in the past:</p>
+                      <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                        <li>
+                          <span className="font-medium">i. <a href="https://github.com/DavidBShan/City-Development-Index" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">LSTM-based city development prediction using geospatial data</a></span>
+                        </li>
+                        <li>
+                          <span className="font-medium">ii. <a href="https://github.com/DavidBShan/Competitive-Programming2022-2024" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Some competitive programming solutions</a></span>
+                        </li>
+                        <li>
+                          <span className="font-medium">iii. <a href="https://github.com/DavidBShan/Heart-Disease-Detector" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Embedded hardware for heart disease detection</a></span>
+                        </li>
+                        <li>
+                          <span className="font-medium">iv. <a href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">Leveraging semantic segmentation to predict wildfires</a></span>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </section>
