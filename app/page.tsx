@@ -100,10 +100,10 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="href-text"
-                  href="https://clado.ai"
-                  aria-label="Visit Clado website"
+                  href="https://freesolo.co"
+                  aria-label="Visit Freesolo website"
                 >
-                  Clado
+                  Freesolo
                 </a>
                 . Excited about AI, infrastructure, deep tech.
               </p>
@@ -142,16 +142,16 @@ export default function Home() {
                       01
                     </div>
                     <p className="break-words">
-                      Training state of the art small language models at{" "}
-                      {" "}<a
+                      Building product native models at{" "}
+                      <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
-                        href="https://clado.ai"
-                        aria-label="Visit Clado website"
+                        href="https://freesolo.co"
+                        aria-label="Visit Freesolo website"
                       >
-                        Clado
-                      </a>{" "}
+                        Freesolo
+                      </a>
                       .
                     </p>
                   </li>
@@ -166,6 +166,31 @@ export default function Home() {
                     >
                       02
                     </div>
+                    <p className="break-words">
+                      Built state of the art people search engine and indexed over 20TB of data at{" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="href-text"
+                        href="https://clado.ai"
+                        aria-label="Visit Clado website"
+                      >
+                        Clado
+                      </a>
+                      .
+                    </p>
+                  </li>
+                  <li
+                    className="text-sm leading-loose animate-fade-in delay-1300"
+                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+                  >
+                    <div
+                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
+                      style={{ marginBottom: "0.25rem" }}
+                      role="presentation"
+                    >
+                      03
+                    </div>
                     <p>
                       Researched agentic engineering at MIT with <a
                         target="_blank"
@@ -179,7 +204,7 @@ export default function Home() {
                     </p>
                   </li>
                   <li
-                    className="text-sm leading-loose animate-fade-in delay-1300"
+                    className="text-sm leading-loose animate-fade-in delay-1500"
                     style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
                   >
                     <div
@@ -187,7 +212,7 @@ export default function Home() {
                       style={{ marginBottom: "0.25rem" }}
                       role="presentation"
                     >
-                      03
+                      04
                     </div>
                     <p>
                       Interned at{" "}
