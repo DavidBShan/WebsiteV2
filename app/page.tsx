@@ -225,7 +225,7 @@ export default function Home() {
                       >
                         Geotab
                       </a>
-                      {" "}to build telematics software.
+                      {" "}building telematics software.
                     </p>
                   </li>
                 </ul>
