@@ -260,14 +260,14 @@ export default function Home() {
                       01
                     </div>
                     <div>
-                      <p className="mb-4">Favorite writings:</p>
+                      <p className="mb-4">Favorite movies:</p>
                       <ol
                         className="list-decimal list-inside space-y-3"
                         style={{ marginLeft: "1rem" }}
                       >
-                        <li>Man's Search For Meaning (Viktor Frankl)</li>
-                        <li>The Almanack of Naval Ravikant (Eric Jorgenson)</li>
-                        <li>Zero To One (Peter Thiel)</li>
+                        <li>Shawshank Redemption</li>
+                        <li>Good Will Hunting</li>
+                        <li>Forrest Gump</li>
                       </ol>
                     </div>
                   </li>
@@ -282,17 +282,7 @@ export default function Home() {
                     >
                       02
                     </div>
-                    <div>
-                      <p className="mb-4">Favorite movies:</p>
-                      <ol
-                        className="list-decimal list-inside space-y-3"
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        <li>Shawshank Redemption</li>
-                        <li>Good Will Hunting</li>
-                        <li>Forrest Gump</li>
-                      </ol>
-                    </div>
+                    <p>Currently learning golf, tennis, guitar, and piloting</p>
                   </li>
                   <li
                     className="text-sm leading-loose animate-fade-in delay-1300"
@@ -304,19 +294,6 @@ export default function Home() {
                       role="presentation"
                     >
                       03
-                    </div>
-                    <p>Currently learning golf, tennis, guitar, and piloting</p>
-                  </li>
-                  <li
-                    className="text-sm leading-loose animate-fade-in delay-1500"
-                    style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
-                  >
-                    <div
-                      className="text-sm italic text-gray-700 dark:text-gray-400 font-mono"
-                      style={{ marginBottom: "0.25rem" }}
-                      role="presentation"
-                    >
-                      04
                     </div>
                     <div>
                       <ul className="list-disc list-inside space-y-1">
