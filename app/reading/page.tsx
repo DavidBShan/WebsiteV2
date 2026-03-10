@@ -51,6 +51,7 @@ const finished = [
   { title: "Of Mice and Men", author: "John Steinbeck" },
   { title: "The Perks of Being a Wallflower", author: "Stephen Chbosky" },
   { title: "The Book of Five Rings", author: "Miyamoto Musashi" },
+  { title: "The Hard Thing About Hard Things", author: "Ben Horowitz" },
 ];
 
 export default function Reading() {
