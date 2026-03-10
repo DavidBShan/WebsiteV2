@@ -48,6 +48,9 @@ const finished = [
   { title: "Brave New World", author: "Aldous Huxley" },
   { title: "I, Robot", author: "Isaac Asimov" },
   { title: "Metamorphosis", author: "Franz Kafka" },
+  { title: "Of Mice and Men", author: "John Steinbeck" },
+  { title: "The Perks of Being a Wallflower", author: "Stephen Chbosky" },
+  { title: "The Book of Five Rings", author: "Miyamoto Musashi" },
 ];
 
 export default function Reading() {
