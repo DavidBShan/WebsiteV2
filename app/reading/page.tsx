@@ -8,10 +8,11 @@ const currentlyReading = [
   { title: "In Buddha's Words", author: "Bhikkhu Bodhi" },
   { title: "The Republic", author: "Plato" },
   { title: "The Hunchback of Notre Dame", author: "Victor Hugo" },
-  { title: "Steve Jobs", author: "Walter Isaacson" },
+  { title: "Leonardo da Vinci", author: "Walter Isaacson" },
 ];
 
 const finished = [
+  { title: "Steve Jobs", author: "Walter Isaacson" },
   { title: "The Three-Body Problem", author: "Liu Cixin" },
   { title: "Designing Data Intensive Applications", author: "Martin Kleppmann" },
   { title: "The Alchemist", author: "Paulo Coelho" },
