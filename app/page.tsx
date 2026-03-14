@@ -39,7 +39,7 @@ export default function Home() {
       <main
         className="min-h-screen flex justify-center overflow-x-hidden"
         style={{
-          paddingTop: "120px",
+          paddingTop: "100px",
           paddingBottom: "30px",
           paddingLeft: "24px",
           paddingRight: "24px",
@@ -91,6 +91,25 @@ export default function Home() {
             </div>
 
             <section className="animate-fade-in delay-400" style={{ marginTop: "-1.25rem", marginBottom: "-1.25rem" }}>
+              <div
+                className="flex items-center gap-2 text-xs font-mono"
+                style={{
+                  color: isDarkMode ? "#6b7280" : "#9ca3af",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span
+                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                    style={{ backgroundColor: isDarkMode ? "#9ca3af" : "#6b7280" }}
+                  ></span>
+                  <span
+                    className="relative inline-flex rounded-full h-2 w-2"
+                    style={{ backgroundColor: isDarkMode ? "#d1d5db" : "#374151" }}
+                  ></span>
+                </span>
+                San Francisco, CA
+              </div>
               <p
                 className="leading-relaxed text-base sm:text-lg"
                 style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
