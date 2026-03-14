@@ -192,15 +192,15 @@ export default function Home() {
                       03
                     </div>
                     <p>
-                      Researched agentic engineering at MIT with <a
+                      Research lead at <a
                         target="_blank"
                         rel="noopener noreferrer"
                         className="href-text"
                         href="https://compbio.mit.edu/"
-                        aria-label="Visit Professor Manolis Kellis at MIT"
+                        aria-label="Visit MIT Kellis Lab"
                       >
-                        Professor Manolis Kellis
-                      </a>.
+                        MIT's Kellis Lab
+                      </a> working on agents in cognitive cartography.
                     </p>
                   </li>
                   <li
