@@ -49,7 +49,7 @@ export default function Home() {
           <div className="flex flex-col gap-6">
             <div className="animate-fade-in delay-0">
               <div className="flex flex-col">
-                <div className="relative" style={{ marginBottom: "1rem" }}>
+                <div className="relative" style={{ marginBottom: "0.5rem" }}>
                   <h1
                     className="text-3xl sm:text-4xl font-black"
                     style={{
@@ -90,7 +90,7 @@ export default function Home() {
               </div>
             </div>
 
-            <section className="animate-fade-in delay-400" style={{ marginTop: "-1.25rem", marginBottom: "-1.25rem" }}>
+            <section className="animate-fade-in delay-400" style={{ marginTop: "-1.5rem", marginBottom: "-1.25rem" }}>
               <div
                 className="flex items-center gap-2 text-xs font-mono"
                 style={{
