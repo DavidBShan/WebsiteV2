@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "David Shan",
   description: "Website of David Shan - CTO of Clado",
   icons: {
-    icon: '/icon.svg',
+    icon: "/icon.svg",
   },
 };
 
@@ -32,7 +32,11 @@ export default function RootLayout({
       <head>
         {/* Preconnect to Google Fonts for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${ebGaramond.className} ${jetbrainsMono.variable} min-h-screen antialiased bg-gray-50 dark:bg-[#0a0a0a]`}

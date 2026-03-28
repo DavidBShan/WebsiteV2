@@ -18,7 +18,10 @@ interface ParticlesProps {
   mousePosition: { x: number; y: number };
 }
 
-const Particles = React.memo(function Particles({ isDark, mousePosition }: ParticlesProps) {
+const Particles = React.memo(function Particles({
+  isDark,
+  mousePosition,
+}: ParticlesProps) {
   const meshRef = useRef<THREE.Points>(null);
   const particleCount = isDark ? 120 : 60;
   const originalColorsRef = useRef<Float32Array | null>(null);
@@ -36,7 +39,7 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
 
-      positions[i3]     = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
       positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       positions[i3 + 2] = radius * Math.cos(phi);
 
@@ -46,17 +49,23 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
         // Stars: varied blue-white, warm white, yellow-white tones
         const starType = Math.random();
         if (starType < 0.3) {
-          colors[i3] = 0.7; colors[i3 + 1] = 0.8; colors[i3 + 2] = 1.0; // blue-white
+          colors[i3] = 0.7;
+          colors[i3 + 1] = 0.8;
+          colors[i3 + 2] = 1.0; // blue-white
         } else if (starType < 0.6) {
-          colors[i3] = 1.0; colors[i3 + 1] = 1.0; colors[i3 + 2] = 0.9; // warm white
+          colors[i3] = 1.0;
+          colors[i3 + 1] = 1.0;
+          colors[i3 + 2] = 0.9; // warm white
         } else {
-          colors[i3] = 1.0; colors[i3 + 1] = 0.9; colors[i3 + 2] = 0.6; // yellow
+          colors[i3] = 1.0;
+          colors[i3 + 1] = 0.9;
+          colors[i3 + 2] = 0.6; // yellow
         }
       } else {
         // Sun motes: warm golden sparkles
-        colors[i3]     = 1.0;
+        colors[i3] = 1.0;
         colors[i3 + 1] = 0.85 + Math.random() * 0.15;
-        colors[i3 + 2] = 0.1  + Math.random() * 0.3;
+        colors[i3 + 2] = 0.1 + Math.random() * 0.3;
       }
     }
 
@@ -85,14 +94,21 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
       if (!originalColorsRef.current) {
         originalColorsRef.current = new Float32Array(colors);
       }
-      const colorAttr = meshRef.current.geometry.attributes.color as THREE.BufferAttribute;
+      const colorAttr = meshRef.current.geometry.attributes
+        .color as THREE.BufferAttribute;
       const t = state.clock.elapsedTime;
       const speeds = twinkleSpeedsRef.current;
       const orig = originalColorsRef.current;
       for (let i = 0; i < particleCount; i++) {
-        const twinkle = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * speeds[i] + i * 1.7));
+        const twinkle =
+          0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * speeds[i] + i * 1.7));
         const i3 = i * 3;
-        colorAttr.setXYZ(i, orig[i3] * twinkle, orig[i3 + 1] * twinkle, orig[i3 + 2] * twinkle);
+        colorAttr.setXYZ(
+          i,
+          orig[i3] * twinkle,
+          orig[i3 + 1] * twinkle,
+          orig[i3 + 2] * twinkle,
+        );
       }
       colorAttr.needsUpdate = true;
     }
@@ -117,17 +133,24 @@ const Particles = React.memo(function Particles({ isDark, mousePosition }: Parti
 });
 
 // Rotating sun rays
-const SunRays = React.memo(function SunRays({ isHovered }: { isHovered: boolean }) {
+const SunRays = React.memo(function SunRays({
+  isHovered,
+}: {
+  isHovered: boolean;
+}) {
   const groupRef = useRef<THREE.Group>(null);
   const rayCount = 12;
 
-  const rays = useMemo(() =>
-    Array.from({ length: rayCount }, (_, i) => {
-      const angle = (i / rayCount) * Math.PI * 2;
-      const length = 0.25 + (i % 3 === 0 ? 0.25 : 0.1);
-      const width = 0.025 + (i % 3 === 0 ? 0.015 : 0.005);
-      return { angle, length, width };
-    }), []);
+  const rays = useMemo(
+    () =>
+      Array.from({ length: rayCount }, (_, i) => {
+        const angle = (i / rayCount) * Math.PI * 2;
+        const length = 0.25 + (i % 3 === 0 ? 0.25 : 0.1);
+        const width = 0.025 + (i % 3 === 0 ? 0.015 : 0.005);
+        return { angle, length, width };
+      }),
+    [],
+  );
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -166,11 +189,14 @@ const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const coronaRef = useRef<THREE.Mesh>(null);
   const sunBodyRef = useRef<THREE.Mesh>(null);
-  const [coronaGeometry] = useState(() => new THREE.IcosahedronGeometry(0.98, 6));
+  const [coronaGeometry] = useState(
+    () => new THREE.IcosahedronGeometry(0.98, 6),
+  );
 
   useEffect(() => {
     if (coronaGeometry) {
-      const positions = coronaGeometry.attributes.position as THREE.BufferAttribute;
+      const positions = coronaGeometry.attributes
+        .position as THREE.BufferAttribute;
       positions.usage = THREE.DynamicDrawUsage;
     }
   }, [coronaGeometry]);
@@ -207,7 +233,12 @@ const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
         const scale = 1 + noise;
 
         const length = Math.sqrt(x * x + y * y + z * z);
-        positions.setXYZ(i, (x / length) * scale, (y / length) * scale, (z / length) * scale);
+        positions.setXYZ(
+          i,
+          (x / length) * scale,
+          (y / length) * scale,
+          (z / length) * scale,
+        );
       }
       positions.needsUpdate = true;
     }
@@ -299,7 +330,12 @@ const Sun = React.memo(function Sun({ isHovered }: { isHovered: boolean }) {
 
       {/* Corona (animated pulsing shell) */}
       <mesh ref={coronaRef} geometry={coronaGeometry}>
-        <meshBasicMaterial color="#ff6600" transparent opacity={0.35} side={THREE.BackSide} />
+        <meshBasicMaterial
+          color="#ff6600"
+          transparent
+          opacity={0.35}
+          side={THREE.BackSide}
+        />
       </mesh>
 
       {/* Outer glow */}
@@ -350,15 +386,60 @@ const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
         Math.sin(nx * 30) * Math.cos(ny * 30) * Math.sin(nz * 30) * 0.01;
 
       let craterDepth = 0;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.5) ** 2 + (ny - 0.3) ** 2 + (nz - 0.1) ** 2) * 4) * 0.12;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.4) ** 2 + (ny + 0.2) ** 2 + (nz - 0.3) ** 2) * 5) * 0.1;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.1) ** 2 + (ny - 0.6) ** 2 + (nz + 0.2) ** 2) * 5) * 0.08;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.3) ** 2 + (ny - 0.5) ** 2 + (nz + 0.4) ** 2) * 8) * 0.05;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.6) ** 2 + (ny + 0.1) ** 2 + (nz - 0.2) ** 2) * 9) * 0.04;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.2) ** 2 + (ny + 0.4) ** 2 + (nz + 0.5) ** 2) * 10) * 0.04;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.3) ** 2 + (ny + 0.5) ** 2 + (nz - 0.4) ** 2) * 15) * 0.03;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx + 0.6) ** 2 + (ny - 0.3) ** 2 + (nz + 0.1) ** 2) * 18) * 0.025;
-      craterDepth += Math.max(0, 1 - Math.sqrt((nx - 0.4) ** 2 + (ny - 0.2) ** 2 + (nz + 0.6) ** 2) * 20) * 0.02;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx - 0.5) ** 2 + (ny - 0.3) ** 2 + (nz - 0.1) ** 2) * 4,
+        ) * 0.12;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx + 0.4) ** 2 + (ny + 0.2) ** 2 + (nz - 0.3) ** 2) * 5,
+        ) * 0.1;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx - 0.1) ** 2 + (ny - 0.6) ** 2 + (nz + 0.2) ** 2) * 5,
+        ) * 0.08;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx + 0.3) ** 2 + (ny - 0.5) ** 2 + (nz + 0.4) ** 2) * 8,
+        ) * 0.05;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx - 0.6) ** 2 + (ny + 0.1) ** 2 + (nz - 0.2) ** 2) * 9,
+        ) * 0.04;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx + 0.2) ** 2 + (ny + 0.4) ** 2 + (nz + 0.5) ** 2) * 10,
+        ) * 0.04;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx - 0.3) ** 2 + (ny + 0.5) ** 2 + (nz - 0.4) ** 2) * 15,
+        ) * 0.03;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx + 0.6) ** 2 + (ny - 0.3) ** 2 + (nz + 0.1) ** 2) * 18,
+        ) * 0.025;
+      craterDepth +=
+        Math.max(
+          0,
+          1 -
+            Math.sqrt((nx - 0.4) ** 2 + (ny - 0.2) ** 2 + (nz + 0.6) ** 2) * 20,
+        ) * 0.02;
 
       const deformation = 1 - craterDepth + noise;
       positions.setXYZ(i, nx * deformation, ny * deformation, nz * deformation);
@@ -368,9 +449,12 @@ const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
     return geometry;
   });
 
-  const moonUniforms = useMemo(() => ({
-    lightDir: { value: new THREE.Vector3(1.5, 0.8, 1.0).normalize() },
-  }), []);
+  const moonUniforms = useMemo(
+    () => ({
+      lightDir: { value: new THREE.Vector3(1.5, 0.8, 1.0).normalize() },
+    }),
+    [],
+  );
 
   const frameCountRef = useRef(0);
 
@@ -380,7 +464,8 @@ const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
 
     if (moonRef.current) {
       moonRef.current.rotation.y = state.clock.elapsedTime * 0.08;
-      moonRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.005) * 0.05;
+      moonRef.current.rotation.x =
+        Math.sin(state.clock.elapsedTime * 0.005) * 0.05;
     }
   });
 
@@ -475,7 +560,11 @@ const Moon = React.memo(function Moon({ isHovered }: { isHovered: boolean }) {
       </mesh>
 
       {/* Directional light from the "sun" side to illuminate craters */}
-      <directionalLight position={[3, 1.5, 2]} intensity={1.4} color="#e8e0d0" />
+      <directionalLight
+        position={[3, 1.5, 2]}
+        intensity={1.4}
+        color="#e8e0d0"
+      />
     </group>
   );
 });
@@ -522,7 +611,8 @@ const CelestialBody = React.memo(function CelestialBody({
     if (frameCountRef.current % 2 !== 0) return;
 
     if (groupRef.current) {
-      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+      groupRef.current.position.y =
+        Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
 
       if (isHovered) {
         groupRef.current.position.x = mousePosition.x * 0.3;
@@ -534,9 +624,18 @@ const CelestialBody = React.memo(function CelestialBody({
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.3} floatingRange={[-0.1, 0.1]}>
+    <Float
+      speed={2}
+      rotationIntensity={0.5}
+      floatIntensity={0.3}
+      floatingRange={[-0.1, 0.1]}
+    >
       <group ref={groupRef}>
-        {isDark ? <Moon isHovered={isHovered} /> : <Sun isHovered={isHovered} />}
+        {isDark ? (
+          <Moon isHovered={isHovered} />
+        ) : (
+          <Sun isHovered={isHovered} />
+        )}
       </group>
     </Float>
   );
@@ -644,7 +743,8 @@ export default function ThemeToggle3D({
         className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:scale-110 transform-origin-center"
         style={{
           backgroundColor: initialBgColor,
-          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          boxShadow:
+            "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           transform: isHovered
             ? `perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg) scale(1.1)`
             : "scale(1)",
@@ -660,7 +760,8 @@ export default function ThemeToggle3D({
               : "conic-gradient(from 0deg, #ffdd00, #ffaa00, #ff8800, #ffaa00, #ffdd00)",
             animation: isHovered ? "spin 3s linear infinite" : "none",
             padding: "2px",
-            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMask:
+              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "exclude",
             maskComposite: "exclude",
           }}
@@ -669,7 +770,11 @@ export default function ThemeToggle3D({
         <Canvas
           camera={{ position: [0, 0, 5], fov: 50 }}
           style={{ width: "100%", height: "100%", background: initialBgColor }}
-          gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
+          gl={{
+            antialias: false,
+            alpha: false,
+            powerPreference: "high-performance",
+          }}
           dpr={[1, 1.5]}
           onCreated={({ gl, scene }) => {
             const color = new THREE.Color(initialBgColor);
@@ -686,8 +791,7 @@ export default function ThemeToggle3D({
         </Canvas>
 
         {/* Label */}
-        <div className="absolute bottom-0 left-0 right-0 text-center pb-1 pointer-events-none">
-        </div>
+        <div className="absolute bottom-0 left-0 right-0 text-center pb-1 pointer-events-none"></div>
       </button>
 
       <style jsx>{`
