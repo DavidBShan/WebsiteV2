@@ -3,11 +3,27 @@
 :root {
   --background: #f9fafb;
   --foreground: #4b5563;
+  --color-text: #4b5563;
+  --color-heading: #1f2937;
+  --color-hero: #111827;
+  --color-subheading: #374151;
+  --color-muted: #9ca3af;
+  --color-muted-strong: #6b7280;
+  --color-border: #e5e7eb;
+  --color-link-hover: #1f2937;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #9ca3af;
+  --color-text: #9ca3af;
+  --color-heading: #e5e7eb;
+  --color-hero: #e5e7eb;
+  --color-subheading: #d1d5db;
+  --color-muted: #6b7280;
+  --color-muted-strong: #9ca3af;
+  --color-border: #1f2937;
+  --color-link-hover: #f3f4f6;
 }
 
 @theme inline {
@@ -42,18 +58,24 @@ body {
   text-decoration-style: dotted;
   text-underline-offset: 2px;
   transition: none !important;
-}
-
-.href-text {
   color: inherit;
 }
 
 .href-text:hover {
-  color: #374151;
+  color: var(--color-link-hover) !important;
 }
 
-.dark .href-text:hover {
-  color: #e5e7eb;
+.hover-link {
+  color: inherit;
+  transition: none !important;
+}
+
+.hover-link:hover {
+  color: var(--color-link-hover) !important;
+}
+
+.hover-link-group:hover .hover-link-target {
+  color: var(--color-link-hover) !important;
 }
 
 p,

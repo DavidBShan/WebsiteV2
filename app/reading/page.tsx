@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const currentlyReading = [
   { title: "Meditations", author: "Marcus Aurelius" },
@@ -14,7 +14,10 @@ const currentlyReading = [
 const finished = [
   { title: "Steve Jobs", author: "Walter Isaacson" },
   { title: "The Three-Body Problem", author: "Liu Cixin" },
-  { title: "Designing Data Intensive Applications", author: "Martin Kleppmann" },
+  {
+    title: "Designing Data Intensive Applications",
+    author: "Martin Kleppmann",
+  },
   { title: "The Alchemist", author: "Paulo Coelho" },
   { title: "1984", author: "George Orwell" },
   { title: "Fahrenheit 451", author: "Ray Bradbury" },
@@ -56,12 +59,9 @@ const finished = [
 ];
 
 export default function Reading() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = savedTheme ? savedTheme === "dark" : false;
-    setIsDarkMode(prefersDark);
 
     if (prefersDark) {
       document.documentElement.classList.add("dark");
@@ -70,9 +70,10 @@ export default function Reading() {
     }
   }, []);
 
-  const textColor = isDarkMode ? "#9ca3af" : "#4b5563";
-  const headingColor = isDarkMode ? "#e5e7eb" : "#1f2937";
-  const subheadingColor = isDarkMode ? "#d1d5db" : "#374151";
+  const textColor = "var(--color-text)";
+  const headingColor = "var(--color-heading)";
+  const subheadingColor = "var(--color-subheading)";
+  const mutedColor = "var(--color-muted)";
 
   return (
     <main
@@ -89,7 +90,7 @@ export default function Reading() {
           {/* Back link */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity animate-fade-in delay-0"
+            className="inline-flex items-center gap-2 text-sm hover-link animate-fade-in delay-0"
             style={{ color: textColor }}
           >
             <svg
@@ -130,16 +131,13 @@ export default function Reading() {
               >
                 Currently Reading
               </h2>
-              <ul
-                className="space-y-3"
-                style={{ color: textColor }}
-              >
+              <ul className="space-y-3" style={{ color: textColor }}>
                 {currentlyReading.map((book, i) => (
                   <li key={book.title} className="flex gap-3">
                     <span
                       className="font-mono text-xs shrink-0"
                       style={{
-                        color: isDarkMode ? "#6b7280" : "#9ca3af",
+                        color: mutedColor,
                         marginTop: "0.2rem",
                       }}
                     >
@@ -147,10 +145,7 @@ export default function Reading() {
                     </span>
                     <div>
                       <div className="text-sm sm:text-base">{book.title}</div>
-                      <div
-                        className="text-xs"
-                        style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
-                      >
+                      <div className="text-xs" style={{ color: mutedColor }}>
                         {book.author}
                       </div>
                     </div>
@@ -170,7 +165,7 @@ export default function Reading() {
               <p
                 className="text-xs italic"
                 style={{
-                  color: isDarkMode ? "#6b7280" : "#9ca3af",
+                  color: mutedColor,
                   marginTop: "-0.5rem",
                   marginBottom: "0.5rem",
                 }}
@@ -178,59 +173,63 @@ export default function Reading() {
                 In no particular order
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16">
-                <ul
-                  className="space-y-3"
-                  style={{ color: textColor }}
-                >
-                  {finished.slice(0, Math.ceil(finished.length / 2)).map((book, i) => (
-                    <li key={book.title} className="flex gap-3">
-                      <span
-                        className="font-mono text-xs shrink-0"
-                        style={{
-                          color: isDarkMode ? "#6b7280" : "#9ca3af",
-                          marginTop: "0.2rem",
-                        }}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <div className="text-sm sm:text-base">{book.title}</div>
-                        <div
-                          className="text-xs"
-                          style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                <ul className="space-y-3" style={{ color: textColor }}>
+                  {finished
+                    .slice(0, Math.ceil(finished.length / 2))
+                    .map((book, i) => (
+                      <li key={book.title} className="flex gap-3">
+                        <span
+                          className="font-mono text-xs shrink-0"
+                          style={{
+                            color: mutedColor,
+                            marginTop: "0.2rem",
+                          }}
                         >
-                          {book.author}
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <div className="text-sm sm:text-base">
+                            {book.title}
+                          </div>
+                          <div
+                            className="text-xs"
+                            style={{ color: mutedColor }}
+                          >
+                            {book.author}
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
                 </ul>
-                <ul
-                  className="space-y-3"
-                  style={{ color: textColor }}
-                >
-                  {finished.slice(Math.ceil(finished.length / 2)).map((book, i) => (
-                    <li key={book.title} className="flex gap-3">
-                      <span
-                        className="font-mono text-xs shrink-0"
-                        style={{
-                          color: isDarkMode ? "#6b7280" : "#9ca3af",
-                          marginTop: "0.2rem",
-                        }}
-                      >
-                        {String(Math.ceil(finished.length / 2) + i + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <div className="text-sm sm:text-base">{book.title}</div>
-                        <div
-                          className="text-xs"
-                          style={{ color: isDarkMode ? "#6b7280" : "#9ca3af" }}
+                <ul className="space-y-3" style={{ color: textColor }}>
+                  {finished
+                    .slice(Math.ceil(finished.length / 2))
+                    .map((book, i) => (
+                      <li key={book.title} className="flex gap-3">
+                        <span
+                          className="font-mono text-xs shrink-0"
+                          style={{
+                            color: mutedColor,
+                            marginTop: "0.2rem",
+                          }}
                         >
-                          {book.author}
+                          {String(
+                            Math.ceil(finished.length / 2) + i + 1,
+                          ).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <div className="text-sm sm:text-base">
+                            {book.title}
+                          </div>
+                          <div
+                            className="text-xs"
+                            style={{ color: mutedColor }}
+                          >
+                            {book.author}
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  ))}
+                      </li>
+                    ))}
                 </ul>
               </div>
             </section>

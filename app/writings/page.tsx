@@ -1,15 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Writings() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = savedTheme ? savedTheme === "dark" : false;
-    setIsDarkMode(prefersDark);
 
     if (prefersDark) {
       document.documentElement.classList.add("dark");
@@ -33,8 +30,8 @@ export default function Writings() {
           {/* Back link */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm hover:opacity-70 transition-opacity animate-fade-in delay-0"
-            style={{ color: isDarkMode ? "#9ca3af" : "#4b5563" }}
+            className="inline-flex items-center gap-2 text-sm hover-link animate-fade-in delay-0"
+            style={{ color: "var(--color-text)" }}
           >
             <svg
               stroke="currentColor"
@@ -45,6 +42,7 @@ export default function Writings() {
               strokeLinejoin="round"
               className="w-4 h-4"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
@@ -56,7 +54,7 @@ export default function Writings() {
             <h1
               className="text-3xl sm:text-4xl font-black"
               style={{
-                color: isDarkMode ? "#e5e7eb" : "#374151",
+                color: "var(--color-subheading)",
                 marginBottom: "1.5rem",
               }}
             >
@@ -76,21 +74,21 @@ export default function Writings() {
               <li>
                 <Link
                   href="/writings/building-sota-people-search"
-                  className="block group"
+                  className="block hover-link-group"
                 >
                   <div
                     className="text-xs font-mono"
                     style={{
-                      color: isDarkMode ? "#6b7280" : "#9ca3af",
+                      color: "var(--color-muted)",
                       marginBottom: "0.25rem",
                     }}
                   >
                     October 29, 2025
                   </div>
                   <h2
-                    className="text-lg sm:text-xl font-bold group-hover:opacity-70 transition-opacity"
+                    className="text-lg sm:text-xl font-bold hover-link-target"
                     style={{
-                      color: isDarkMode ? "#e5e7eb" : "#1f2937",
+                      color: "var(--color-heading)",
                     }}
                   >
                     Building SOTA People Search
@@ -98,11 +96,13 @@ export default function Writings() {
                   <p
                     className="text-sm leading-relaxed"
                     style={{
-                      color: isDarkMode ? "#9ca3af" : "#4b5563",
+                      color: "var(--color-text)",
                       marginTop: "0.5rem",
                     }}
                   >
-                    Scaling from per-school databases of ~10k profiles to a unified architecture indexing 800M+ people and 30M companies worldwide.
+                    Scaling from per-school databases of ~10k profiles to a
+                    unified architecture indexing 800M+ people and 30M companies
+                    worldwide.
                   </p>
                 </Link>
               </li>
