@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { LifeMedia } from "./getLifeMedia";
 
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
+  const [visibleCount, setVisibleCount] = useState(12);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -17,6 +19,29 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
       document.documentElement.classList.remove("dark");
     }
   }, []);
+
+  useEffect(() => {
+    if (!sentinelRef.current || visibleCount >= media.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+
+        if (firstEntry?.isIntersecting) {
+          setVisibleCount((current) => Math.min(current + 12, media.length));
+        }
+      },
+      {
+        rootMargin: "1200px 0px",
+      },
+    );
+
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [media.length, visibleCount]);
 
   useEffect(() => {
     if (selectedIndex === null) {
@@ -55,6 +80,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
 
   const selectedMedia = selectedIndex === null ? null : media[selectedIndex];
   const selectedFrame = selectedIndex === null ? null : selectedIndex + 1;
+  const visibleMedia = media.slice(0, visibleCount);
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
   const mutedColor = "var(--color-muted)";
@@ -106,7 +132,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
             {media.length > 0 ? (
               <section className="animate-fade-in delay-400">
                 <div className="life-gallery-columns">
-                  {media.map((item, index) => (
+                  {visibleMedia.map((item, index) => (
                     <button
                       key={`${item.kind}-${item.src}`}
                       type="button"
@@ -124,7 +150,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                             muted
                             playsInline
                             poster={item.posterSrc}
-                            preload="metadata"
+                            preload="none"
                           >
                             <source src={item.src} />
                             <track
@@ -153,6 +179,28 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                     </button>
                   ))}
                 </div>
+
+                {visibleCount < media.length ? (
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      type="button"
+                      className="rounded-full border px-4 py-2 text-sm hover-link"
+                      style={{
+                        borderColor: "var(--color-border)",
+                        color: textColor,
+                      }}
+                      onClick={() =>
+                        setVisibleCount((current) =>
+                          Math.min(current + 12, media.length),
+                        )
+                      }
+                    >
+                      Load more
+                    </button>
+                  </div>
+                ) : null}
+
+                <div ref={sentinelRef} aria-hidden="true" />
               </section>
             ) : (
               <p
