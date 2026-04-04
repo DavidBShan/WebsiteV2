@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState } from "react";
+import { Float, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { PerspectiveCamera, Float } from "@react-three/drei";
-import * as THREE from "three";
 import gsap from "gsap";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
 
 const getInitialBgColor = () => {
   if (typeof window === "undefined") return "#BFDAF7";
@@ -147,7 +147,7 @@ const SunRays = React.memo(function SunRays({
         const angle = (i / rayCount) * Math.PI * 2;
         const length = 0.25 + (i % 3 === 0 ? 0.25 : 0.1);
         const width = 0.025 + (i % 3 === 0 ? 0.015 : 0.005);
-        return { angle, length, width };
+        return { id: `ray-${i}`, angle, length, width };
       }),
     [],
   );
@@ -160,9 +160,9 @@ const SunRays = React.memo(function SunRays({
 
   return (
     <group ref={groupRef}>
-      {rays.map((ray, i) => (
+      {rays.map((ray) => (
         <mesh
-          key={i}
+          key={ray.id}
           position={[
             Math.cos(ray.angle) * (1.12 + ray.length / 2),
             Math.sin(ray.angle) * (1.12 + ray.length / 2),
