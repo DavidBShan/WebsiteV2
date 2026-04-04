@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
-const formatDisplayName = (name: string) => name.replace(/\.[^.]+$/, "");
 
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -184,7 +183,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                               ) : (
                                 <img
                                   src={item.src}
-                                  alt={item.name}
+                                  alt={`Life frame ${absoluteIndex + 1}`}
                                   className="life-media"
                                   loading={absoluteIndex < 8 ? "eager" : "lazy"}
                                 />
@@ -192,9 +191,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                               <span className="life-photo-meta">
                                 <span className="life-photo-index">
                                   {String(absoluteIndex + 1).padStart(2, "0")}
-                                </span>
-                                <span className="life-photo-name">
-                                  {formatDisplayName(item.name)}
                                 </span>
                               </span>
                             </span>
@@ -290,9 +286,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                     <div className="life-lightbox-kicker">
                       Frame {String(selectedFrame).padStart(2, "0")}
                     </div>
-                    <div className="life-lightbox-title">
-                      {formatDisplayName(selectedMedia.name)}
-                    </div>
+                    <div className="life-lightbox-title">Life archive</div>
                   </div>
 
                   <button
@@ -339,7 +333,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                   ) : (
                     <img
                       src={selectedMedia.src}
-                      alt={selectedMedia.name}
+                      alt={`Life frame ${selectedFrame}`}
                       className="life-lightbox-media"
                     />
                   )}
