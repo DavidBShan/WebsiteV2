@@ -4,8 +4,11 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { LifeMedia } from "./getLifeMedia";
 
+const PAGE_SIZE = 12;
+const formatDisplayName = (name: string) => name.replace(/\.[^.]+$/, "");
+
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,7 +33,9 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
         const firstEntry = entries[0];
 
         if (firstEntry?.isIntersecting) {
-          setVisibleCount((current) => Math.min(current + 12, media.length));
+          setVisibleCount((current) =>
+            Math.min(current + PAGE_SIZE, media.length),
+          );
         }
       },
       {
@@ -81,6 +86,11 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const selectedMedia = selectedIndex === null ? null : media[selectedIndex];
   const selectedFrame = selectedIndex === null ? null : selectedIndex + 1;
   const visibleMedia = media.slice(0, visibleCount);
+  const mediaChunks = Array.from(
+    { length: Math.ceil(visibleMedia.length / PAGE_SIZE) },
+    (_, chunkIndex) =>
+      visibleMedia.slice(chunkIndex * PAGE_SIZE, (chunkIndex + 1) * PAGE_SIZE),
+  );
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
   const mutedColor = "var(--color-muted)";
@@ -131,52 +141,67 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
 
             {media.length > 0 ? (
               <section className="animate-fade-in delay-400">
-                <div className="life-gallery-columns">
-                  {visibleMedia.map((item, index) => (
-                    <button
-                      key={`${item.kind}-${item.src}`}
-                      type="button"
-                      className="life-gallery-item group w-full text-left"
-                      onClick={() => setSelectedIndex(index)}
+                <div className="life-gallery-stack">
+                  {mediaChunks.map((chunk, chunkIndex) => (
+                    <div
+                      key={chunk[0]?.src ?? `chunk-empty-${chunkIndex}`}
+                      className="life-gallery-columns"
                     >
-                      <span
-                        className={`life-photo-card ${
-                          item.kind === "video" ? "life-photo-card-video" : ""
-                        }`}
-                      >
-                        {item.kind === "video" ? (
-                          <video
-                            className="life-media"
-                            muted
-                            playsInline
-                            poster={item.posterSrc}
-                            preload="none"
+                      {chunk.map((item, index) => {
+                        const absoluteIndex = chunkIndex * PAGE_SIZE + index;
+
+                        return (
+                          <button
+                            key={`${item.kind}-${item.src}`}
+                            type="button"
+                            className="life-gallery-item group w-full text-left"
+                            onClick={() => setSelectedIndex(absoluteIndex)}
                           >
-                            <source src={item.src} />
-                            <track
-                              default
-                              kind="captions"
-                              label="No captions available"
-                              src="/empty-captions.vtt"
-                              srcLang="en"
-                            />
-                          </video>
-                        ) : (
-                          <img
-                            src={item.src}
-                            alt={item.name}
-                            className="life-media"
-                            loading={index < 8 ? "eager" : "lazy"}
-                          />
-                        )}
-                        <span className="life-photo-meta">
-                          <span className="life-photo-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="life-photo-name">{item.name}</span>
-                        </span>
-                      </span>
-                    </button>
+                            <span
+                              className={`life-photo-card ${
+                                item.kind === "video"
+                                  ? "life-photo-card-video"
+                                  : ""
+                              }`}
+                            >
+                              {item.kind === "video" ? (
+                                <video
+                                  className="life-media"
+                                  muted
+                                  playsInline
+                                  poster={item.posterSrc}
+                                  preload="none"
+                                >
+                                  <source src={item.src} />
+                                  <track
+                                    default
+                                    kind="captions"
+                                    label="No captions available"
+                                    src="/empty-captions.vtt"
+                                    srcLang="en"
+                                  />
+                                </video>
+                              ) : (
+                                <img
+                                  src={item.src}
+                                  alt={item.name}
+                                  className="life-media"
+                                  loading={absoluteIndex < 8 ? "eager" : "lazy"}
+                                />
+                              )}
+                              <span className="life-photo-meta">
+                                <span className="life-photo-index">
+                                  {String(absoluteIndex + 1).padStart(2, "0")}
+                                </span>
+                                <span className="life-photo-name">
+                                  {formatDisplayName(item.name)}
+                                </span>
+                              </span>
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   ))}
                 </div>
 
@@ -191,7 +216,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                       }}
                       onClick={() =>
                         setVisibleCount((current) =>
-                          Math.min(current + 12, media.length),
+                          Math.min(current + PAGE_SIZE, media.length),
                         )
                       }
                     >
@@ -216,7 +241,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
 
       {selectedMedia && selectedFrame ? (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm px-4 py-6 sm:px-8"
+          className="fixed inset-0 z-50 life-lightbox-shell px-4 py-4 sm:px-8 sm:py-6"
           role="dialog"
           aria-modal="true"
           aria-label={`Life frame ${selectedFrame}`}
@@ -228,7 +253,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
             onClick={() => setSelectedIndex(null)}
           />
 
-          <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center gap-3 sm:gap-6">
+          <div className="relative z-10 mx-auto flex h-full max-w-[96rem] items-center gap-3 sm:gap-5">
             <button
               type="button"
               className="life-lightbox-button hidden sm:inline-flex"
@@ -257,25 +282,16 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
 
             <div className="w-full">
               <div
-                className="rounded-[28px] overflow-hidden"
-                style={{
-                  backgroundColor: "rgba(10, 10, 10, 0.45)",
-                  border: `1px solid ${borderColor}`,
-                }}
+                className="life-lightbox-panel"
+                style={{ border: `1px solid ${borderColor}` }}
               >
-                <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
-                  <div className="min-w-0">
-                    <div
-                      className="text-xs font-mono"
-                      style={{ color: mutedColor, marginBottom: "0.2rem" }}
-                    >
+                <div className="life-lightbox-header">
+                  <div className="min-w-0 flex-1">
+                    <div className="life-lightbox-kicker">
                       Frame {String(selectedFrame).padStart(2, "0")}
                     </div>
-                    <div
-                      className="text-sm sm:text-base truncate"
-                      style={{ color: "#f3f4f6" }}
-                    >
-                      {selectedMedia.name}
+                    <div className="life-lightbox-title">
+                      {formatDisplayName(selectedMedia.name)}
                     </div>
                   </div>
 
@@ -302,11 +318,11 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                   </button>
                 </div>
 
-                <div className="px-3 pb-3 sm:px-5 sm:pb-5">
+                <div className="life-lightbox-stage">
                   {selectedMedia.kind === "video" ? (
                     <video
                       autoPlay
-                      className="block mx-auto max-h-[78vh] w-auto max-w-full rounded-[20px]"
+                      className="life-lightbox-media"
                       controls
                       playsInline
                       poster={selectedMedia.posterSrc}
@@ -324,9 +340,34 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                     <img
                       src={selectedMedia.src}
                       alt={selectedMedia.name}
-                      className="block mx-auto max-h-[78vh] w-auto max-w-full rounded-[20px]"
+                      className="life-lightbox-media"
                     />
                   )}
+                </div>
+
+                <div className="life-lightbox-footer sm:hidden">
+                  <button
+                    type="button"
+                    className="life-lightbox-inline-button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSelectedIndex(
+                        (selectedFrame - 2 + media.length) % media.length,
+                      );
+                    }}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    className="life-lightbox-inline-button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSelectedIndex(selectedFrame % media.length);
+                    }}
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
             </div>

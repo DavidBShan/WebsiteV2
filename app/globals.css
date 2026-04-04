@@ -214,6 +214,12 @@ li {
   }
 }
 
+.life-gallery-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .life-gallery-columns {
   column-count: 1;
   column-gap: 1rem;
@@ -328,6 +334,7 @@ li {
 }
 
 .life-lightbox-button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.75rem;
@@ -339,7 +346,93 @@ li {
   backdrop-filter: blur(12px);
 }
 
+.life-lightbox-shell {
+  background:
+    radial-gradient(circle at top, rgb(255 255 255 / 0.08), transparent 28%),
+    linear-gradient(180deg, rgb(8 10 18 / 0.92), rgb(7 9 17 / 0.84));
+  backdrop-filter: blur(18px);
+}
+
+.life-lightbox-panel {
+  overflow: hidden;
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.03)),
+    rgb(10 12 22 / 0.78);
+  box-shadow:
+    0 30px 90px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+
+.life-lightbox-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1rem 0.75rem;
+}
+
+.life-lightbox-kicker {
+  margin-bottom: 0.25rem;
+  color: rgb(226 232 240 / 0.65);
+  font-family: var(--font-jetbrains);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.life-lightbox-title {
+  overflow: hidden;
+  color: rgb(248 250 252);
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.life-lightbox-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.85rem 0.85rem;
+}
+
+.life-lightbox-media {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  max-height: min(76vh, 1200px);
+  margin: 0 auto;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.35), rgb(2 6 23 / 0.65)), #050510;
+  box-shadow:
+    0 22px 60px rgb(0 0 0 / 0.34),
+    inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+.life-lightbox-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 0.85rem 0.95rem;
+}
+
+.life-lightbox-inline-button {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.07);
+  color: rgb(248 250 252);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.85rem 1rem;
+  backdrop-filter: blur(10px);
+}
+
 @media (min-width: 768px) {
+  .life-gallery-stack {
+    gap: 1.25rem;
+  }
+
   .life-gallery-columns {
     column-count: 2;
     column-gap: 1.25rem;
@@ -347,6 +440,18 @@ li {
 
   .life-gallery-item {
     margin-bottom: 1.25rem;
+  }
+
+  .life-lightbox-header {
+    padding: 1.2rem 1.25rem 0.9rem;
+  }
+
+  .life-lightbox-title {
+    font-size: 1.05rem;
+  }
+
+  .life-lightbox-stage {
+    padding: 0 1.25rem 1.25rem;
   }
 }
 
