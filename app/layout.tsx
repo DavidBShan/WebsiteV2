@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { EB_Garamond, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -42,6 +43,7 @@ export default function RootLayout({
         className={`${ebGaramond.className} ${jetbrainsMono.variable} min-h-screen antialiased bg-gray-50 dark:bg-[#0a0a0a]`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
