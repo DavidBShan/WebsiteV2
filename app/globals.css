@@ -293,12 +293,12 @@ li {
   white-space: nowrap;
 }
 
-.life-photo-card-video::before {
-  content: "Play";
+.life-video-control {
   position: absolute;
   top: 1rem;
   right: 1rem;
   z-index: 1;
+  border: 0;
   border-radius: 999px;
   padding: 0.35rem 0.7rem;
   background: rgb(15 23 42 / 0.72);

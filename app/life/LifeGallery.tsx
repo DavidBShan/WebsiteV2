@@ -6,6 +6,61 @@ import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
 
+function LifeVideoCard({ index, item }: { index: number; item: LifeMedia }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <span className="life-photo-card life-photo-card-video">
+      <video
+        ref={videoRef}
+        className="life-media life-video-media"
+        muted
+        playsInline
+        poster={item.posterSrc}
+        preload="metadata"
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+        onEnded={() => setIsPlaying(false)}
+      >
+        <source src={item.src} />
+        <track
+          default
+          kind="captions"
+          label="No captions available"
+          src="/empty-captions.vtt"
+          srcLang="en"
+        />
+      </video>
+      <button
+        type="button"
+        className="life-video-control"
+        onClick={async () => {
+          const video = videoRef.current;
+
+          if (!video) {
+            return;
+          }
+
+          if (video.paused) {
+            await video.play();
+            return;
+          }
+
+          video.pause();
+        }}
+      >
+        {isPlaying ? "Pause" : "Play"}
+      </button>
+      <span className="life-photo-meta">
+        <span className="life-photo-index">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </span>
+    </span>
+  );
+}
+
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -101,42 +156,23 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                     key={`${item.kind}-${item.src}`}
                     className="life-gallery-item group"
                   >
-                    <span
-                      className={`life-photo-card ${
-                        item.kind === "video" ? "life-photo-card-video" : ""
-                      }`}
-                    >
-                      {item.kind === "video" ? (
-                        <video
-                          className="life-media life-video-media pointer-events-none"
-                          muted
-                          playsInline
-                          poster={item.posterSrc}
-                          preload="metadata"
-                        >
-                          <source src={item.src} />
-                          <track
-                            default
-                            kind="captions"
-                            label="No captions available"
-                            src="/empty-captions.vtt"
-                            srcLang="en"
-                          />
-                        </video>
-                      ) : (
+                    {item.kind === "video" ? (
+                      <LifeVideoCard index={index} item={item} />
+                    ) : (
+                      <span className="life-photo-card">
                         <img
                           src={item.src}
                           alt={`Life frame ${index + 1}`}
                           className="life-media"
                           loading={index < 8 ? "eager" : "lazy"}
                         />
-                      )}
-                      <span className="life-photo-meta">
-                        <span className="life-photo-index">
-                          {String(index + 1).padStart(2, "0")}
+                        <span className="life-photo-meta">
+                          <span className="life-photo-index">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
                         </span>
                       </span>
-                    </span>
+                    )}
                   </div>
                 ))}
               </div>
