@@ -250,9 +250,8 @@ li {
 }
 
 .life-video-media {
-  aspect-ratio: 9 / 16;
-  min-height: 18rem;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
 }
 
 .life-photo-card::after {
