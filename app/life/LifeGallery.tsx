@@ -15,6 +15,8 @@ function LifeVideoCard({ index, item }: { index: number; item: LifeMedia }) {
       <video
         ref={videoRef}
         className="life-media life-video-media"
+        autoPlay
+        loop
         muted
         playsInline
         poster={item.posterSrc}
