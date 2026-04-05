@@ -249,6 +249,12 @@ li {
   transition: transform 220ms ease;
 }
 
+.life-video-media {
+  aspect-ratio: 9 / 16;
+  min-height: 18rem;
+  object-fit: cover;
+}
+
 .life-photo-card::after {
   content: "";
   position: absolute;

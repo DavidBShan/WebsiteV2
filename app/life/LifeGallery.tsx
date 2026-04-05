@@ -108,11 +108,11 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                     >
                       {item.kind === "video" ? (
                         <video
-                          className="life-media pointer-events-none"
+                          className="life-media life-video-media pointer-events-none"
                           muted
                           playsInline
                           poster={item.posterSrc}
-                          preload="none"
+                          preload="metadata"
                         >
                           <source src={item.src} />
                           <track
