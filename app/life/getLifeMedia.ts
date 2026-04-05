@@ -1,5 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
+import { list } from "@vercel/blob";
 
 export type LifeMedia = {
   kind: "image" | "video";
@@ -8,7 +7,12 @@ export type LifeMedia = {
   src: string;
 };
 
-const LIFE_DIR = path.join(process.cwd(), "public", "life-images");
+type MediaFile = {
+  name: string;
+  src: string;
+};
+
+const LIFE_PREFIX = "life-images/";
 
 const imageExtensions = new Set([
   ".avif",
@@ -28,33 +32,21 @@ const compareNames = (left: string, right: string) =>
     sensitivity: "base",
   });
 
-const encodePublicPath = (...parts: string[]) =>
-  `/${parts.map((part) => encodeURIComponent(part)).join("/")}`;
-
-const isFile = (directory: string, fileName: string) =>
-  fs.existsSync(path.join(directory, fileName)) &&
-  fs.statSync(path.join(directory, fileName)).isFile();
-
 const stripExtension = (fileName: string) => fileName.replace(/\.[^.]+$/, "");
+const stripBlobSuffix = (fileName: string) =>
+  fileName.replace(/-[A-Za-z0-9]{20,}(?=\.[^.]+$)/, "");
 
 const toSlug = (fileName: string) =>
   stripExtension(fileName).toLowerCase().replaceAll(" ", "-");
 
-export function getLifeMedia(): LifeMedia[] {
-  const files = fs
-    .readdirSync(LIFE_DIR)
-    .filter((fileName) => isFile(LIFE_DIR, fileName))
-    .sort(compareNames);
-
-  const lookup = new Map(
-    files.map((fileName) => [fileName.toLowerCase(), fileName]),
-  );
+const shapeMedia = (files: MediaFile[]) => {
+  const lookup = new Map(files.map((file) => [file.name.toLowerCase(), file]));
   const seenVideoSlugs = new Set<string>();
   const media: LifeMedia[] = [];
 
-  for (const fileName of files) {
-    const lowerName = fileName.toLowerCase();
-    const extension = path.extname(lowerName);
+  for (const file of files) {
+    const lowerName = file.name.toLowerCase();
+    const extension = lowerName.match(/\.[^.]+$/)?.[0] ?? "";
 
     if (lowerName.endsWith("-poster.jpg") || heicExtensions.has(extension)) {
       continue;
@@ -63,8 +55,8 @@ export function getLifeMedia(): LifeMedia[] {
     if (imageExtensions.has(extension)) {
       media.push({
         kind: "image",
-        name: fileName,
-        src: encodePublicPath("life-images", fileName),
+        name: file.name,
+        src: file.src,
       });
       continue;
     }
@@ -73,40 +65,70 @@ export function getLifeMedia(): LifeMedia[] {
       continue;
     }
 
-    const slug = toSlug(fileName);
+    const slug = toSlug(file.name);
 
     if (seenVideoSlugs.has(slug)) {
       continue;
     }
 
-    const preferredName =
+    const preferredFile =
       preferredVideoExtensions
         .map((candidateExtension) => lookup.get(`${slug}${candidateExtension}`))
-        .find(Boolean) ?? fileName;
+        .find(Boolean) ?? file;
 
-    if (preferredName !== fileName) {
+    if (preferredFile.name !== file.name) {
       continue;
     }
 
     seenVideoSlugs.add(slug);
 
-    const posterName = lookup.get(`${slug}-poster.jpg`);
+    const posterFile = lookup.get(`${slug}-poster.jpg`);
     const originalName =
-      lookup.get(`${slug}.mov`) ??
-      lookup.get(`${slug}.mp4`) ??
-      lookup.get(`${slug}.m4v`) ??
-      lookup.get(`${slug}.webm`) ??
-      fileName;
+      lookup.get(`${slug}.mov`)?.name ??
+      lookup.get(`${slug}.mp4`)?.name ??
+      lookup.get(`${slug}.m4v`)?.name ??
+      lookup.get(`${slug}.webm`)?.name ??
+      file.name;
 
     media.push({
       kind: "video",
       name: originalName,
-      posterSrc: posterName
-        ? encodePublicPath("life-images", posterName)
-        : undefined,
-      src: encodePublicPath("life-images", preferredName),
+      posterSrc: posterFile?.src,
+      src: preferredFile.src,
     });
   }
 
   return media;
+};
+
+export async function getLifeMedia(): Promise<LifeMedia[]> {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return [];
+  }
+
+  const files: MediaFile[] = [];
+  let cursor: string | undefined;
+
+  do {
+    const response = await list({
+      cursor,
+      limit: 1000,
+      prefix: LIFE_PREFIX,
+    });
+
+    files.push(
+      ...response.blobs.map((blob) => ({
+        name: stripBlobSuffix(blob.pathname.slice(LIFE_PREFIX.length)),
+        src: blob.url,
+      })),
+    );
+
+    cursor = response.hasMore ? response.cursor : undefined;
+  } while (cursor);
+
+  return shapeMedia(
+    files
+      .filter((file) => file.name.length > 0)
+      .sort((left, right) => compareNames(left.name, right.name)),
+  );
 }

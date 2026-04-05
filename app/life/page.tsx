@@ -1,6 +1,6 @@
 import { getLifeMedia } from "./getLifeMedia";
 import LifeGallery from "./LifeGallery";
 
-export default function LifePage() {
-  return <LifeGallery media={getLifeMedia()} />;
+export default async function LifePage() {
+  return <LifeGallery media={await getLifeMedia()} />;
 }
