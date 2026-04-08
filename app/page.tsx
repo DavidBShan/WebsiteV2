@@ -132,9 +132,9 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="href-text"
                 href="https://freesolo.co"
-                aria-label="Visit Clado website"
+                aria-label="Visit Freesolo website"
               >
-                Clado
+                Freesolo
               </a>
               . Excited about AI, infrastructure, deep tech.
             </p>
@@ -176,15 +176,15 @@ export default function Home() {
                     01
                   </div>
                   <p className="break-words">
-                    Training product native models at{" "}
+                    Building product native models at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
                       className="href-text"
                       href="https://freesolo.co"
-                      aria-label="Visit Clado website"
+                      aria-label="Visit Freesolo website"
                     >
-                      Clado
+                      Freesolo
                     </a>
                     .
                   </p>
