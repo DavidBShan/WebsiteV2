@@ -261,7 +261,7 @@ export default function Home() {
                     04
                   </div>
                   <p>
-                    Youngest intern at{" "}
+                    Youngest software developer at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
