@@ -354,8 +354,7 @@ export default function Home() {
                     <ul className="list-disc list-inside space-y-1">
                       <li>Team Ontario Table Tennis</li>
                       <li>
-                        Haliburton 26K, Toronto Waterfront Marathon, and 50K
-                        Ultramarathon
+                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront Marathon Finisher
                       </li>
                       <li>CSIA Level 2 Ski Instructor</li>
                     </ul>
