@@ -309,15 +309,62 @@ export default function Home() {
                     01
                   </div>
                   <div>
-                    <p className="mb-4">Favorite movies:</p>
-                    <ol
-                      className="list-decimal list-inside space-y-3"
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      <li>Shawshank Redemption</li>
-                      <li>Good Will Hunting</li>
-                      <li>Forrest Gump</li>
-                    </ol>
+                    <p className="mb-4">Some cool stuff I built in the past:</p>
+                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                      <li>
+                        <span className="font-medium">
+                          i.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/City-Development-Index"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            LSTM-based city development prediction using
+                            geospatial data
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          ii.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/Competitive-Programming2022-2024"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Some competitive programming solutions
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          iii.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/Heart-Disease-Detector"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Embedded hardware for heart disease detection
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          iv.{" "}
+                          <a
+                            href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Using semantic segmentation to predict wildfires
+                          </a>
+                        </span>
+                      </li>
+                    </ul>
                   </div>
                 </li>
                 <li
@@ -458,79 +505,6 @@ export default function Home() {
                         >
                           RL environments for frontier AI labs
                         </div>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li
-                  className="text-sm leading-loose animate-fade-in delay-1100"
-                  style={{ color: textColor }}
-                >
-                  <div
-                    className="text-sm italic font-mono"
-                    style={{
-                      marginBottom: "0.25rem",
-                      color: mutedStrongColor,
-                    }}
-                    role="presentation"
-                  >
-                    02
-                  </div>
-                  <div>
-                    <p className="mb-4">Some cool stuff I built in the past:</p>
-                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
-                      <li>
-                        <span className="font-medium">
-                          i.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/City-Development-Index"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            LSTM-based city development prediction using
-                            geospatial data
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          ii.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/Competitive-Programming2022-2024"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Some competitive programming solutions
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          iii.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/Heart-Disease-Detector"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Embedded hardware for heart disease detection
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          iv.{" "}
-                          <a
-                            href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Using semantic segmentation to predict wildfires
-                          </a>
-                        </span>
                       </li>
                     </ul>
                   </div>
