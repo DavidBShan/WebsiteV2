@@ -245,7 +245,7 @@ export default function Home() {
                     03
                   </div>
                   <p>
-                    Research lead at{" "}
+                    Youngest research lead at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
