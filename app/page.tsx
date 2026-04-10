@@ -146,8 +146,7 @@ export default function Home() {
               >
                 Freesolo
               </a>
-              )
-              . Excited about AI, infrastructure, deep tech.
+              ). Excited about post-training, infrastructure, deep tech.
             </p>
           </section>
 
@@ -216,8 +215,7 @@ export default function Home() {
                   </div>
                   <p className="break-words">
                     Building state of the art people search engine and indexed
-                    over
-                    20TB of data at{" "}
+                    over 20TB of data at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -307,79 +305,6 @@ export default function Home() {
                 }}
               >
                 <li
-                  className="text-sm leading-loose animate-fade-in delay-900"
-                  style={{ color: textColor }}
-                >
-                  <div
-                    className="text-sm italic font-mono"
-                    style={{
-                      marginBottom: "0.25rem",
-                      color: mutedStrongColor,
-                    }}
-                    role="presentation"
-                  >
-                    01
-                  </div>
-                  <div>
-                    <p className="mb-4">Some cool stuff I built in the past:</p>
-                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
-                      <li>
-                        <span className="font-medium">
-                          i.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/City-Development-Index"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            LSTM-based city development prediction using
-                            geospatial data
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          ii.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/Competitive-Programming2022-2024"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Some competitive programming solutions
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          iii.{" "}
-                          <a
-                            href="https://github.com/DavidBShan/Heart-Disease-Detector"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Embedded hardware for heart disease detection
-                          </a>
-                        </span>
-                      </li>
-                      <li>
-                        <span className="font-medium">
-                          iv.{" "}
-                          <a
-                            href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover-link"
-                          >
-                            Using semantic segmentation to predict wildfires
-                          </a>
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li
                   className="text-sm leading-loose animate-fade-in delay-1100"
                   style={{ color: textColor }}
                 >
@@ -391,7 +316,7 @@ export default function Home() {
                     }}
                     role="presentation"
                   >
-                    02
+                    01
                   </div>
                   <p>Currently learning golf, tennis, guitar, and piloting</p>
                 </li>
@@ -407,13 +332,14 @@ export default function Home() {
                     }}
                     role="presentation"
                   >
-                    03
+                    02
                   </div>
                   <div>
                     <ul className="list-disc list-inside space-y-1">
                       <li>Team Ontario Table Tennis</li>
                       <li>
-                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront Marathon Finisher
+                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront
+                        Marathon Finisher
                       </li>
                       <li>CSIA Level 2 Ski Instructor</li>
                     </ul>
@@ -517,6 +443,79 @@ export default function Home() {
                         >
                           RL environments for frontier AI labs
                         </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li
+                  className="text-sm leading-loose animate-fade-in delay-1100"
+                  style={{ color: textColor }}
+                >
+                  <div
+                    className="text-sm italic font-mono"
+                    style={{
+                      marginBottom: "0.25rem",
+                      color: mutedStrongColor,
+                    }}
+                    role="presentation"
+                  >
+                    02
+                  </div>
+                  <div>
+                    <p className="mb-4">Some cool stuff I built in the past:</p>
+                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                      <li>
+                        <span className="font-medium">
+                          i.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/City-Development-Index"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            LSTM-based city development prediction using
+                            geospatial data
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          ii.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/Competitive-Programming2022-2024"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Some competitive programming solutions
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          iii.{" "}
+                          <a
+                            href="https://github.com/DavidBShan/Heart-Disease-Detector"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Embedded hardware for heart disease detection
+                          </a>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="font-medium">
+                          iv.{" "}
+                          <a
+                            href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover-link"
+                          >
+                            Using semantic segmentation to predict wildfires
+                          </a>
+                        </span>
                       </li>
                     </ul>
                   </div>
