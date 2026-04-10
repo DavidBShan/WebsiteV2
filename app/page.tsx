@@ -126,7 +126,17 @@ export default function Home() {
               className="leading-relaxed text-base sm:text-lg"
               style={{ color: textColor }}
             >
-              CTO @{" "}
+              CTO @ Linkd Inc. (dba{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="href-text"
+                href="https://clado.ai"
+                aria-label="Visit Clado website"
+              >
+                Clado
+              </a>{" "}
+              &{" "}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
@@ -136,6 +146,7 @@ export default function Home() {
               >
                 Freesolo
               </a>
+              )
               . Excited about AI, infrastructure, deep tech.
             </p>
           </section>
@@ -204,7 +215,8 @@ export default function Home() {
                     02
                   </div>
                   <p className="break-words">
-                    Built state of the art people search engine and indexed over
+                    Building state of the art people search engine and indexed
+                    over
                     20TB of data at{" "}
                     <a
                       target="_blank"
