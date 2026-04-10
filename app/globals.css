@@ -78,6 +78,29 @@ body {
   color: var(--color-link-hover) !important;
 }
 
+.reading-audio-title {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+.reading-audio-title:hover,
+.reading-audio-title.is-playing {
+  color: var(--color-link-hover);
+}
+
+.reading-audio-title:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-heading) 34%, transparent);
+  outline-offset: 3px;
+}
+
 p,
 li,
 div,

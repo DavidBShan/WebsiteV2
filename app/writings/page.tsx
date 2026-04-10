@@ -76,15 +76,6 @@ export default function Writings() {
                   href="/writings/building-sota-people-search"
                   className="block hover-link-group"
                 >
-                  <div
-                    className="text-xs font-mono"
-                    style={{
-                      color: "var(--color-muted)",
-                      marginBottom: "0.25rem",
-                    }}
-                  >
-                    October 29, 2025
-                  </div>
                   <h2
                     className="text-lg sm:text-xl font-bold hover-link-target"
                     style={{

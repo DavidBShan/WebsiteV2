@@ -18,7 +18,6 @@ export default function BuildingSOTAPeopleSearch() {
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
   const subheadingColor = "var(--color-subheading)";
-  const mutedColor = "var(--color-muted)";
 
   return (
     <main
@@ -62,15 +61,6 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Building SOTA People Search
             </h1>
-            <div
-              className="text-xs font-mono"
-              style={{
-                color: mutedColor,
-                marginTop: "0.5rem",
-              }}
-            >
-              October 29, 2025
-            </div>
           </div>
 
           {/* Content */}

@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const THINK_DIFFERENT_AUDIO_URL =
+  "https://rjdgugnxm7szh20r.public.blob.vercel-storage.com/Apple%20_Think%20Different_%20%28Steve%20Jobs%20narrated%29%20%5BcpzvwkR1RYU%5D.mp3";
 
 const currentlyReading = [
   { title: "Meditations", author: "Marcus Aurelius" },
@@ -57,6 +60,59 @@ const finished = [
   { title: "The Book of Five Rings", author: "Miyamoto Musashi" },
   { title: "The Hard Thing About Hard Things", author: "Ben Horowitz" },
 ];
+
+function SteveJobsAudioTitle({ title }: { title: string }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const toggleAudio = async () => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    if (audio.paused) {
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch {
+        setIsPlaying(false);
+      }
+      return;
+    }
+
+    audio.pause();
+    audio.currentTime = 0;
+    setIsPlaying(false);
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className={`reading-audio-title${isPlaying ? " is-playing" : ""}`}
+        onClick={toggleAudio}
+        aria-label={isPlaying ? "Stop related audio" : "Play related audio"}
+      >
+        {title}
+      </button>
+      <audio
+        ref={audioRef}
+        src={THINK_DIFFERENT_AUDIO_URL}
+        preload="metadata"
+        onPause={() => setIsPlaying(false)}
+        onPlay={() => setIsPlaying(true)}
+        onEnded={(event) => {
+          event.currentTarget.currentTime = 0;
+          setIsPlaying(false);
+        }}
+      >
+        <track kind="captions" src="/empty-captions.vtt" />
+      </audio>
+    </>
+  );
+}
 
 export default function Reading() {
   useEffect(() => {
@@ -189,7 +245,11 @@ export default function Reading() {
                         </span>
                         <div>
                           <div className="text-sm sm:text-base">
-                            {book.title}
+                            {book.title === "Steve Jobs" ? (
+                              <SteveJobsAudioTitle title={book.title} />
+                            ) : (
+                              book.title
+                            )}
                           </div>
                           <div
                             className="text-xs"
