@@ -244,6 +244,12 @@ li {
   align-items: start;
 }
 
+.life-gallery-column {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
 .life-gallery-item {
   display: block;
   margin-bottom: 1rem;
@@ -479,7 +485,6 @@ li {
 
 @media (min-width: 768px) {
   .life-gallery-columns {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 1.25rem;
   }
 
@@ -493,11 +498,5 @@ li {
 
   .life-lightbox-stage {
     padding: 0 1.25rem 1.25rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .life-gallery-columns {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

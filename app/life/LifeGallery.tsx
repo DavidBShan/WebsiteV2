@@ -6,8 +6,26 @@ import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
 const EAGER_MEDIA_COUNT = 8;
+const MEDIUM_GALLERY_WIDTH = 768;
+const LARGE_GALLERY_WIDTH = 1280;
+const GALLERY_COLUMN_KEYS = [
+  "life-gallery-column-primary",
+  "life-gallery-column-secondary",
+  "life-gallery-column-tertiary",
+] as const;
 
 type MediaLoadStatus = "loading" | "ready" | "error";
+
+type LifeMediaColumnItem = {
+  index: number;
+  item: LifeMedia;
+  mediaKey: string;
+};
+
+type LifeMediaColumn = {
+  items: LifeMediaColumnItem[];
+  key: string;
+};
 
 type LifeMediaCardProps = {
   index: number;
@@ -18,6 +36,59 @@ type LifeMediaCardProps = {
 
 function getMediaKey(item: LifeMedia) {
   return `${item.kind}-${item.src}`;
+}
+
+function getLifeGalleryColumnCount() {
+  if (window.innerWidth >= LARGE_GALLERY_WIDTH) {
+    return 3;
+  }
+
+  if (window.innerWidth >= MEDIUM_GALLERY_WIDTH) {
+    return 2;
+  }
+
+  return 1;
+}
+
+function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
+  const columns: LifeMediaColumn[] = Array.from(
+    { length: columnCount },
+    (_, columnIndex) => ({
+      items: [],
+      key: GALLERY_COLUMN_KEYS[columnIndex] ?? `life-gallery-column-extra`,
+    }),
+  );
+
+  items.forEach((item, index) => {
+    columns[index % columnCount]?.items.push({
+      index,
+      item,
+      mediaKey: getMediaKey(item),
+    });
+  });
+
+  return columns;
+}
+
+function useLifeGalleryColumnCount() {
+  const [columnCount, setColumnCount] = useState(1);
+
+  useEffect(() => {
+    const updateColumnCount = () => {
+      setColumnCount((currentCount) => {
+        const nextCount = getLifeGalleryColumnCount();
+
+        return currentCount === nextCount ? currentCount : nextCount;
+      });
+    };
+
+    updateColumnCount();
+    window.addEventListener("resize", updateColumnCount);
+
+    return () => window.removeEventListener("resize", updateColumnCount);
+  }, []);
+
+  return columnCount;
 }
 
 function LifePhotoMeta({ index }: { index: number }) {
@@ -196,13 +267,38 @@ function LifeVideoCard({
   );
 }
 
+function LifeMediaCard({
+  index,
+  item,
+  mediaKey,
+  onSettled,
+}: LifeMediaCardProps) {
+  return item.kind === "video" ? (
+    <LifeVideoCard
+      index={index}
+      item={item}
+      mediaKey={mediaKey}
+      onSettled={onSettled}
+    />
+  ) : (
+    <LifeImageCard
+      index={index}
+      item={item}
+      mediaKey={mediaKey}
+      onSettled={onSettled}
+    />
+  );
+}
+
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [settledMediaKeys, setSettledMediaKeys] = useState<Set<string>>(
     () => new Set(),
   );
+  const columnCount = useLifeGalleryColumnCount();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const visibleMedia = media.slice(0, visibleCount);
+  const mediaColumns = getLifeMediaColumns(visibleMedia, columnCount);
   const hasPendingVisibleMedia = visibleMedia.some(
     (item) => !settledMediaKeys.has(getMediaKey(item)),
   );
@@ -306,28 +402,25 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
 
           {media.length > 0 ? (
             <section className="animate-fade-in delay-400">
-              <div className="life-gallery-columns">
-                {visibleMedia.map((item, index) => {
-                  const mediaKey = getMediaKey(item);
-
-                  return item.kind === "video" ? (
-                    <LifeVideoCard
-                      index={index}
-                      item={item}
-                      key={mediaKey}
-                      mediaKey={mediaKey}
-                      onSettled={markMediaSettled}
-                    />
-                  ) : (
-                    <LifeImageCard
-                      index={index}
-                      item={item}
-                      key={mediaKey}
-                      mediaKey={mediaKey}
-                      onSettled={markMediaSettled}
-                    />
-                  );
-                })}
+              <div
+                className="life-gallery-columns"
+                style={{
+                  gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                }}
+              >
+                {mediaColumns.map((column) => (
+                  <div className="life-gallery-column" key={column.key}>
+                    {column.items.map(({ index, item, mediaKey }) => (
+                      <LifeMediaCard
+                        index={index}
+                        item={item}
+                        key={mediaKey}
+                        mediaKey={mediaKey}
+                        onSettled={markMediaSettled}
+                      />
+                    ))}
+                  </div>
+                ))}
               </div>
 
               <div ref={sentinelRef} aria-hidden="true" />
