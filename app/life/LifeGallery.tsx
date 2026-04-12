@@ -1,71 +1,222 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
+const EAGER_MEDIA_COUNT = 8;
 
-function LifeVideoCard({ index, item }: { index: number; item: LifeMedia }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+type MediaLoadStatus = "loading" | "ready" | "error";
 
+type LifeMediaCardProps = {
+  index: number;
+  item: LifeMedia;
+  mediaKey: string;
+  onSettled: (mediaKey: string) => void;
+};
+
+function getMediaKey(item: LifeMedia) {
+  return `${item.kind}-${item.src}`;
+}
+
+function LifePhotoMeta({ index }: { index: number }) {
   return (
-    <span className="life-photo-card life-photo-card-video">
-      <video
-        ref={videoRef}
-        className="life-media life-video-media"
-        autoPlay
-        loop
-        muted
-        playsInline
-        poster={item.posterSrc}
-        preload="metadata"
-        onPause={() => setIsPlaying(false)}
-        onPlay={() => setIsPlaying(true)}
-        onEnded={() => setIsPlaying(false)}
-      >
-        <source src={item.src} />
-        <track
-          default
-          kind="captions"
-          label="No captions available"
-          src="/empty-captions.vtt"
-          srcLang="en"
-        />
-      </video>
-      <button
-        type="button"
-        className="life-video-control"
-        onClick={async () => {
-          const video = videoRef.current;
-
-          if (!video) {
-            return;
-          }
-
-          if (video.paused) {
-            await video.play();
-            return;
-          }
-
-          video.pause();
-        }}
-      >
-        {isPlaying ? "Pause" : "Play"}
-      </button>
-      <span className="life-photo-meta">
-        <span className="life-photo-index">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+    <span className="life-photo-meta">
+      <span className="life-photo-index">
+        {String(index + 1).padStart(2, "0")}
       </span>
     </span>
   );
 }
 
+function getGalleryItemClassName(isReady: boolean) {
+  return `life-gallery-item group${isReady ? "" : " life-gallery-item-loading"}`;
+}
+
+function getPhotoCardClassName(isReady: boolean, extraClassName = "") {
+  return [
+    "life-photo-card",
+    extraClassName,
+    isReady ? "is-loaded" : "is-loading",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function LifeImageCard({
+  index,
+  item,
+  mediaKey,
+  onSettled,
+}: LifeMediaCardProps) {
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
+  const isReady = loadStatus === "ready";
+  const isEager = index < EAGER_MEDIA_COUNT;
+  const markReady = useCallback(() => {
+    setLoadStatus("ready");
+    onSettled(mediaKey);
+  }, [mediaKey, onSettled]);
+  const markError = useCallback(() => {
+    setLoadStatus("error");
+    onSettled(mediaKey);
+  }, [mediaKey, onSettled]);
+
+  useEffect(() => {
+    const image = imageRef.current;
+
+    if (!image?.complete) {
+      return;
+    }
+
+    if (image.naturalWidth > 0) {
+      markReady();
+      return;
+    }
+
+    markError();
+  }, [markError, markReady]);
+
+  if (loadStatus === "error") {
+    return null;
+  }
+
+  return (
+    <div className={getGalleryItemClassName(isReady)}>
+      <span className={getPhotoCardClassName(isReady)}>
+        <img
+          ref={imageRef}
+          src={item.src}
+          alt={`Life frame ${index + 1}`}
+          className="life-media"
+          loading="eager"
+          decoding="async"
+          fetchPriority={isEager ? "high" : "auto"}
+          onLoad={markReady}
+          onError={markError}
+        />
+        {isReady ? <LifePhotoMeta index={index} /> : null}
+      </span>
+    </div>
+  );
+}
+
+function LifeVideoCard({
+  index,
+  item,
+  mediaKey,
+  onSettled,
+}: LifeMediaCardProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
+  const isReady = loadStatus === "ready";
+  const markReady = useCallback(() => {
+    setLoadStatus("ready");
+    onSettled(mediaKey);
+  }, [mediaKey, onSettled]);
+  const markError = useCallback(() => {
+    setLoadStatus("error");
+    onSettled(mediaKey);
+  }, [mediaKey, onSettled]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+      return;
+    }
+
+    markReady();
+  }, [markReady]);
+
+  if (loadStatus === "error") {
+    return null;
+  }
+
+  return (
+    <div className={getGalleryItemClassName(isReady)}>
+      <span className={getPhotoCardClassName(isReady, "life-photo-card-video")}>
+        <video
+          ref={videoRef}
+          className="life-media life-video-media"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={item.posterSrc}
+          preload="auto"
+          onCanPlay={markReady}
+          onLoadedData={markReady}
+          onPause={() => setIsPlaying(false)}
+          onPlay={() => setIsPlaying(true)}
+          onEnded={() => setIsPlaying(false)}
+          onError={markError}
+        >
+          <source src={item.src} />
+          <track
+            default
+            kind="captions"
+            label="No captions available"
+            src="/empty-captions.vtt"
+            srcLang="en"
+          />
+        </video>
+        {isReady ? (
+          <button
+            type="button"
+            className="life-video-control"
+            onClick={async () => {
+              const video = videoRef.current;
+
+              if (!video) {
+                return;
+              }
+
+              if (video.paused) {
+                try {
+                  await video.play();
+                } catch {
+                  setIsPlaying(false);
+                }
+
+                return;
+              }
+
+              video.pause();
+            }}
+          >
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        ) : null}
+        {isReady ? <LifePhotoMeta index={index} /> : null}
+      </span>
+    </div>
+  );
+}
+
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [settledMediaKeys, setSettledMediaKeys] = useState<Set<string>>(
+    () => new Set(),
+  );
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const visibleMedia = media.slice(0, visibleCount);
+  const hasPendingVisibleMedia = visibleMedia.some(
+    (item) => !settledMediaKeys.has(getMediaKey(item)),
+  );
+  const markMediaSettled = useCallback((mediaKey: string) => {
+    setSettledMediaKeys((currentKeys) => {
+      if (currentKeys.has(mediaKey)) {
+        return currentKeys;
+      }
+
+      const nextKeys = new Set(currentKeys);
+      nextKeys.add(mediaKey);
+      return nextKeys;
+    });
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -79,7 +230,11 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   }, []);
 
   useEffect(() => {
-    if (!sentinelRef.current || visibleCount >= media.length) {
+    if (
+      !sentinelRef.current ||
+      visibleCount >= media.length ||
+      hasPendingVisibleMedia
+    ) {
       return;
     }
 
@@ -101,9 +256,8 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
     observer.observe(sentinelRef.current);
 
     return () => observer.disconnect();
-  }, [media.length, visibleCount]);
+  }, [hasPendingVisibleMedia, media.length, visibleCount]);
 
-  const visibleMedia = media.slice(0, visibleCount);
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
   const mutedColor = "var(--color-muted)";
@@ -153,30 +307,27 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
           {media.length > 0 ? (
             <section className="animate-fade-in delay-400">
               <div className="life-gallery-columns">
-                {visibleMedia.map((item, index) => (
-                  <div
-                    key={`${item.kind}-${item.src}`}
-                    className="life-gallery-item group"
-                  >
-                    {item.kind === "video" ? (
-                      <LifeVideoCard index={index} item={item} />
-                    ) : (
-                      <span className="life-photo-card">
-                        <img
-                          src={item.src}
-                          alt={`Life frame ${index + 1}`}
-                          className="life-media"
-                          loading={index < 8 ? "eager" : "lazy"}
-                        />
-                        <span className="life-photo-meta">
-                          <span className="life-photo-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                        </span>
-                      </span>
-                    )}
-                  </div>
-                ))}
+                {visibleMedia.map((item, index) => {
+                  const mediaKey = getMediaKey(item);
+
+                  return item.kind === "video" ? (
+                    <LifeVideoCard
+                      index={index}
+                      item={item}
+                      key={mediaKey}
+                      mediaKey={mediaKey}
+                      onSettled={markMediaSettled}
+                    />
+                  ) : (
+                    <LifeImageCard
+                      index={index}
+                      item={item}
+                      key={mediaKey}
+                      mediaKey={mediaKey}
+                      onSettled={markMediaSettled}
+                    />
+                  );
+                })}
               </div>
 
               {visibleCount < media.length ? (
