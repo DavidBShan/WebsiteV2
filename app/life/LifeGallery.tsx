@@ -330,26 +330,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                 })}
               </div>
 
-              {visibleCount < media.length ? (
-                <div className="mt-6 flex justify-center">
-                  <button
-                    type="button"
-                    className="rounded-full border px-4 py-2 text-sm hover-link"
-                    style={{
-                      borderColor: "var(--color-border)",
-                      color: textColor,
-                    }}
-                    onClick={() =>
-                      setVisibleCount((current) =>
-                        Math.min(current + PAGE_SIZE, media.length),
-                      )
-                    }
-                  >
-                    Load more
-                  </button>
-                </div>
-              ) : null}
-
               <div ref={sentinelRef} aria-hidden="true" />
             </section>
           ) : (
