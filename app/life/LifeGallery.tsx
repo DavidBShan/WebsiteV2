@@ -13,6 +13,7 @@ const GALLERY_COLUMN_KEYS = [
   "life-gallery-column-secondary",
   "life-gallery-column-tertiary",
 ] as const;
+const DEFAULT_MEDIA_HEIGHT_RATIO = 0.75;
 
 type MediaLoadStatus = "loading" | "ready" | "error";
 
@@ -23,6 +24,7 @@ type LifeMediaColumnItem = {
 };
 
 type LifeMediaColumn = {
+  estimatedHeight: number;
   items: LifeMediaColumnItem[];
   key: string;
 };
@@ -31,6 +33,7 @@ type LifeMediaCardProps = {
   index: number;
   item: LifeMedia;
   mediaKey: string;
+  onMeasured: (mediaKey: string, heightRatio: number) => void;
   onSettled: (mediaKey: string) => void;
 };
 
@@ -50,21 +53,33 @@ function getLifeGalleryColumnCount() {
   return 1;
 }
 
-function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
+function getLifeMediaColumns(
+  items: LifeMedia[],
+  columnCount: number,
+  mediaHeightRatios: Map<string, number>,
+) {
   const columns: LifeMediaColumn[] = Array.from(
     { length: columnCount },
     (_, columnIndex) => ({
+      estimatedHeight: 0,
       items: [],
       key: GALLERY_COLUMN_KEYS[columnIndex] ?? `life-gallery-column-extra`,
     }),
   );
 
   items.forEach((item, index) => {
-    columns[index % columnCount]?.items.push({
+    const mediaKey = getMediaKey(item);
+    const shortestColumn = columns.reduce((shortest, column) =>
+      column.estimatedHeight < shortest.estimatedHeight ? column : shortest,
+    );
+
+    shortestColumn.items.push({
       index,
       item,
-      mediaKey: getMediaKey(item),
+      mediaKey,
     });
+    shortestColumn.estimatedHeight +=
+      mediaHeightRatios.get(mediaKey) ?? DEFAULT_MEDIA_HEIGHT_RATIO;
   });
 
   return columns;
@@ -119,6 +134,7 @@ function LifeImageCard({
   index,
   item,
   mediaKey,
+  onMeasured,
   onSettled,
 }: LifeMediaCardProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -126,9 +142,15 @@ function LifeImageCard({
   const isReady = loadStatus === "ready";
   const isEager = index < EAGER_MEDIA_COUNT;
   const markReady = useCallback(() => {
+    const image = imageRef.current;
+
+    if (image?.naturalWidth && image.naturalHeight) {
+      onMeasured(mediaKey, image.naturalHeight / image.naturalWidth);
+    }
+
     setLoadStatus("ready");
     onSettled(mediaKey);
-  }, [mediaKey, onSettled]);
+  }, [mediaKey, onMeasured, onSettled]);
   const markError = useCallback(() => {
     setLoadStatus("error");
     onSettled(mediaKey);
@@ -177,16 +199,25 @@ function LifeVideoCard({
   index,
   item,
   mediaKey,
+  onMeasured,
   onSettled,
 }: LifeMediaCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
+  const measureVideo = useCallback(() => {
+    const video = videoRef.current;
+
+    if (video?.videoWidth && video.videoHeight) {
+      onMeasured(mediaKey, video.videoHeight / video.videoWidth);
+    }
+  }, [mediaKey, onMeasured]);
   const markReady = useCallback(() => {
+    measureVideo();
     setLoadStatus("ready");
     onSettled(mediaKey);
-  }, [mediaKey, onSettled]);
+  }, [measureVideo, mediaKey, onSettled]);
   const markError = useCallback(() => {
     setLoadStatus("error");
     onSettled(mediaKey);
@@ -220,6 +251,7 @@ function LifeVideoCard({
           preload="auto"
           onCanPlay={markReady}
           onLoadedData={markReady}
+          onLoadedMetadata={measureVideo}
           onPause={() => setIsPlaying(false)}
           onPlay={() => setIsPlaying(true)}
           onEnded={() => setIsPlaying(false)}
@@ -271,6 +303,7 @@ function LifeMediaCard({
   index,
   item,
   mediaKey,
+  onMeasured,
   onSettled,
 }: LifeMediaCardProps) {
   return item.kind === "video" ? (
@@ -278,6 +311,7 @@ function LifeMediaCard({
       index={index}
       item={item}
       mediaKey={mediaKey}
+      onMeasured={onMeasured}
       onSettled={onSettled}
     />
   ) : (
@@ -285,6 +319,7 @@ function LifeMediaCard({
       index={index}
       item={item}
       mediaKey={mediaKey}
+      onMeasured={onMeasured}
       onSettled={onSettled}
     />
   );
@@ -295,12 +330,42 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [settledMediaKeys, setSettledMediaKeys] = useState<Set<string>>(
     () => new Set(),
   );
+  const [mediaHeightRatios, setMediaHeightRatios] = useState<
+    Map<string, number>
+  >(() => new Map());
   const columnCount = useLifeGalleryColumnCount();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const visibleMedia = media.slice(0, visibleCount);
-  const mediaColumns = getLifeMediaColumns(visibleMedia, columnCount);
+  const mediaColumns = getLifeMediaColumns(
+    visibleMedia,
+    columnCount,
+    mediaHeightRatios,
+  );
   const hasPendingVisibleMedia = visibleMedia.some(
     (item) => !settledMediaKeys.has(getMediaKey(item)),
+  );
+  const markMediaMeasured = useCallback(
+    (mediaKey: string, heightRatio: number) => {
+      if (!Number.isFinite(heightRatio) || heightRatio <= 0) {
+        return;
+      }
+
+      setMediaHeightRatios((currentRatios) => {
+        const currentRatio = currentRatios.get(mediaKey);
+
+        if (
+          typeof currentRatio === "number" &&
+          Math.abs(currentRatio - heightRatio) < 0.001
+        ) {
+          return currentRatios;
+        }
+
+        const nextRatios = new Map(currentRatios);
+        nextRatios.set(mediaKey, heightRatio);
+        return nextRatios;
+      });
+    },
+    [],
   );
   const markMediaSettled = useCallback((mediaKey: string) => {
     setSettledMediaKeys((currentKeys) => {
@@ -416,6 +481,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                         item={item}
                         key={mediaKey}
                         mediaKey={mediaKey}
+                        onMeasured={markMediaMeasured}
                         onSettled={markMediaSettled}
                       />
                     ))}
