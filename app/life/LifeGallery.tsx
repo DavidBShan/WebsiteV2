@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
@@ -41,6 +47,40 @@ function getMediaKey(item: LifeMedia) {
   return `${item.kind}-${item.src}`;
 }
 
+function getMediaHeightRatio(
+  item: LifeMedia,
+  mediaHeightRatios: Map<string, number>,
+) {
+  if (item.width && item.height) {
+    return item.height / item.width;
+  }
+
+  return mediaHeightRatios.get(getMediaKey(item)) ?? DEFAULT_MEDIA_HEIGHT_RATIO;
+}
+
+function getMediaSize(item: LifeMedia) {
+  if (!item.width || !item.height) {
+    return undefined;
+  }
+
+  return {
+    height: item.height,
+    width: item.width,
+  };
+}
+
+function getMediaAspectRatioStyle(item: LifeMedia): CSSProperties | undefined {
+  const size = getMediaSize(item);
+
+  if (!size) {
+    return undefined;
+  }
+
+  return {
+    aspectRatio: `${size.width} / ${size.height}`,
+  };
+}
+
 function getLifeGalleryColumnCount() {
   if (window.innerWidth >= LARGE_GALLERY_WIDTH) {
     return 3;
@@ -78,8 +118,10 @@ function getLifeMediaColumns(
       item,
       mediaKey,
     });
-    shortestColumn.estimatedHeight +=
-      mediaHeightRatios.get(mediaKey) ?? DEFAULT_MEDIA_HEIGHT_RATIO;
+    shortestColumn.estimatedHeight += getMediaHeightRatio(
+      item,
+      mediaHeightRatios,
+    );
   });
 
   return columns;
@@ -116,14 +158,25 @@ function LifePhotoMeta({ index }: { index: number }) {
   );
 }
 
-function getGalleryItemClassName(isReady: boolean) {
-  return `life-gallery-item group${isReady ? "" : " life-gallery-item-loading"}`;
+function getGalleryItemClassName(isReady: boolean, hasKnownSize: boolean) {
+  return [
+    "life-gallery-item",
+    "group",
+    !isReady && !hasKnownSize ? "life-gallery-item-loading" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
-function getPhotoCardClassName(isReady: boolean, extraClassName = "") {
+function getPhotoCardClassName(
+  isReady: boolean,
+  hasKnownSize: boolean,
+  extraClassName = "",
+) {
   return [
     "life-photo-card",
     extraClassName,
+    hasKnownSize ? "has-known-size" : "",
     isReady ? "is-loaded" : "is-loading",
   ]
     .filter(Boolean)
@@ -141,6 +194,8 @@ function LifeImageCard({
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
   const isEager = index < EAGER_MEDIA_COUNT;
+  const size = getMediaSize(item);
+  const mediaStyle = getMediaAspectRatioStyle(item);
   const markReady = useCallback(() => {
     const image = imageRef.current;
 
@@ -176,18 +231,23 @@ function LifeImageCard({
   }
 
   return (
-    <div className={getGalleryItemClassName(isReady)}>
-      <span className={getPhotoCardClassName(isReady)}>
+    <div className={getGalleryItemClassName(isReady, Boolean(size))}>
+      <span
+        className={getPhotoCardClassName(isReady, Boolean(size))}
+        style={mediaStyle}
+      >
         <img
           ref={imageRef}
           src={item.src}
           alt={`Life frame ${index + 1}`}
           className="life-media"
+          height={size?.height}
           loading="eager"
           decoding="async"
           fetchPriority={isEager ? "high" : "auto"}
           onLoad={markReady}
           onError={markError}
+          width={size?.width}
         />
         {isReady ? <LifePhotoMeta index={index} /> : null}
       </span>
@@ -206,6 +266,8 @@ function LifeVideoCard({
   const [isPlaying, setIsPlaying] = useState(false);
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
+  const size = getMediaSize(item);
+  const mediaStyle = getMediaAspectRatioStyle(item);
   const measureVideo = useCallback(() => {
     const video = videoRef.current;
 
@@ -238,12 +300,20 @@ function LifeVideoCard({
   }
 
   return (
-    <div className={getGalleryItemClassName(isReady)}>
-      <span className={getPhotoCardClassName(isReady, "life-photo-card-video")}>
+    <div className={getGalleryItemClassName(isReady, Boolean(size))}>
+      <span
+        className={getPhotoCardClassName(
+          isReady,
+          Boolean(size),
+          "life-photo-card-video",
+        )}
+        style={mediaStyle}
+      >
         <video
           ref={videoRef}
           className="life-media life-video-media"
           autoPlay
+          height={size?.height}
           loop
           muted
           playsInline
@@ -256,6 +326,7 @@ function LifeVideoCard({
           onPlay={() => setIsPlaying(true)}
           onEnded={() => setIsPlaying(false)}
           onError={markError}
+          width={size?.width}
         >
           <source src={item.src} />
           <track

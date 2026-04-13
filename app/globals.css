@@ -276,10 +276,13 @@ li {
 }
 
 .life-photo-card.is-loading {
-  height: 0;
   border-width: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.life-photo-card.is-loading:not(.has-known-size) {
+  height: 0;
 }
 
 .dark .life-photo-card.is-loading {

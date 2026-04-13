@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { getLifeMedia } from "./getLifeMedia";
 import LifeGallery from "./LifeGallery";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Life",
+};
 
 const shuffle = <T,>(items: T[]) => {
   const copy = [...items];
