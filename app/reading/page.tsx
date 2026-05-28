@@ -8,13 +8,15 @@ const THINK_DIFFERENT_AUDIO_URL =
 
 const currentlyReading = [
   { title: "Meditations", author: "Marcus Aurelius" },
-  { title: "In Buddha's Words", author: "Bhikkhu Bodhi" },
   { title: "The Republic", author: "Plato" },
-  { title: "The Hunchback of Notre Dame", author: "Victor Hugo" },
-  { title: "Elon Musk", author: "Walter Isaacson" },
+  { title: "The Infinity Machine", author: "Camila Russo" },
+  { title: "The Reason for God", author: "Timothy Keller" },
+  { title: "Gödel, Escher, Bach", author: "Douglas Hofstadter" },
 ];
 
 const finished = [
+  { title: "Elon Musk", author: "Walter Isaacson" },
+  { title: "The Art of War", author: "Sun Tzu" },
   { title: "Steve Jobs", author: "Walter Isaacson" },
   { title: "The Metamorphosis of Prime Intellect", author: "Roger Williams" },
   { title: "The Three-Body Problem", author: "Liu Cixin" },
