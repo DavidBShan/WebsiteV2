@@ -195,8 +195,9 @@ export default function Home() {
                       aria-label="Visit Freesolo website"
                     >
                       Freesolo
-                    </a>
-                    .
+                    </a>{" "}
+                    backed by Valor Equity Partners, Y Combinator, and Z
+                    Fellows.
                   </p>
                 </li>
                 <li
