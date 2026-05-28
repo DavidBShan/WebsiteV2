@@ -1,5 +1,5 @@
 import { list } from "@vercel/blob";
-import { imageSize } from "image-size";
+import { unstable_cache } from "next/cache";
 
 export type LifeMedia = {
   height?: number;
@@ -15,14 +15,8 @@ type MediaFile = {
   src: string;
 };
 
-type MediaDimensions = {
-  height: number;
-  width: number;
-};
-
 const LIFE_PREFIX = "life-images/";
-const IMAGE_DIMENSION_RANGE_BYTES = 1024 * 1024;
-const MEDIA_DIMENSION_CONCURRENCY = 8;
+const LIFE_MEDIA_REVALIDATE_SECONDS = 60 * 60;
 
 const imageExtensions = new Set([
   ".avif",
@@ -48,114 +42,6 @@ const stripBlobSuffix = (fileName: string) =>
 
 const toSlug = (fileName: string) =>
   stripExtension(fileName).toLowerCase().replaceAll(" ", "-");
-
-const mediaDimensionsCache = new Map<
-  string,
-  Promise<MediaDimensions | undefined>
->();
-
-const normalizeDimensions = ({
-  height,
-  orientation,
-  width,
-}: {
-  height?: number;
-  orientation?: number;
-  width?: number;
-}): MediaDimensions | undefined => {
-  if (!height || !width) {
-    return undefined;
-  }
-
-  if (orientation && orientation >= 5 && orientation <= 8) {
-    return {
-      height: width,
-      width: height,
-    };
-  }
-
-  return {
-    height,
-    width,
-  };
-};
-
-const fetchImageBytes = async (src: string, rangeBytes?: number) => {
-  const response = await fetch(src, {
-    cache: "force-cache",
-    headers:
-      typeof rangeBytes === "number"
-        ? {
-            Range: `bytes=0-${rangeBytes - 1}`,
-          }
-        : undefined,
-  });
-
-  if (!response.ok) {
-    return undefined;
-  }
-
-  return new Uint8Array(await response.arrayBuffer());
-};
-
-const readImageDimensions = async (src: string) => {
-  const partialBytes = await fetchImageBytes(src, IMAGE_DIMENSION_RANGE_BYTES);
-
-  if (partialBytes) {
-    try {
-      return normalizeDimensions(imageSize(partialBytes));
-    } catch {
-      // Some formats need more than the first range, so fall through.
-    }
-  }
-
-  const fullBytes = await fetchImageBytes(src);
-
-  if (!fullBytes) {
-    return undefined;
-  }
-
-  try {
-    return normalizeDimensions(imageSize(fullBytes));
-  } catch {
-    return undefined;
-  }
-};
-
-const getImageDimensions = (src: string) => {
-  const cachedDimensions = mediaDimensionsCache.get(src);
-
-  if (cachedDimensions) {
-    return cachedDimensions;
-  }
-
-  const dimensionsPromise = readImageDimensions(src);
-  mediaDimensionsCache.set(src, dimensionsPromise);
-  return dimensionsPromise;
-};
-
-const mapWithConcurrency = async <T, U>(
-  items: T[],
-  concurrency: number,
-  mapper: (item: T, index: number) => Promise<U>,
-) => {
-  const results: U[] = [];
-  let nextIndex = 0;
-
-  const workers = Array.from(
-    { length: Math.min(concurrency, items.length) },
-    async () => {
-      while (nextIndex < items.length) {
-        const itemIndex = nextIndex;
-        nextIndex += 1;
-        results[itemIndex] = await mapper(items[itemIndex], itemIndex);
-      }
-    },
-  );
-
-  await Promise.all(workers);
-  return results;
-};
 
 const shapeMedia = (files: MediaFile[]) => {
   const lookup = new Map(files.map((file) => [file.name.toLowerCase(), file]));
@@ -219,58 +105,48 @@ const shapeMedia = (files: MediaFile[]) => {
   return media;
 };
 
-const addMediaDimensions = (media: LifeMedia[]) =>
-  mapWithConcurrency(media, MEDIA_DIMENSION_CONCURRENCY, async (item) => {
-    const dimensionsSrc =
-      item.kind === "video" && item.posterSrc ? item.posterSrc : item.src;
-
-    if (item.kind === "video" && !item.posterSrc) {
-      return item;
+const getCachedLifeMedia = unstable_cache(
+  async (): Promise<LifeMedia[]> => {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return [];
     }
 
-    const dimensions = await getImageDimensions(dimensionsSrc);
+    const files: MediaFile[] = [];
+    let cursor: string | undefined;
 
-    if (!dimensions) {
-      return item;
-    }
+    do {
+      const response = await list({
+        cursor,
+        limit: 1000,
+        prefix: LIFE_PREFIX,
+      });
 
-    return {
-      ...item,
-      height: dimensions.height,
-      width: dimensions.width,
-    };
-  });
+      files.push(
+        ...response.blobs.map((blob) => ({
+          name: stripBlobSuffix(blob.pathname.slice(LIFE_PREFIX.length)),
+          src: blob.url,
+        })),
+      );
+
+      cursor = response.hasMore ? response.cursor : undefined;
+    } while (cursor);
+
+    return shapeMedia(
+      files
+        .filter((file) => file.name.length > 0)
+        .sort((left, right) => compareNames(left.name, right.name)),
+    );
+  },
+  ["life-media"],
+  {
+    revalidate: LIFE_MEDIA_REVALIDATE_SECONDS,
+  },
+);
 
 export async function getLifeMedia(): Promise<LifeMedia[]> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return [];
   }
 
-  const files: MediaFile[] = [];
-  let cursor: string | undefined;
-
-  do {
-    const response = await list({
-      cursor,
-      limit: 1000,
-      prefix: LIFE_PREFIX,
-    });
-
-    files.push(
-      ...response.blobs.map((blob) => ({
-        name: stripBlobSuffix(blob.pathname.slice(LIFE_PREFIX.length)),
-        src: blob.url,
-      })),
-    );
-
-    cursor = response.hasMore ? response.cursor : undefined;
-  } while (cursor);
-
-  return addMediaDimensions(
-    shapeMedia(
-      files
-        .filter((file) => file.name.length > 0)
-        .sort((left, right) => compareNames(left.name, right.name)),
-    ),
-  );
+  return getCachedLifeMedia();
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
   type CSSProperties,
@@ -11,9 +12,12 @@ import {
 import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
-const EAGER_MEDIA_COUNT = 8;
+const EAGER_MEDIA_COUNT = 3;
 const MEDIUM_GALLERY_WIDTH = 768;
 const LARGE_GALLERY_WIDTH = 1280;
+const LIFE_IMAGE_SIZES =
+  "(min-width: 1280px) 420px, (min-width: 768px) 50vw, calc(100vw - 48px)";
+const VIDEO_AUTOPLAY_ROOT_MARGIN = "240px 0px";
 const GALLERY_COLUMN_KEYS = [
   "life-gallery-column-primary",
   "life-gallery-column-secondary",
@@ -36,11 +40,11 @@ type LifeMediaColumn = {
 };
 
 type LifeMediaCardProps = {
+  heightRatio: number;
   index: number;
   item: LifeMedia;
   mediaKey: string;
   onMeasured: (mediaKey: string, heightRatio: number) => void;
-  onSettled: (mediaKey: string) => void;
 };
 
 function getMediaKey(item: LifeMedia) {
@@ -58,6 +62,14 @@ function getMediaHeightRatio(
   return mediaHeightRatios.get(getMediaKey(item)) ?? DEFAULT_MEDIA_HEIGHT_RATIO;
 }
 
+function getInitialMediaHeightRatio(item: LifeMedia) {
+  if (item.width && item.height) {
+    return item.height / item.width;
+  }
+
+  return DEFAULT_MEDIA_HEIGHT_RATIO;
+}
+
 function getMediaSize(item: LifeMedia) {
   if (!item.width || !item.height) {
     return undefined;
@@ -69,16 +81,14 @@ function getMediaSize(item: LifeMedia) {
   };
 }
 
-function getMediaAspectRatioStyle(item: LifeMedia): CSSProperties | undefined {
-  const size = getMediaSize(item);
-
-  if (!size) {
-    return undefined;
-  }
-
+function getMediaAspectRatioStyle(heightRatio: number): CSSProperties {
   return {
-    aspectRatio: `${size.width} / ${size.height}`,
+    aspectRatio: `1 / ${heightRatio}`,
   };
+}
+
+function isUnoptimizedImage(item: LifeMedia) {
+  return item.name.toLowerCase().endsWith(".gif");
 }
 
 function getLifeGalleryColumnCount() {
@@ -93,11 +103,7 @@ function getLifeGalleryColumnCount() {
   return 1;
 }
 
-function getLifeMediaColumns(
-  items: LifeMedia[],
-  columnCount: number,
-  mediaHeightRatios: Map<string, number>,
-) {
+function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
   const columns: LifeMediaColumn[] = Array.from(
     { length: columnCount },
     (_, columnIndex) => ({
@@ -118,10 +124,7 @@ function getLifeMediaColumns(
       item,
       mediaKey,
     });
-    shortestColumn.estimatedHeight += getMediaHeightRatio(
-      item,
-      mediaHeightRatios,
-    );
+    shortestColumn.estimatedHeight += getInitialMediaHeightRatio(item);
   });
 
   return columns;
@@ -158,25 +161,14 @@ function LifePhotoMeta({ index }: { index: number }) {
   );
 }
 
-function getGalleryItemClassName(isReady: boolean, hasKnownSize: boolean) {
-  return [
-    "life-gallery-item",
-    "group",
-    !isReady && !hasKnownSize ? "life-gallery-item-loading" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+function getGalleryItemClassName() {
+  return "life-gallery-item group";
 }
 
-function getPhotoCardClassName(
-  isReady: boolean,
-  hasKnownSize: boolean,
-  extraClassName = "",
-) {
+function getPhotoCardClassName(isReady: boolean, extraClassName = "") {
   return [
     "life-photo-card",
     extraClassName,
-    hasKnownSize ? "has-known-size" : "",
     isReady ? "is-loaded" : "is-loading",
   ]
     .filter(Boolean)
@@ -184,32 +176,30 @@ function getPhotoCardClassName(
 }
 
 function LifeImageCard({
+  heightRatio,
   index,
   item,
   mediaKey,
   onMeasured,
-  onSettled,
 }: LifeMediaCardProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
   const isEager = index < EAGER_MEDIA_COUNT;
-  const size = getMediaSize(item);
-  const mediaStyle = getMediaAspectRatioStyle(item);
-  const markReady = useCallback(() => {
-    const image = imageRef.current;
+  const mediaStyle = getMediaAspectRatioStyle(heightRatio);
+  const markReady = useCallback(
+    (image?: HTMLImageElement | null) => {
+      if (image?.naturalWidth && image.naturalHeight) {
+        onMeasured(mediaKey, image.naturalHeight / image.naturalWidth);
+      }
 
-    if (image?.naturalWidth && image.naturalHeight) {
-      onMeasured(mediaKey, image.naturalHeight / image.naturalWidth);
-    }
-
-    setLoadStatus("ready");
-    onSettled(mediaKey);
-  }, [mediaKey, onMeasured, onSettled]);
+      setLoadStatus("ready");
+    },
+    [mediaKey, onMeasured],
+  );
   const markError = useCallback(() => {
     setLoadStatus("error");
-    onSettled(mediaKey);
-  }, [mediaKey, onSettled]);
+  }, []);
 
   useEffect(() => {
     const image = imageRef.current;
@@ -219,7 +209,7 @@ function LifeImageCard({
     }
 
     if (image.naturalWidth > 0) {
-      markReady();
+      markReady(image);
       return;
     }
 
@@ -231,23 +221,21 @@ function LifeImageCard({
   }
 
   return (
-    <div className={getGalleryItemClassName(isReady, Boolean(size))}>
-      <span
-        className={getPhotoCardClassName(isReady, Boolean(size))}
-        style={mediaStyle}
-      >
-        <img
+    <div className={getGalleryItemClassName()}>
+      <span className={getPhotoCardClassName(isReady)} style={mediaStyle}>
+        <Image
           ref={imageRef}
           src={item.src}
           alt={`Life frame ${index + 1}`}
           className="life-media"
-          height={size?.height}
-          loading="eager"
+          fill
+          sizes={LIFE_IMAGE_SIZES}
+          loading={isEager ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={isEager ? "high" : "auto"}
-          onLoad={markReady}
+          onLoad={(event) => markReady(event.currentTarget)}
           onError={markError}
-          width={size?.width}
+          unoptimized={isUnoptimizedImage(item)}
         />
         {isReady ? <LifePhotoMeta index={index} /> : null}
       </span>
@@ -256,18 +244,21 @@ function LifeImageCard({
 }
 
 function LifeVideoCard({
+  heightRatio,
   index,
   item,
   mediaKey,
   onMeasured,
-  onSettled,
 }: LifeMediaCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const userPausedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
+  const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>(() =>
+    item.posterSrc ? "ready" : "loading",
+  );
   const isReady = loadStatus === "ready";
   const size = getMediaSize(item);
-  const mediaStyle = getMediaAspectRatioStyle(item);
+  const mediaStyle = getMediaAspectRatioStyle(heightRatio);
   const measureVideo = useCallback(() => {
     const video = videoRef.current;
 
@@ -278,50 +269,85 @@ function LifeVideoCard({
   const markReady = useCallback(() => {
     measureVideo();
     setLoadStatus("ready");
-    onSettled(mediaKey);
-  }, [measureVideo, mediaKey, onSettled]);
+  }, [measureVideo]);
   const markError = useCallback(() => {
     setLoadStatus("error");
-    onSettled(mediaKey);
-  }, [mediaKey, onSettled]);
+  }, []);
+
+  useEffect(() => {
+    if (item.posterSrc) {
+      markReady();
+    }
+  }, [item.posterSrc, markReady]);
 
   useEffect(() => {
     const video = videoRef.current;
 
-    if (!video || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+    if (!video || video.readyState < HTMLMediaElement.HAVE_METADATA) {
       return;
     }
 
     markReady();
   }, [markReady]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        if (!entry) {
+          return;
+        }
+
+        if (entry.isIntersecting && !userPausedRef.current) {
+          void video.play().catch(() => setIsPlaying(false));
+          return;
+        }
+
+        video.pause();
+      },
+      {
+        rootMargin: VIDEO_AUTOPLAY_ROOT_MARGIN,
+        threshold: 0.2,
+      },
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      video.pause();
+    };
+  }, []);
+
   if (loadStatus === "error") {
     return null;
   }
 
   return (
-    <div className={getGalleryItemClassName(isReady, Boolean(size))}>
+    <div className={getGalleryItemClassName()}>
       <span
-        className={getPhotoCardClassName(
-          isReady,
-          Boolean(size),
-          "life-photo-card-video",
-        )}
+        className={getPhotoCardClassName(isReady, "life-photo-card-video")}
         style={mediaStyle}
       >
         <video
           ref={videoRef}
           className="life-media life-video-media"
-          autoPlay
           height={size?.height}
           loop
           muted
           playsInline
           poster={item.posterSrc}
-          preload="auto"
+          preload="metadata"
           onCanPlay={markReady}
           onLoadedData={markReady}
-          onLoadedMetadata={measureVideo}
+          onLoadedMetadata={markReady}
           onPause={() => setIsPlaying(false)}
           onPlay={() => setIsPlaying(true)}
           onEnded={() => setIsPlaying(false)}
@@ -341,6 +367,7 @@ function LifeVideoCard({
           <button
             type="button"
             className="life-video-control"
+            aria-label={isPlaying ? "Pause video" : "Play video"}
             onClick={async () => {
               const video = videoRef.current;
 
@@ -349,6 +376,8 @@ function LifeVideoCard({
               }
 
               if (video.paused) {
+                userPausedRef.current = false;
+
                 try {
                   await video.play();
                 } catch {
@@ -358,6 +387,7 @@ function LifeVideoCard({
                 return;
               }
 
+              userPausedRef.current = true;
               video.pause();
             }}
           >
@@ -371,50 +401,40 @@ function LifeVideoCard({
 }
 
 function LifeMediaCard({
+  heightRatio,
   index,
   item,
   mediaKey,
   onMeasured,
-  onSettled,
 }: LifeMediaCardProps) {
   return item.kind === "video" ? (
     <LifeVideoCard
+      heightRatio={heightRatio}
       index={index}
       item={item}
       mediaKey={mediaKey}
       onMeasured={onMeasured}
-      onSettled={onSettled}
     />
   ) : (
     <LifeImageCard
+      heightRatio={heightRatio}
       index={index}
       item={item}
       mediaKey={mediaKey}
       onMeasured={onMeasured}
-      onSettled={onSettled}
     />
   );
 }
 
 export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [settledMediaKeys, setSettledMediaKeys] = useState<Set<string>>(
-    () => new Set(),
-  );
   const [mediaHeightRatios, setMediaHeightRatios] = useState<
     Map<string, number>
   >(() => new Map());
   const columnCount = useLifeGalleryColumnCount();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const visibleMedia = media.slice(0, visibleCount);
-  const mediaColumns = getLifeMediaColumns(
-    visibleMedia,
-    columnCount,
-    mediaHeightRatios,
-  );
-  const hasPendingVisibleMedia = visibleMedia.some(
-    (item) => !settledMediaKeys.has(getMediaKey(item)),
-  );
+  const mediaColumns = getLifeMediaColumns(visibleMedia, columnCount);
   const markMediaMeasured = useCallback(
     (mediaKey: string, heightRatio: number) => {
       if (!Number.isFinite(heightRatio) || heightRatio <= 0) {
@@ -438,17 +458,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
     },
     [],
   );
-  const markMediaSettled = useCallback((mediaKey: string) => {
-    setSettledMediaKeys((currentKeys) => {
-      if (currentKeys.has(mediaKey)) {
-        return currentKeys;
-      }
-
-      const nextKeys = new Set(currentKeys);
-      nextKeys.add(mediaKey);
-      return nextKeys;
-    });
-  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -462,11 +471,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   }, []);
 
   useEffect(() => {
-    if (
-      !sentinelRef.current ||
-      visibleCount >= media.length ||
-      hasPendingVisibleMedia
-    ) {
+    if (!sentinelRef.current || visibleCount >= media.length) {
       return;
     }
 
@@ -488,7 +493,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
     observer.observe(sentinelRef.current);
 
     return () => observer.disconnect();
-  }, [hasPendingVisibleMedia, media.length, visibleCount]);
+  }, [media.length, visibleCount]);
 
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
@@ -548,12 +553,15 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                   <div className="life-gallery-column" key={column.key}>
                     {column.items.map(({ index, item, mediaKey }) => (
                       <LifeMediaCard
+                        heightRatio={getMediaHeightRatio(
+                          item,
+                          mediaHeightRatios,
+                        )}
                         index={index}
                         item={item}
                         key={mediaKey}
                         mediaKey={mediaKey}
                         onMeasured={markMediaMeasured}
-                        onSettled={markMediaSettled}
                       />
                     ))}
                   </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getLifeMedia } from "./getLifeMedia";
 import LifeGallery from "./LifeGallery";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Life",
