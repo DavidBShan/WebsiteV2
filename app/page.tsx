@@ -386,7 +386,7 @@ export default function Home() {
                   >
                     03
                   </div>
-                  <p>VAR is still checking</p>
+                  <p>Football</p>
                 </li>
               </ul>
             </div>
