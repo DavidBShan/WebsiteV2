@@ -354,7 +354,7 @@ export default function Home() {
                   >
                     01
                   </div>
-                  <p>Formula 1, rooting for Charles Leclerc</p>
+                  <p>Formula 1 and football</p>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1300"
