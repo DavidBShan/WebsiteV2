@@ -331,7 +331,7 @@ export default function Home() {
                   color: headingColor,
                 }}
               >
-                Obsessions
+                Outside the Terminal
               </h2>
               <ul
                 style={{
@@ -386,7 +386,7 @@ export default function Home() {
                   >
                     03
                   </div>
-                  <p>The beautiful game</p>
+                  <p>VAR is still checking</p>
                 </li>
               </ul>
             </div>
