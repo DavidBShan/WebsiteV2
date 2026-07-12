@@ -354,7 +354,7 @@ export default function Home() {
                   >
                     16
                   </div>
-                  <p>Formula 1 and football</p>
+                  <p>Formula 1</p>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1300"
