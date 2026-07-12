@@ -122,32 +122,6 @@ export default function Home() {
               </span>
               San Francisco, CA
             </div>
-            <p
-              className="leading-relaxed text-base sm:text-lg"
-              style={{ color: textColor }}
-            >
-              CTO @ Linkd Inc. (dba{" "}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="href-text"
-                href="https://clado.ai"
-                aria-label="Visit Clado website"
-              >
-                Clado
-              </a>{" "}
-              &{" "}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="href-text"
-                href="https://freesolo.co"
-                aria-label="Visit Freesolo website"
-              >
-                Freesolo
-              </a>
-              ). Excited about post-training, infrastructure, deep tech.
-            </p>
           </section>
 
           <section
@@ -345,6 +319,74 @@ export default function Home() {
                       <li>CSIA Level 2 Ski Instructor</li>
                     </ul>
                   </div>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2
+                className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
+                style={{
+                  marginBottom: "0.75rem",
+                  color: headingColor,
+                }}
+              >
+                Favorites
+              </h2>
+              <ul
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <li
+                  className="text-sm leading-loose animate-fade-in delay-1100"
+                  style={{ color: textColor }}
+                >
+                  <div
+                    className="text-sm italic font-mono"
+                    style={{
+                      marginBottom: "0.25rem",
+                      color: mutedStrongColor,
+                    }}
+                    role="presentation"
+                  >
+                    01
+                  </div>
+                  <p>Formula 1, rooting for Charles Leclerc</p>
+                </li>
+                <li
+                  className="text-sm leading-loose animate-fade-in delay-1300"
+                  style={{ color: textColor }}
+                >
+                  <div
+                    className="text-sm italic font-mono"
+                    style={{
+                      marginBottom: "0.25rem",
+                      color: mutedStrongColor,
+                    }}
+                    role="presentation"
+                  >
+                    02
+                  </div>
+                  <p>Movies, sitcoms, and reading</p>
+                </li>
+                <li
+                  className="text-sm leading-loose animate-fade-in delay-1500"
+                  style={{ color: textColor }}
+                >
+                  <div
+                    className="text-sm italic font-mono"
+                    style={{
+                      marginBottom: "0.25rem",
+                      color: mutedStrongColor,
+                    }}
+                    role="presentation"
+                  >
+                    03
+                  </div>
+                  <p>60s and 70s music</p>
                 </li>
               </ul>
             </div>
