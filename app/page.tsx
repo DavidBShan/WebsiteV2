@@ -331,7 +331,7 @@ export default function Home() {
                   color: headingColor,
                 }}
               >
-                Favorites
+                Obsessions
               </h2>
               <ul
                 style={{
@@ -370,7 +370,7 @@ export default function Home() {
                   >
                     02
                   </div>
-                  <p>Movies, sitcoms, and reading</p>
+                  <p>Movies, sitcoms, reading, and 60s-70s music</p>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1500"
@@ -386,7 +386,7 @@ export default function Home() {
                   >
                     03
                   </div>
-                  <p>60s and 70s music</p>
+                  <p>The beautiful game</p>
                 </li>
               </ul>
             </div>
