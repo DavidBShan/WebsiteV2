@@ -9,15 +9,15 @@ const THINK_DIFFERENT_AUDIO_URL =
 const currentlyReading = [
   { title: "Meditations", author: "Marcus Aurelius" },
   { title: "The Republic", author: "Plato" },
-  { title: "The Infinity Machine", author: "Camila Russo" },
+  { title: "Chip War", author: "Chris Miller" },
   { title: "The Reason for God", author: "Timothy Keller" },
   { title: "Gödel, Escher, Bach", author: "Douglas Hofstadter" },
 ];
 
 const finished = [
-  { title: "Elon Musk", author: "Walter Isaacson" },
   { title: "The Art of War", author: "Sun Tzu" },
   { title: "Steve Jobs", author: "Walter Isaacson" },
+  { title: "Elon Musk", author: "Walter Isaacson" },
   { title: "The Metamorphosis of Prime Intellect", author: "Roger Williams" },
   { title: "The Three-Body Problem", author: "Liu Cixin" },
   {
@@ -62,6 +62,7 @@ const finished = [
   { title: "The Perks of Being a Wallflower", author: "Stephen Chbosky" },
   { title: "The Book of Five Rings", author: "Miyamoto Musashi" },
   { title: "The Hard Thing About Hard Things", author: "Ben Horowitz" },
+  { title: "The Infinity Machine", author: "Camila Russo" },
 ];
 
 function SteveJobsAudioTitle({ title }: { title: string }) {
