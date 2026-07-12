@@ -309,68 +309,63 @@ export default function Home() {
                   >
                     02
                   </div>
-                  <div>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>Team Ontario Table Tennis</li>
-                      <li>
-                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront
-                        Marathon Finisher
-                      </li>
-                      <li>CSIA Level 2 Ski Instructor</li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h2
-                className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
-                style={{
-                  marginBottom: "0.75rem",
-                  color: headingColor,
-                }}
-              >
-                Outside the Terminal
-              </h2>
-              <ul
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                }}
-              >
-                <li
-                  className="text-sm leading-loose animate-fade-in delay-1100"
-                  style={{ color: textColor }}
-                >
-                  <div
-                    className="text-sm italic font-mono"
+                  <h3
+                    className="text-base font-semibold"
                     style={{
-                      marginBottom: "0.25rem",
-                      color: mutedStrongColor,
+                      marginBottom: "0.5rem",
+                      color: headingColor,
                     }}
-                    role="presentation"
                   >
-                    16
-                  </div>
-                  <p>Formula 1</p>
-                </li>
-                <li
-                  className="text-sm leading-loose animate-fade-in delay-1300"
-                  style={{ color: textColor }}
-                >
-                  <div
-                    className="text-sm italic font-mono"
+                    Outside the Terminal
+                  </h3>
+                  <ul
                     style={{
-                      marginBottom: "0.25rem",
-                      color: mutedStrongColor,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.75rem",
+                      marginLeft: "1rem",
                     }}
-                    role="presentation"
                   >
-                    02
-                  </div>
-                  <p>Movies, sitcoms, reading, and 60s-70s music</p>
+                    <li>
+                      <div
+                        className="text-sm italic font-mono"
+                        style={{
+                          marginBottom: "0.25rem",
+                          color: mutedStrongColor,
+                        }}
+                        role="presentation"
+                      >
+                        16
+                      </div>
+                      <p>Formula 1</p>
+                    </li>
+                    <li>
+                      <div
+                        className="text-sm italic font-mono"
+                        style={{
+                          marginBottom: "0.25rem",
+                          color: mutedStrongColor,
+                        }}
+                        role="presentation"
+                      >
+                        02
+                      </div>
+                      <p>Movies, sitcoms, reading, and 60s-70s music</p>
+                    </li>
+                    <li>
+                      <div
+                        className="text-sm italic font-mono"
+                        style={{
+                          marginBottom: "0.25rem",
+                          color: mutedStrongColor,
+                        }}
+                        role="presentation"
+                      >
+                        03
+                      </div>
+                      <p>Football</p>
+                    </li>
+                  </ul>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1500"
@@ -386,7 +381,16 @@ export default function Home() {
                   >
                     03
                   </div>
-                  <p>Football</p>
+                  <div>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>Team Ontario Table Tennis</li>
+                      <li>
+                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront
+                        Marathon Finisher
+                      </li>
+                      <li>CSIA Level 2 Ski Instructor</li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </div>
