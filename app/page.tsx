@@ -309,63 +309,14 @@ export default function Home() {
                   >
                     02
                   </div>
-                  <h3
-                    className="text-base font-semibold"
-                    style={{
-                      marginBottom: "0.5rem",
-                      color: headingColor,
-                    }}
-                  >
-                    Outside the Terminal
-                  </h3>
-                  <ul
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.75rem",
-                      marginLeft: "1rem",
-                    }}
-                  >
-                    <li>
-                      <div
-                        className="text-sm italic font-mono"
-                        style={{
-                          marginBottom: "0.25rem",
-                          color: mutedStrongColor,
-                        }}
-                        role="presentation"
-                      >
-                        16
-                      </div>
-                      <p>Formula 1</p>
-                    </li>
-                    <li>
-                      <div
-                        className="text-sm italic font-mono"
-                        style={{
-                          marginBottom: "0.25rem",
-                          color: mutedStrongColor,
-                        }}
-                        role="presentation"
-                      >
-                        02
-                      </div>
-                      <p>Movies, sitcoms, reading, and 60s-70s music</p>
-                    </li>
-                    <li>
-                      <div
-                        className="text-sm italic font-mono"
-                        style={{
-                          marginBottom: "0.25rem",
-                          color: mutedStrongColor,
-                        }}
-                        role="presentation"
-                      >
-                        03
-                      </div>
-                      <p>Football</p>
-                    </li>
-                  </ul>
+                  <div>
+                    <p className="mb-4">Outside the terminal:</p>
+                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                      <li>xvi. Formula 1</li>
+                      <li>ii. Movies, sitcoms, reading, and 60s-70s music</li>
+                      <li>iii. Football</li>
+                    </ul>
+                  </div>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1500"
@@ -382,13 +333,13 @@ export default function Home() {
                     03
                   </div>
                   <div>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>Team Ontario Table Tennis</li>
+                    <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                      <li>i. Team Ontario Table Tennis</li>
                       <li>
-                        Haliburton 26K, Haliburton 50K, and Toronto Waterfront
-                        Marathon Finisher
+                        ii. Haliburton 26K, Haliburton 50K, and Toronto
+                        Waterfront Marathon Finisher
                       </li>
-                      <li>CSIA Level 2 Ski Instructor</li>
+                      <li>iii. CSIA Level 2 Ski Instructor</li>
                     </ul>
                   </div>
                 </li>
