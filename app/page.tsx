@@ -312,8 +312,8 @@ export default function Home() {
                   <div>
                     <p className="mb-4">Outside the terminal:</p>
                     <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
+                      <li>i. Movies, sitcoms, reading, and 60s-70s music</li>
                       <li>xvi. Formula 1</li>
-                      <li>ii. Movies, sitcoms, reading, and 60s-70s music</li>
                       <li>iii. Football</li>
                     </ul>
                   </div>
