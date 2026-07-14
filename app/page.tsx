@@ -97,10 +97,7 @@ export default function Home() {
             </div>
           </div>
 
-          <section
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
-            style={{ marginTop: "1.5rem" }}
-          >
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div>
               <h2
                 className="text-lg sm:text-xl font-bold animate-fade-in delay-700"
