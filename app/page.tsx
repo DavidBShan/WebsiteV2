@@ -36,9 +36,7 @@ export default function Home() {
 
   const heroColor = "var(--color-hero)";
   const headingColor = "var(--color-heading)";
-  const subheadingColor = "var(--color-subheading)";
   const textColor = "var(--color-text)";
-  const mutedColor = "var(--color-muted)";
   const mutedStrongColor = "var(--color-muted-strong)";
   const borderColor = "var(--color-border)";
 
@@ -98,31 +96,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <section
-            className="animate-fade-in delay-400"
-            style={{ marginTop: "-1.5rem", marginBottom: "-1.25rem" }}
-          >
-            <div
-              className="flex items-center gap-2 text-xs font-mono"
-              style={{
-                color: mutedColor,
-                marginBottom: "0.5rem",
-              }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span
-                  className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                  style={{ backgroundColor: mutedStrongColor }}
-                ></span>
-                <span
-                  className="relative inline-flex rounded-full h-2 w-2"
-                  style={{ backgroundColor: subheadingColor }}
-                ></span>
-              </span>
-              San Francisco, CA
-            </div>
-          </section>
 
           <section
             className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"

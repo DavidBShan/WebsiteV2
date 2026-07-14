@@ -585,23 +585,32 @@ const CelestialBody = React.memo(function CelestialBody({
   const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
-    if (groupRef.current) {
-      gsap.to(groupRef.current.scale, {
-        x: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
-        y: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
-        z: isTransitioning ? 0.8 : isHovered ? 1.1 : 1,
-        duration: 0.3,
-        ease: "power2.inOut",
-      });
+    const group = groupRef.current;
+    if (!group) return;
 
-      if (isTransitioning) {
-        gsap.to(groupRef.current.rotation, {
-          y: groupRef.current.rotation.y + Math.PI * 2,
-          duration: 0.6,
+    const targetScale = isTransitioning ? 0.04 : isHovered ? 1.1 : 1;
+    const scaleTween = gsap.to(group.scale, {
+      x: targetScale,
+      y: targetScale,
+      z: targetScale,
+      duration: isTransitioning ? 0.28 : 0.5,
+      ease: isTransitioning ? "power3.in" : "back.out(1.7)",
+      overwrite: "auto",
+    });
+    const rotationTween = isTransitioning
+      ? gsap.to(group.rotation, {
+          y: group.rotation.y + Math.PI,
+          z: group.rotation.z + Math.PI * 0.75,
+          duration: 0.62,
           ease: "power2.inOut",
-        });
-      }
-    }
+          overwrite: "auto",
+        })
+      : null;
+
+    return () => {
+      scaleTween.kill();
+      rotationTween?.kill();
+    };
   }, [isTransitioning, isHovered]);
 
   const frameCountRef = useRef(0);
@@ -657,11 +666,36 @@ const Scene = React.memo(function Scene({
   const { gl, scene } = useThree();
 
   useEffect(() => {
-    const targetColor = isDark ? "#050510" : "#BFDAF7";
-    scene.background = new THREE.Color(targetColor);
-    if (gl.domElement.parentElement) {
-      gl.domElement.parentElement.style.backgroundColor = targetColor;
-    }
+    const targetColor = new THREE.Color(isDark ? "#050510" : "#BFDAF7");
+    const backgroundColor =
+      scene.background instanceof THREE.Color
+        ? scene.background
+        : targetColor.clone();
+    const canvasContainer = gl.domElement.parentElement;
+
+    scene.background = backgroundColor;
+
+    const backgroundTween = gsap.to(backgroundColor, {
+      r: targetColor.r,
+      g: targetColor.g,
+      b: targetColor.b,
+      duration: 0.55,
+      ease: "power2.inOut",
+      overwrite: "auto",
+    });
+    const containerTween = canvasContainer
+      ? gsap.to(canvasContainer, {
+          backgroundColor: `#${targetColor.getHexString()}`,
+          duration: 0.55,
+          ease: "power2.inOut",
+          overwrite: "auto",
+        })
+      : null;
+
+    return () => {
+      backgroundTween.kill();
+      containerTween?.kill();
+    };
   }, [isDark, gl, scene]);
 
   return (
@@ -701,6 +735,7 @@ export default function ThemeToggle3D({
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLButtonElement>(null);
+  const transitionTimersRef = useRef<number[]>([]);
   const initialBgColor = getInitialBgColor();
 
   useEffect(() => {
@@ -709,12 +744,25 @@ export default function ThemeToggle3D({
       ? navigator.hardwareConcurrency <= 2
       : false;
     if (isMobile || isLowEnd) setShowCanvas(false);
+
+    return () => {
+      transitionTimersRef.current.forEach((timer) => {
+        window.clearTimeout(timer);
+      });
+    };
   }, []);
 
   const handleClick = () => {
+    if (isTransitioning) return;
+
     setIsTransitioning(true);
-    toggleTheme();
-    setTimeout(() => setIsTransitioning(false), 600);
+    transitionTimersRef.current = [
+      window.setTimeout(toggleTheme, 280),
+      window.setTimeout(() => {
+        setIsTransitioning(false);
+        transitionTimersRef.current = [];
+      }, 680),
+    ];
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -740,16 +788,23 @@ export default function ThemeToggle3D({
           setMousePosition({ x: 0, y: 0 });
         }}
         onMouseMove={handleMouseMove}
-        className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:scale-110 transform-origin-center"
+        className="relative w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:scale-110 transform-origin-center focus-visible:outline-2 focus-visible:outline-offset-4"
         style={{
           backgroundColor: initialBgColor,
-          boxShadow:
-            "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-          transform: isHovered
-            ? `perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg) scale(1.1)`
-            : "scale(1)",
+          boxShadow: isDarkMode
+            ? "0 0 0 1px rgba(148, 163, 255, 0.2), 0 12px 32px rgba(38, 45, 100, 0.36)"
+            : "0 0 0 1px rgba(255, 184, 0, 0.2), 0 12px 32px rgba(255, 149, 0, 0.24)",
+          transform: isTransitioning
+            ? "perspective(1000px) scale(0.96)"
+            : isHovered
+              ? `perspective(1000px) rotateX(${mousePosition.y * 8}deg) rotateY(${mousePosition.x * 8}deg) scale(1.08)`
+              : "scale(1)",
+          transition:
+            "transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 550ms ease",
         }}
-        aria-label="Toggle theme"
+        aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+        aria-pressed={isDarkMode}
+        aria-busy={isTransitioning}
       >
         {/* Animated border gradient */}
         <div
