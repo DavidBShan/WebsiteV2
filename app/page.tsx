@@ -139,9 +139,8 @@ export default function Home() {
                       aria-label="Visit Freesolo website"
                     >
                       Freesolo
-                    </a>{" "}
-                    backed by Valor Equity Partners, Y Combinator, and Z
-                    Fellows.
+                    </a>
+                    .
                   </p>
                 </li>
                 <li
@@ -159,8 +158,8 @@ export default function Home() {
                     02
                   </div>
                   <p className="break-words">
-                    Building state of the art people search engine and indexed
-                    over 20TB of data at{" "}
+                    Scaled state of the art people search engine to 300k ARR and
+                    indexed over 20TB of data at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -280,11 +279,12 @@ export default function Home() {
                     02
                   </div>
                   <div>
-                    <p className="mb-4">Outside the terminal:</p>
+                    <p className="mb-4">Also love:</p>
                     <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
-                      <li>i. Movies, sitcoms, reading, and 60s-70s music</li>
-                      <li>xvi. Formula 1</li>
-                      <li>iii. Football</li>
+                      <li>i. Movies, sitcoms, and 60s-70s vinyls</li>
+                      <li>ii. Formula 1 and cars</li>
+                      <li>iii. Audible and my Kindle</li>
+                      <li>iv. Adventuring and travelling</li>
                     </ul>
                   </div>
                 </li>
