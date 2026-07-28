@@ -159,8 +159,8 @@ export default function Home() {
                     02
                   </div>
                   <p className="break-words">
-                    Building state of the art people search engine and indexed
-                    over 20TB of data at{" "}
+                    Scaled state of the art people search engine to 300k ARR and
+                    indexed over 20TB of data at{" "}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
