@@ -284,6 +284,7 @@ export default function Home() {
                       <li>i. Movies, sitcoms, and 60s-70s vinyls</li>
                       <li>ii. Formula 1 and cars</li>
                       <li>iii. Audible and my Kindle</li>
+                      <li>iv. Adventuring and travelling</li>
                     </ul>
                   </div>
                 </li>
