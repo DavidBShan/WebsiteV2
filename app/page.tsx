@@ -139,9 +139,8 @@ export default function Home() {
                       aria-label="Visit Freesolo website"
                     >
                       Freesolo
-                    </a>{" "}
-                    backed by Valor Equity Partners, Y Combinator, and Z
-                    Fellows.
+                    </a>
+                    .
                   </p>
                 </li>
                 <li
@@ -285,7 +284,6 @@ export default function Home() {
                       <li>i. Movies, sitcoms, and 60s-70s vinyls</li>
                       <li>ii. Formula 1 and cars</li>
                       <li>iii. Audible and my Kindle</li>
-                      <li>iv. Football</li>
                     </ul>
                   </div>
                 </li>
