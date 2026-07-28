@@ -280,11 +280,12 @@ export default function Home() {
                     02
                   </div>
                   <div>
-                    <p className="mb-4">Outside the terminal:</p>
+                    <p className="mb-4">Also love:</p>
                     <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
-                      <li>i. Movies, sitcoms, reading, and 60s-70s music</li>
+                      <li>i. Movies, sitcoms, and 60s-70s vinyls</li>
                       <li>ii. Formula 1 and cars</li>
-                      <li>iii. Football</li>
+                      <li>iii. Audible and my Kindle</li>
+                      <li>iv. Football</li>
                     </ul>
                   </div>
                 </li>
