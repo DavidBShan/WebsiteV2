@@ -285,21 +285,13 @@ export default function Home() {
                       <li>ii. Formula 1 (Forza Ferrari 🏎️)</li>
                       <li>
                         iii.{" "}
-                        <Link
-                          href="/reading"
-                          className="hover-link"
-                          aria-label="View David Shan's reading list"
-                        >
+                        <Link href="/reading" className="hover-link">
                           Audible and my Kindle
                         </Link>
                       </li>
                       <li>
                         iv.{" "}
-                        <Link
-                          href="/life"
-                          className="hover-link"
-                          aria-label="View David Shan's life gallery"
-                        >
+                        <Link href="/life" className="hover-link">
                           Adventuring, Travelling, and Eating Good Food
                         </Link>
                       </li>
