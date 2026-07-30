@@ -8,10 +8,11 @@ const THINK_DIFFERENT_AUDIO_URL =
 
 const currentlyReading = [
   { title: "Meditations", author: "Marcus Aurelius" },
-  { title: "The Republic", author: "Plato" },
-  { title: "Chip War", author: "Chris Miller" },
-  { title: "The Reason for God", author: "Timothy Keller" },
   { title: "Gödel, Escher, Bach", author: "Douglas Hofstadter" },
+  {
+    title: "The Autobiography of Benjamin Franklin",
+    author: "Benjamin Franklin",
+  },
 ];
 
 const finished = [
@@ -63,6 +64,9 @@ const finished = [
   { title: "The Book of Five Rings", author: "Miyamoto Musashi" },
   { title: "The Hard Thing About Hard Things", author: "Ben Horowitz" },
   { title: "The Infinity Machine", author: "Camila Russo" },
+  { title: "The Republic", author: "Plato" },
+  { title: "Chip War", author: "Chris Miller" },
+  { title: "The Reason for God", author: "Timothy Keller" },
 ];
 
 function SteveJobsAudioTitle({ title }: { title: string }) {

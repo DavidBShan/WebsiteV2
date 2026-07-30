@@ -282,9 +282,27 @@ export default function Home() {
                     <p className="mb-4">Also love:</p>
                     <ul className="space-y-2" style={{ marginLeft: "1rem" }}>
                       <li>i. Movies, sitcoms, and 60s-70s vinyls</li>
-                      <li>ii. Formula 1 and cars</li>
-                      <li>iii. Audible and my Kindle</li>
-                      <li>iv. Adventuring and travelling</li>
+                      <li>ii. Formula 1 (Forza Ferrari 🏎️)</li>
+                      <li>
+                        iii.{" "}
+                        <Link
+                          href="/reading"
+                          className="hover-link"
+                          aria-label="View David Shan's reading list"
+                        >
+                          Audible and my Kindle
+                        </Link>
+                      </li>
+                      <li>
+                        iv.{" "}
+                        <Link
+                          href="/life"
+                          className="hover-link"
+                          aria-label="View David Shan's life gallery"
+                        >
+                          Adventuring, Travelling, and Eating Good Food
+                        </Link>
+                      </li>
                     </ul>
                   </div>
                 </li>
