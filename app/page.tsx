@@ -292,7 +292,7 @@ export default function Home() {
                       <li>
                         iv.{" "}
                         <Link href="/life" className="hover-link">
-                          Adventuring, Travelling, and Eating Good Food
+                          Adventuring, Travelling, and Eating
                         </Link>
                       </li>
                     </ul>
