@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTheme } from "../components/useTheme";
 import type { LifeMedia } from "./getLifeMedia";
 
 const PAGE_SIZE = 12;
@@ -459,16 +460,7 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
     [],
   );
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : false;
-
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  useTheme();
 
   useEffect(() => {
     if (!sentinelRef.current || visibleCount >= media.length) {

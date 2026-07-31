@@ -1,38 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import AgeProgress from "./components/AgeProgress";
+import { useTheme } from "./components/useTheme";
 
 const ThemeToggle3D = lazy(() => import("./components/ThemeToggle3D"));
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : false;
-    setIsDarkMode(prefersDark);
-
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-
-    localStorage.setItem("theme", newTheme ? "dark" : "light");
-
-    if (newTheme) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+  const { isDarkMode, isDesktop, toggleTheme } = useTheme();
 
   const heroColor = "var(--color-hero)";
   const headingColor = "var(--color-heading)";
@@ -65,34 +41,36 @@ export default function Home() {
                 <div style={{ marginTop: "0.5rem" }}>
                   <AgeProgress isDarkMode={isDarkMode} />
                 </div>
-                {/* Theme Toggle - positioned absolutely, hidden on mobile */}
-                <div
-                  className="hidden sm:block fadeIn"
-                  style={{
-                    position: "absolute",
-                    top: "0",
-                    right: "0",
-                    width: "88px",
-                    height: "88px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    pointerEvents: "none",
-                  }}
-                >
-                  <div style={{ pointerEvents: "auto" }}>
-                    <Suspense
-                      fallback={
-                        <div style={{ width: "80px", height: "80px" }} />
-                      }
-                    >
-                      <ThemeToggle3D
-                        isDarkMode={isDarkMode}
-                        toggleTheme={toggleTheme}
-                      />
-                    </Suspense>
+                {/* Theme Toggle - desktop only, mobile stays in light mode */}
+                {isDesktop && (
+                  <div
+                    className="fadeIn"
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      right: "0",
+                      width: "88px",
+                      height: "88px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div style={{ pointerEvents: "auto" }}>
+                      <Suspense
+                        fallback={
+                          <div style={{ width: "80px", height: "80px" }} />
+                        }
+                      >
+                        <ThemeToggle3D
+                          isDarkMode={isDarkMode}
+                          toggleTheme={toggleTheme}
+                        />
+                      </Suspense>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -286,7 +264,7 @@ export default function Home() {
                       <li>
                         iii.{" "}
                         <Link href="/reading" className="hover-link">
-                          Audible and my Kindle
+                          Audible, Podcasts, and my Kindle
                         </Link>
                       </li>
                       <li>

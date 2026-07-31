@@ -1,19 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useTheme } from "../../components/useTheme";
 
 export default function BuildingSOTAPeopleSearch() {
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : false;
-
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  useTheme();
 
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";

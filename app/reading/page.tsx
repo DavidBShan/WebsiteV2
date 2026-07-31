@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useTheme } from "../components/useTheme";
 
 const THINK_DIFFERENT_AUDIO_URL =
   "https://rjdgugnxm7szh20r.public.blob.vercel-storage.com/Apple%20_Think%20Different_%20%28Steve%20Jobs%20narrated%29%20%5BcpzvwkR1RYU%5D.mp3";
@@ -123,16 +124,7 @@ function SteveJobsAudioTitle({ title }: { title: string }) {
 }
 
 export default function Reading() {
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = savedTheme ? savedTheme === "dark" : false;
-
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  useTheme();
 
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";

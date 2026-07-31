@@ -738,12 +738,13 @@ export default function ThemeToggle3D({
   const transitionTimersRef = useRef<number[]>([]);
   const initialBgColor = getInitialBgColor();
 
+  // the parent only mounts this on desktop viewports, so mobile is already
+  // excluded. low-end machines still skip the canvas.
   useEffect(() => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const isLowEnd = navigator.hardwareConcurrency
       ? navigator.hardwareConcurrency <= 2
       : false;
-    if (isMobile || isLowEnd) setShowCanvas(false);
+    if (isLowEnd) setShowCanvas(false);
 
     return () => {
       transitionTimersRef.current.forEach((timer) => {
