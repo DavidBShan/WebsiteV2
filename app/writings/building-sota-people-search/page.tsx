@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { writingCaptions } from "../../captions";
+import { CaptionedImage } from "../../components/CaptionedImage";
 import { useTheme } from "../../components/useTheme";
 
 export default function BuildingSOTAPeopleSearch() {
@@ -152,11 +154,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               MVP
             </h2>
-            <img
-              src="https://i.imgur.com/F8AyB4n.png"
-              alt="MVP"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.mvp}>
+              <img
+                src="https://i.imgur.com/F8AyB4n.png"
+                alt="MVP"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               The initial version of Linkd was built using a combination of
               Voyage embeddings and FAISS with a simple thresholding system. For
@@ -189,11 +193,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Database + Agent
             </h2>
-            <img
-              src="https://i.imgur.com/jNztE7u.png"
-              alt="Database + Agent"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.databaseAgent}>
+              <img
+                src="https://i.imgur.com/jNztE7u.png"
+                alt="Database + Agent"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               Afterward, we experimented with a prompt-to-SQL architecture by
               loading our data into BigQuery. The goal was to let an LLM
@@ -234,11 +240,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Data Pipeline
             </h2>
-            <img
-              src="https://i.imgur.com/SnjKirt.png"
-              alt="Data Pipeline"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.dataPipeline}>
+              <img
+                src="https://i.imgur.com/SnjKirt.png"
+                alt="Data Pipeline"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               During the transition to OpenSearch, we made the decision to
               expand our dataset from 200 million profiles to over 800 million.
@@ -273,11 +281,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Stage 1: Parallel Data Ingestion to MySQL
             </h3>
-            <img
-              src="https://i.imgur.com/vbfnHDn.png"
-              alt="Step 1: Parallel Data Ingestion to MySQL"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.mysqlIngestion}>
+              <img
+                src="https://i.imgur.com/vbfnHDn.png"
+                alt="Step 1: Parallel Data Ingestion to MySQL"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               We split the ingestion into two parallel streams - people and
               companies - each optimized differently:
@@ -560,11 +570,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Thoughts on Embeddings
             </h2>
-            <img
-              src="https://i.imgur.com/6d1HVoU.png"
-              alt="Embeddings"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.embeddings}>
+              <img
+                src="https://i.imgur.com/6d1HVoU.png"
+                alt="Embeddings"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               Throughout this process, we kept revisiting the idea of embeddings
               since they had always seemed promising for improving semantic
@@ -614,11 +626,13 @@ export default function BuildingSOTAPeopleSearch() {
               handle hundreds of millions of profiles efficiently, at a fraction
               of the cost of hosted APIs.
             </p>
-            <img
-              src="https://i.imgur.com/QPQ4yBF.png"
-              alt="Embeddings Architecture"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.embeddingsArchitecture}>
+              <img
+                src="https://i.imgur.com/QPQ4yBF.png"
+                alt="Embeddings Architecture"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               Despite the efficient setup, the results were underwhelming. The
               reduced dimensionality led to significant loss in granularity, and
@@ -659,11 +673,13 @@ export default function BuildingSOTAPeopleSearch() {
             >
               Conclusion & What's Next
             </h2>
-            <img
-              src="https://i.imgur.com/3Hk4rVL.png"
-              alt="Conclusion"
-              className="w-full rounded-lg"
-            />
+            <CaptionedImage caption={writingCaptions.conclusion}>
+              <img
+                src="https://i.imgur.com/3Hk4rVL.png"
+                alt="Conclusion"
+                className="w-full rounded-lg"
+              />
+            </CaptionedImage>
             <p>
               Building Clado's people search engine has been a constant cycle of
               iteration: from small, school-level databases to a globally

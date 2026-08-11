@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { getLifeCaption } from "../captions";
 import { useTheme } from "../components/useTheme";
 import type { LifeMedia } from "./getLifeMedia";
 
@@ -152,12 +153,28 @@ function useLifeGalleryColumnCount() {
   return columnCount;
 }
 
-function LifePhotoMeta({ index }: { index: number }) {
+function LifePhotoMeta({
+  caption,
+  index,
+  name,
+}: {
+  caption: string;
+  index: number;
+  name: string;
+}) {
+  // in development, an uncaptioned photo shows its file name on hover so it
+  // can be pasted straight into lifeCaptions in app/captions.ts.
+  const showCaptionHint = !caption && process.env.NODE_ENV !== "production";
+
   return (
     <span className="life-photo-meta">
       <span className="life-photo-index">
         {String(index + 1).padStart(2, "0")}
       </span>
+      {caption ? <span className="life-photo-caption">{caption}</span> : null}
+      {showCaptionHint ? (
+        <span className="life-photo-caption-hint">{name}</span>
+      ) : null}
     </span>
   );
 }
@@ -166,10 +183,15 @@ function getGalleryItemClassName() {
   return "life-gallery-item group";
 }
 
-function getPhotoCardClassName(isReady: boolean, extraClassName = "") {
+function getPhotoCardClassName(
+  isReady: boolean,
+  hasCaption: boolean,
+  extraClassName = "",
+) {
   return [
     "life-photo-card",
     extraClassName,
+    hasCaption ? "is-captioned" : "",
     isReady ? "is-loaded" : "is-loading",
   ]
     .filter(Boolean)
@@ -187,6 +209,7 @@ function LifeImageCard({
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
   const isEager = index < EAGER_MEDIA_COUNT;
+  const caption = getLifeCaption(item.name);
   const mediaStyle = getMediaAspectRatioStyle(heightRatio);
   const markReady = useCallback(
     (image?: HTMLImageElement | null) => {
@@ -223,11 +246,14 @@ function LifeImageCard({
 
   return (
     <div className={getGalleryItemClassName()}>
-      <span className={getPhotoCardClassName(isReady)} style={mediaStyle}>
+      <span
+        className={getPhotoCardClassName(isReady, Boolean(caption))}
+        style={mediaStyle}
+      >
         <Image
           ref={imageRef}
           src={item.src}
-          alt={`Life frame ${index + 1}`}
+          alt={caption || `Life frame ${index + 1}`}
           className="life-media"
           fill
           sizes={LIFE_IMAGE_SIZES}
@@ -238,7 +264,9 @@ function LifeImageCard({
           onError={markError}
           unoptimized={isUnoptimizedImage(item)}
         />
-        {isReady ? <LifePhotoMeta index={index} /> : null}
+        {isReady ? (
+          <LifePhotoMeta caption={caption} index={index} name={item.name} />
+        ) : null}
       </span>
     </div>
   );
@@ -258,6 +286,7 @@ function LifeVideoCard({
     item.posterSrc ? "ready" : "loading",
   );
   const isReady = loadStatus === "ready";
+  const caption = getLifeCaption(item.name);
   const size = getMediaSize(item);
   const mediaStyle = getMediaAspectRatioStyle(heightRatio);
   const measureVideo = useCallback(() => {
@@ -334,7 +363,11 @@ function LifeVideoCard({
   return (
     <div className={getGalleryItemClassName()}>
       <span
-        className={getPhotoCardClassName(isReady, "life-photo-card-video")}
+        className={getPhotoCardClassName(
+          isReady,
+          Boolean(caption),
+          "life-photo-card-video",
+        )}
         style={mediaStyle}
       >
         <video
@@ -395,7 +428,9 @@ function LifeVideoCard({
             {isPlaying ? "Pause" : "Play"}
           </button>
         ) : null}
-        {isReady ? <LifePhotoMeta index={index} /> : null}
+        {isReady ? (
+          <LifePhotoMeta caption={caption} index={index} name={item.name} />
+        ) : null}
       </span>
     </div>
   );

@@ -237,6 +237,101 @@ li {
   }
 }
 
+/* Hover captions: the image desaturates behind a gray veil and the caption
+   fades in over it. Used by the writeup images via CaptionedImage. */
+.captioned-image {
+  position: relative;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.captioned-image img {
+  display: block;
+  width: 100%;
+  transition: filter 220ms ease;
+}
+
+.captioned-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(55 65 81 / 0.74);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.captioned-image:hover img,
+.captioned-image:focus-within img {
+  filter: grayscale(1);
+}
+
+.captioned-image:hover::after,
+.captioned-image:focus-within::after {
+  opacity: 1;
+}
+
+.captioned-image-caption {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  color: rgb(249 250 251);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-align: center;
+  text-wrap: balance;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.captioned-image:hover .captioned-image-caption,
+.captioned-image:focus-within .captioned-image-caption {
+  opacity: 1;
+}
+
+@media (min-width: 640px) {
+  .captioned-image-caption {
+    font-size: 0.95rem;
+  }
+}
+
+/* Touch devices never hover, so the caption sits under the image instead. */
+@media (hover: none) {
+  .captioned-image::after {
+    display: none;
+  }
+
+  .captioned-image:hover img,
+  .captioned-image:focus-within img {
+    filter: none;
+  }
+
+  .captioned-image-caption {
+    position: static;
+    display: block;
+    padding: 0.6rem 0.1rem 0;
+    color: var(--color-muted-strong);
+    font-size: 0.8rem;
+    text-align: left;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .captioned-image img,
+  .captioned-image::after,
+  .captioned-image-caption {
+    transition-duration: 0s;
+  }
+}
+
 .life-gallery-columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -338,6 +433,43 @@ li {
   color: rgb(255 255 255 / 0.75);
   font-family: var(--font-jetbrains);
   font-size: 0.75rem;
+}
+
+/* A captioned gallery card goes gray on hover, matching the writeup images. */
+.life-photo-card.is-captioned::after {
+  background: rgb(55 65 81 / 0.74);
+}
+
+.life-gallery-item:hover .life-photo-card.is-captioned .life-media,
+.life-gallery-item:focus-visible .life-photo-card.is-captioned .life-media {
+  filter: grayscale(1);
+}
+
+.life-photo-caption {
+  color: white;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.life-photo-caption-hint {
+  position: absolute;
+  inset: auto 1rem 1rem 1rem;
+  z-index: 1;
+  color: rgb(255 255 255 / 0.85);
+  font-family: var(--font-jetbrains);
+  font-size: 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.life-gallery-item:hover .life-photo-caption-hint,
+.life-gallery-item:focus-visible .life-photo-caption-hint {
+  opacity: 1;
 }
 
 .life-photo-name {
