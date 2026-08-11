@@ -59,8 +59,7 @@ export const lifeCaptions: Record<string, string> = {
   "IMG_0831.jpg": "Apres-ski meal 🎿",
   "IMG_0833.jpg": "Norwegian meal at a French restaurant",
   "IMG_0836.jpg": "Pic I got while dying on the slopes",
-  "IMG_0861.jpg":
-    "The one good photo of myself that I actually have (credit [@rohin](https://r0h.in/))",
+  "IMG_0861.jpg": "The one good photo of myself that I actually have",
   "IMG_0875.jpg": "Anything for the bulk",
   "IMG_0928.jpg": "Cessna 152 landing at the Oakland International Airport",
   "IMG_0931.jpg": "Dollar oysters",
