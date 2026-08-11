@@ -13,7 +13,6 @@ import { getLifeCaption } from "../captions";
 import { useTheme } from "../components/useTheme";
 import type { LifeMedia } from "./getLifeMedia";
 
-const PAGE_SIZE = 12;
 const EAGER_MEDIA_COUNT = 3;
 const MEDIUM_GALLERY_WIDTH = 768;
 const LARGE_GALLERY_WIDTH = 1280;
@@ -273,9 +272,11 @@ function buildCaptionsSkeleton(media: LifeMedia[]) {
   return `export const lifeCaptions: Record<string, string> = {\n${rows.join("\n")}\n};`;
 }
 
-function LifeCaptionToolbar({ media }: { media: LifeMedia[] }) {
+// Takes every photo in the bucket, not just the captioned ones the page shows,
+// so the count and the copied list keep reporting the work that is left.
+function LifeCaptionToolbar({ allMedia }: { allMedia: LifeMedia[] }) {
   const [isCopied, setIsCopied] = useState(false);
-  const captionedCount = media.filter(
+  const captionedCount = allMedia.filter(
     (item) => getLifeCaption(item.name) !== "",
   ).length;
 
@@ -295,13 +296,13 @@ function LifeCaptionToolbar({ media }: { media: LifeMedia[] }) {
   return (
     <div style={CAPTION_TOOLBAR_STYLE}>
       <span>
-        {captionedCount} of {media.length} captioned
+        {captionedCount} of {allMedia.length} captioned
       </span>
       <button
         type="button"
         style={CAPTION_TOOLBAR_BUTTON_STYLE}
         onClick={async () => {
-          setIsCopied(await copyText(buildCaptionsSkeleton(media)));
+          setIsCopied(await copyText(buildCaptionsSkeleton(allMedia)));
         }}
       >
         {isCopied ? "Copied - paste into app/captions.ts" : "Copy caption list"}
@@ -596,15 +597,21 @@ function LifeMediaCard({
   );
 }
 
-export default function LifeGallery({ media }: { media: LifeMedia[] }) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+export default function LifeGallery({
+  allMedia,
+  media,
+}: {
+  // every photo in the bucket, captioned or not. only the development caption
+  // toolbar reads it, and the page omits it in production so uncaptioned photos
+  // are not named in the shipped payload.
+  allMedia?: LifeMedia[];
+  media: LifeMedia[];
+}) {
   const [mediaHeightRatios, setMediaHeightRatios] = useState<
     Map<string, number>
   >(() => new Map());
   const columnCount = useLifeGalleryColumnCount();
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const visibleMedia = media.slice(0, visibleCount);
-  const mediaColumns = getLifeMediaColumns(visibleMedia, columnCount);
+  const mediaColumns = getLifeMediaColumns(media, columnCount);
   const markMediaMeasured = useCallback(
     (mediaKey: string, heightRatio: number) => {
       if (!Number.isFinite(heightRatio) || heightRatio <= 0) {
@@ -630,31 +637,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   );
 
   useTheme();
-
-  useEffect(() => {
-    if (!sentinelRef.current || visibleCount >= media.length) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-
-        if (firstEntry?.isIntersecting) {
-          setVisibleCount((current) =>
-            Math.min(current + PAGE_SIZE, media.length),
-          );
-        }
-      },
-      {
-        rootMargin: "1200px 0px",
-      },
-    );
-
-    observer.observe(sentinelRef.current);
-
-    return () => observer.disconnect();
-  }, [media.length, visibleCount]);
 
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
@@ -701,8 +683,8 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
               Life
             </h1>
 
-            {IS_CAPTION_TOOLING_ENABLED && media.length > 0 ? (
-              <LifeCaptionToolbar media={media} />
+            {IS_CAPTION_TOOLING_ENABLED && allMedia && allMedia.length > 0 ? (
+              <LifeCaptionToolbar allMedia={allMedia} />
             ) : null}
           </div>
 
@@ -732,8 +714,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                   </div>
                 ))}
               </div>
-
-              <div ref={sentinelRef} aria-hidden="true" />
             </section>
           ) : (
             <p
