@@ -497,7 +497,7 @@ export default function Home() {
                   GitHub
                 </a>
                 <a
-                  href="mailto:david@clado.ai"
+                  href="mailto:david@freesolo.co"
                   className="hover-link"
                   aria-label="Email David Shan"
                 >

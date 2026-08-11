@@ -340,6 +340,37 @@ li {
   font-size: 0.75rem;
 }
 
+/* A captioned card veils itself in gray on hover so the caption reads. */
+.life-photo-card.is-captioned::after {
+  background: rgb(55 65 81 / 0.74);
+}
+
+.life-gallery-item:hover .life-photo-card.is-captioned .life-media,
+.life-gallery-item:focus-visible .life-photo-card.is-captioned .life-media {
+  filter: grayscale(1);
+}
+
+.life-photo-caption {
+  color: white;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+/* Touch devices never hover, so a captioned photo keeps its caption visible
+   under the usual bottom scrim instead of behind the gray veil. */
+@media (hover: none) {
+  .life-photo-card.is-captioned::after {
+    background: linear-gradient(180deg, transparent 45%, rgb(15 23 42 / 0.65));
+    opacity: 1;
+  }
+
+  .life-photo-card.is-captioned .life-photo-meta {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .life-photo-name {
   color: white;
   font-size: 0.9rem;

@@ -9,10 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { getLifeCaption } from "../captions";
 import { useTheme } from "../components/useTheme";
 import type { LifeMedia } from "./getLifeMedia";
 
-const PAGE_SIZE = 12;
 const EAGER_MEDIA_COUNT = 3;
 const MEDIUM_GALLERY_WIDTH = 768;
 const LARGE_GALLERY_WIDTH = 1280;
@@ -25,6 +25,58 @@ const GALLERY_COLUMN_KEYS = [
   "life-gallery-column-tertiary",
 ] as const;
 const DEFAULT_MEDIA_HEIGHT_RATIO = 0.75;
+const COPIED_LABEL_MS = 1200;
+
+// the caption-writing helpers below only render while running `bun run dev`.
+// their styles are inline rather than in globals.css so that nothing about
+// them - markup or css - reaches the deployed site.
+const IS_CAPTION_TOOLING_ENABLED = process.env.NODE_ENV !== "production";
+
+const CAPTION_KEY_STYLE: CSSProperties = {
+  background: "transparent",
+  border: 0,
+  color: "rgb(255 255 255 / 0.85)",
+  cursor: "pointer",
+  fontFamily: "var(--font-jetbrains)",
+  fontSize: "0.7rem",
+  maxWidth: "100%",
+  overflow: "hidden",
+  padding: 0,
+  pointerEvents: "auto",
+  textAlign: "left",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+};
+
+const CAPTION_TOOLBAR_STYLE: CSSProperties = {
+  alignItems: "center",
+  color: "var(--color-muted-strong)",
+  display: "flex",
+  flexWrap: "wrap",
+  fontFamily: "var(--font-jetbrains)",
+  fontSize: "0.75rem",
+  gap: "0.75rem",
+  marginTop: "0.85rem",
+};
+
+const CAPTION_TOOLBAR_BUTTON_STYLE: CSSProperties = {
+  background: "transparent",
+  border: "1px solid var(--color-border)",
+  borderRadius: "999px",
+  color: "var(--color-heading)",
+  cursor: "pointer",
+  font: "inherit",
+  padding: "0.3rem 0.75rem",
+};
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 type MediaLoadStatus = "loading" | "ready" | "error";
 
@@ -152,13 +204,113 @@ function useLifeGalleryColumnCount() {
   return columnCount;
 }
 
-function LifePhotoMeta({ index }: { index: number }) {
+function LifePhotoMeta({
+  caption,
+  index,
+  name,
+}: {
+  caption: string;
+  index: number;
+  name: string;
+}) {
   return (
     <span className="life-photo-meta">
       <span className="life-photo-index">
         {String(index + 1).padStart(2, "0")}
       </span>
+      {caption ? <span className="life-photo-caption">{caption}</span> : null}
+      {IS_CAPTION_TOOLING_ENABLED ? <LifeCaptionKey name={name} /> : null}
     </span>
+  );
+}
+
+// in development, every photo shows its caption key on hover. clicking copies
+// that key, ready to paste into lifeCaptions in app/captions.ts.
+function LifeCaptionKey({ name }: { name: string }) {
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    if (!isCopied) {
+      return;
+    }
+
+    const timeout = window.setTimeout(
+      () => setIsCopied(false),
+      COPIED_LABEL_MS,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [isCopied]);
+
+  return (
+    <button
+      type="button"
+      style={CAPTION_KEY_STYLE}
+      title="Copy this caption key"
+      onClick={async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsCopied(await copyText(`${JSON.stringify(name)}: "",`));
+      }}
+    >
+      {isCopied ? "copied" : name}
+    </button>
+  );
+}
+
+// Development-only helper: copies a ready-to-paste lifeCaptions block listing
+// every photo in gallery order, so captions get filled into blanks rather than
+// looked up one file name at a time.
+function buildCaptionsSkeleton(media: LifeMedia[]) {
+  const rows = media.map((item) => {
+    const caption = getLifeCaption(item.name);
+    const escaped = caption.replaceAll("\\", "\\\\").replaceAll('"', '\\"');
+
+    return `  ${JSON.stringify(item.name)}: "${escaped}",`;
+  });
+
+  return `export const lifeCaptions: Record<string, string> = {\n${rows.join("\n")}\n};`;
+}
+
+// Takes every photo in the bucket, not just the captioned ones the page shows,
+// so the count and the copied list keep reporting the work that is left.
+function LifeCaptionToolbar({ allMedia }: { allMedia: LifeMedia[] }) {
+  const [isCopied, setIsCopied] = useState(false);
+  const captionedCount = allMedia.filter(
+    (item) => getLifeCaption(item.name) !== "",
+  ).length;
+
+  useEffect(() => {
+    if (!isCopied) {
+      return;
+    }
+
+    const timeout = window.setTimeout(
+      () => setIsCopied(false),
+      COPIED_LABEL_MS,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [isCopied]);
+
+  return (
+    <div style={CAPTION_TOOLBAR_STYLE}>
+      <span>
+        {captionedCount} of {allMedia.length} captioned
+      </span>
+      <button
+        type="button"
+        style={CAPTION_TOOLBAR_BUTTON_STYLE}
+        onClick={async () => {
+          setIsCopied(await copyText(buildCaptionsSkeleton(allMedia)));
+        }}
+      >
+        {isCopied ? "Copied - paste into app/captions.ts" : "Copy caption list"}
+      </button>
+      <span style={{ color: "var(--color-muted)" }}>
+        dev only - hover a photo to copy just its key
+      </span>
+    </div>
   );
 }
 
@@ -166,10 +318,15 @@ function getGalleryItemClassName() {
   return "life-gallery-item group";
 }
 
-function getPhotoCardClassName(isReady: boolean, extraClassName = "") {
+function getPhotoCardClassName(
+  isReady: boolean,
+  hasCaption: boolean,
+  extraClassName = "",
+) {
   return [
     "life-photo-card",
     extraClassName,
+    hasCaption ? "is-captioned" : "",
     isReady ? "is-loaded" : "is-loading",
   ]
     .filter(Boolean)
@@ -187,6 +344,7 @@ function LifeImageCard({
   const [loadStatus, setLoadStatus] = useState<MediaLoadStatus>("loading");
   const isReady = loadStatus === "ready";
   const isEager = index < EAGER_MEDIA_COUNT;
+  const caption = getLifeCaption(item.name);
   const mediaStyle = getMediaAspectRatioStyle(heightRatio);
   const markReady = useCallback(
     (image?: HTMLImageElement | null) => {
@@ -223,11 +381,14 @@ function LifeImageCard({
 
   return (
     <div className={getGalleryItemClassName()}>
-      <span className={getPhotoCardClassName(isReady)} style={mediaStyle}>
+      <span
+        className={getPhotoCardClassName(isReady, Boolean(caption))}
+        style={mediaStyle}
+      >
         <Image
           ref={imageRef}
           src={item.src}
-          alt={`Life frame ${index + 1}`}
+          alt={caption || `Life frame ${index + 1}`}
           className="life-media"
           fill
           sizes={LIFE_IMAGE_SIZES}
@@ -238,7 +399,9 @@ function LifeImageCard({
           onError={markError}
           unoptimized={isUnoptimizedImage(item)}
         />
-        {isReady ? <LifePhotoMeta index={index} /> : null}
+        {isReady ? (
+          <LifePhotoMeta caption={caption} index={index} name={item.name} />
+        ) : null}
       </span>
     </div>
   );
@@ -258,6 +421,7 @@ function LifeVideoCard({
     item.posterSrc ? "ready" : "loading",
   );
   const isReady = loadStatus === "ready";
+  const caption = getLifeCaption(item.name);
   const size = getMediaSize(item);
   const mediaStyle = getMediaAspectRatioStyle(heightRatio);
   const measureVideo = useCallback(() => {
@@ -334,7 +498,11 @@ function LifeVideoCard({
   return (
     <div className={getGalleryItemClassName()}>
       <span
-        className={getPhotoCardClassName(isReady, "life-photo-card-video")}
+        className={getPhotoCardClassName(
+          isReady,
+          Boolean(caption),
+          "life-photo-card-video",
+        )}
         style={mediaStyle}
       >
         <video
@@ -395,7 +563,9 @@ function LifeVideoCard({
             {isPlaying ? "Pause" : "Play"}
           </button>
         ) : null}
-        {isReady ? <LifePhotoMeta index={index} /> : null}
+        {isReady ? (
+          <LifePhotoMeta caption={caption} index={index} name={item.name} />
+        ) : null}
       </span>
     </div>
   );
@@ -427,15 +597,21 @@ function LifeMediaCard({
   );
 }
 
-export default function LifeGallery({ media }: { media: LifeMedia[] }) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+export default function LifeGallery({
+  allMedia,
+  media,
+}: {
+  // every photo in the bucket, captioned or not. only the development caption
+  // toolbar reads it, and the page omits it in production so uncaptioned photos
+  // are not named in the shipped payload.
+  allMedia?: LifeMedia[];
+  media: LifeMedia[];
+}) {
   const [mediaHeightRatios, setMediaHeightRatios] = useState<
     Map<string, number>
   >(() => new Map());
   const columnCount = useLifeGalleryColumnCount();
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const visibleMedia = media.slice(0, visibleCount);
-  const mediaColumns = getLifeMediaColumns(visibleMedia, columnCount);
+  const mediaColumns = getLifeMediaColumns(media, columnCount);
   const markMediaMeasured = useCallback(
     (mediaKey: string, heightRatio: number) => {
       if (!Number.isFinite(heightRatio) || heightRatio <= 0) {
@@ -461,31 +637,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
   );
 
   useTheme();
-
-  useEffect(() => {
-    if (!sentinelRef.current || visibleCount >= media.length) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const firstEntry = entries[0];
-
-        if (firstEntry?.isIntersecting) {
-          setVisibleCount((current) =>
-            Math.min(current + PAGE_SIZE, media.length),
-          );
-        }
-      },
-      {
-        rootMargin: "1200px 0px",
-      },
-    );
-
-    observer.observe(sentinelRef.current);
-
-    return () => observer.disconnect();
-  }, [media.length, visibleCount]);
 
   const textColor = "var(--color-text)";
   const headingColor = "var(--color-heading)";
@@ -531,6 +682,10 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
             >
               Life
             </h1>
+
+            {IS_CAPTION_TOOLING_ENABLED && allMedia && allMedia.length > 0 ? (
+              <LifeCaptionToolbar allMedia={allMedia} />
+            ) : null}
           </div>
 
           {media.length > 0 ? (
@@ -559,8 +714,6 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
                   </div>
                 ))}
               </div>
-
-              <div ref={sentinelRef} aria-hidden="true" />
             </section>
           ) : (
             <p
