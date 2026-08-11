@@ -357,17 +357,6 @@ li {
   text-wrap: balance;
 }
 
-/* Development-only: the file name to use as the caption key. Fades in with
-   the rest of the meta block, so it needs no hover rule of its own. */
-.life-photo-caption-hint {
-  color: rgb(255 255 255 / 0.85);
-  font-family: var(--font-jetbrains);
-  font-size: 0.7rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* Touch devices never hover, so a captioned photo keeps its caption visible
    under the usual bottom scrim instead of behind the gray veil. */
 @media (hover: none) {

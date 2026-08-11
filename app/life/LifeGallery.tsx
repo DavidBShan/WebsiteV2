@@ -26,6 +26,58 @@ const GALLERY_COLUMN_KEYS = [
   "life-gallery-column-tertiary",
 ] as const;
 const DEFAULT_MEDIA_HEIGHT_RATIO = 0.75;
+const COPIED_LABEL_MS = 1200;
+
+// the caption-writing helpers below only render while running `bun run dev`.
+// their styles are inline rather than in globals.css so that nothing about
+// them - markup or css - reaches the deployed site.
+const IS_CAPTION_TOOLING_ENABLED = process.env.NODE_ENV !== "production";
+
+const CAPTION_KEY_STYLE: CSSProperties = {
+  background: "transparent",
+  border: 0,
+  color: "rgb(255 255 255 / 0.85)",
+  cursor: "pointer",
+  fontFamily: "var(--font-jetbrains)",
+  fontSize: "0.7rem",
+  maxWidth: "100%",
+  overflow: "hidden",
+  padding: 0,
+  pointerEvents: "auto",
+  textAlign: "left",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+};
+
+const CAPTION_TOOLBAR_STYLE: CSSProperties = {
+  alignItems: "center",
+  color: "var(--color-muted-strong)",
+  display: "flex",
+  flexWrap: "wrap",
+  fontFamily: "var(--font-jetbrains)",
+  fontSize: "0.75rem",
+  gap: "0.75rem",
+  marginTop: "0.85rem",
+};
+
+const CAPTION_TOOLBAR_BUTTON_STYLE: CSSProperties = {
+  background: "transparent",
+  border: "1px solid var(--color-border)",
+  borderRadius: "999px",
+  color: "var(--color-heading)",
+  cursor: "pointer",
+  font: "inherit",
+  padding: "0.3rem 0.75rem",
+};
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 type MediaLoadStatus = "loading" | "ready" | "error";
 
@@ -162,20 +214,102 @@ function LifePhotoMeta({
   index: number;
   name: string;
 }) {
-  // in development, an uncaptioned photo shows its file name on hover so it
-  // can be pasted straight into lifeCaptions in app/captions.ts.
-  const showCaptionHint = !caption && process.env.NODE_ENV !== "production";
-
   return (
     <span className="life-photo-meta">
       <span className="life-photo-index">
         {String(index + 1).padStart(2, "0")}
       </span>
       {caption ? <span className="life-photo-caption">{caption}</span> : null}
-      {showCaptionHint ? (
-        <span className="life-photo-caption-hint">{name}</span>
-      ) : null}
+      {IS_CAPTION_TOOLING_ENABLED ? <LifeCaptionKey name={name} /> : null}
     </span>
+  );
+}
+
+// in development, every photo shows its caption key on hover. clicking copies
+// that key, ready to paste into lifeCaptions in app/captions.ts.
+function LifeCaptionKey({ name }: { name: string }) {
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    if (!isCopied) {
+      return;
+    }
+
+    const timeout = window.setTimeout(
+      () => setIsCopied(false),
+      COPIED_LABEL_MS,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [isCopied]);
+
+  return (
+    <button
+      type="button"
+      style={CAPTION_KEY_STYLE}
+      title="Copy this caption key"
+      onClick={async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsCopied(await copyText(`${JSON.stringify(name)}: "",`));
+      }}
+    >
+      {isCopied ? "copied" : name}
+    </button>
+  );
+}
+
+// Development-only helper: copies a ready-to-paste lifeCaptions block listing
+// every photo in gallery order, so captions get filled into blanks rather than
+// looked up one file name at a time.
+function buildCaptionsSkeleton(media: LifeMedia[]) {
+  const rows = media.map((item) => {
+    const caption = getLifeCaption(item.name);
+    const escaped = caption.replaceAll("\\", "\\\\").replaceAll('"', '\\"');
+
+    return `  ${JSON.stringify(item.name)}: "${escaped}",`;
+  });
+
+  return `export const lifeCaptions: Record<string, string> = {\n${rows.join("\n")}\n};`;
+}
+
+function LifeCaptionToolbar({ media }: { media: LifeMedia[] }) {
+  const [isCopied, setIsCopied] = useState(false);
+  const captionedCount = media.filter(
+    (item) => getLifeCaption(item.name) !== "",
+  ).length;
+
+  useEffect(() => {
+    if (!isCopied) {
+      return;
+    }
+
+    const timeout = window.setTimeout(
+      () => setIsCopied(false),
+      COPIED_LABEL_MS,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [isCopied]);
+
+  return (
+    <div style={CAPTION_TOOLBAR_STYLE}>
+      <span>
+        {captionedCount} of {media.length} captioned
+      </span>
+      <button
+        type="button"
+        style={CAPTION_TOOLBAR_BUTTON_STYLE}
+        onClick={async () => {
+          setIsCopied(await copyText(buildCaptionsSkeleton(media)));
+        }}
+      >
+        {isCopied ? "Copied - paste into app/captions.ts" : "Copy caption list"}
+      </button>
+      <span style={{ color: "var(--color-muted)" }}>
+        dev only - hover a photo to copy just its key
+      </span>
+    </div>
   );
 }
 
@@ -566,6 +700,10 @@ export default function LifeGallery({ media }: { media: LifeMedia[] }) {
             >
               Life
             </h1>
+
+            {IS_CAPTION_TOOLING_ENABLED && media.length > 0 ? (
+              <LifeCaptionToolbar media={media} />
+            ) : null}
           </div>
 
           {media.length > 0 ? (
