@@ -263,13 +263,13 @@ export default function Home() {
                       <li>ii. Formula 1 (Forza Ferrari 🏎️)</li>
                       <li>
                         iii.{" "}
-                        <Link href="/reading" className="hover-link">
+                        <Link href="/reading" className="href-text">
                           Audible, Podcasts, and my Kindle
                         </Link>
                       </li>
                       <li>
                         iv.{" "}
-                        <Link href="/life" className="hover-link">
+                        <Link href="/life" className="href-text">
                           Adventuring, Travelling, and Eating
                         </Link>
                       </li>
@@ -347,7 +347,7 @@ export default function Home() {
                             href="https://www.trymatrix.bio/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             Matrix Biotech
                           </a>{" "}
@@ -367,7 +367,7 @@ export default function Home() {
                             href="https://www.imagineai.me/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             Imagine AI
                           </a>{" "}
@@ -407,7 +407,7 @@ export default function Home() {
                             href="https://github.com/DavidBShan/City-Development-Index"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             LSTM-based city development prediction using
                             geospatial data
@@ -421,7 +421,7 @@ export default function Home() {
                             href="https://github.com/DavidBShan/Competitive-Programming2022-2024"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             Some competitive programming solutions
                           </a>
@@ -434,7 +434,7 @@ export default function Home() {
                             href="https://github.com/DavidBShan/Heart-Disease-Detector"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             Embedded hardware for heart disease detection
                           </a>
@@ -447,7 +447,7 @@ export default function Home() {
                             href="https://drive.google.com/file/d/17VzJ2ki5vfzq2MjZK_dueFeCMcsKuCvk/view"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover-link"
+                            className="href-text"
                           >
                             Using semantic segmentation to predict wildfires
                           </a>
@@ -473,7 +473,7 @@ export default function Home() {
                   href="https://twitter.com/davidbshan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Visit David Shan on Twitter"
                 >
                   Twitter
@@ -482,7 +482,7 @@ export default function Home() {
                   href="https://www.linkedin.com/in/davidbshan/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Visit David Shan on LinkedIn"
                 >
                   LinkedIn
@@ -491,14 +491,14 @@ export default function Home() {
                   href="https://github.com/davidbshan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Visit David Shan on GitHub"
                 >
                   GitHub
                 </a>
                 <a
                   href="mailto:david@freesolo.co"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Email David Shan"
                 >
                   Email
@@ -507,28 +507,28 @@ export default function Home() {
                   href="https://letterboxd.com/ChickenMcSwag/films/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Visit David Shan on Letterboxd"
                 >
                   Letterboxd
                 </a>
                 <Link
                   href="/writings"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="Read David Shan's writings"
                 >
                   Writings
                 </Link>
                 <Link
                   href="/reading"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="View David Shan's reading list"
                 >
                   Reading
                 </Link>
                 <Link
                   href="/life"
-                  className="hover-link"
+                  className="href-text"
                   aria-label="View David Shan's life gallery"
                 >
                   Life
