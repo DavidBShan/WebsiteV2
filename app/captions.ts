@@ -56,7 +56,7 @@ export const lifeCaptions: Record<string, string> = {
   "IMG_0698.jpg": "In the Eiffel Tower from Walmart",
   "IMG_0699.jpg": "My go-to appetizer",
   "IMG_0783 2.jpg": "UMich",
-  "IMG_0831.jpg": "Après-ski meal 🎿",
+  "IMG_0831.jpg": "Après-ski meal",
   "IMG_0833.jpg": "Norwegian meal at a French restaurant",
   "IMG_0836.jpg": "Pic I got while dying on the slopes",
   "IMG_0861.jpg": "The one good photo of me that I actually have",
