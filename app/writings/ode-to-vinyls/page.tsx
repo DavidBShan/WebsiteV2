@@ -52,12 +52,6 @@ export default function OdeToVinyls() {
             >
               Ode to Vinyls
             </h1>
-            <p
-              className="text-sm"
-              style={{ color: mutedColor, marginTop: "0.5rem" }}
-            >
-              <time dateTime="2026-08-20">August 20, 2026</time>
-            </p>
           </div>
 
           {/* Content */}
@@ -85,7 +79,7 @@ export default function OdeToVinyls() {
                 className="w-full rounded-lg"
               />
               <figcaption className="text-sm" style={{ color: mutedColor }}>
-                The vinyls on my wall
+                The vinyls on my wall 🙂
               </figcaption>
             </figure>
 
