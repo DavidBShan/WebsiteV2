@@ -64,6 +64,32 @@ export default function Writings() {
             >
               <li>
                 <Link
+                  href="/writings/ode-to-vinyls"
+                  className="block hover-link-group"
+                >
+                  <h2
+                    className="text-lg sm:text-xl font-bold hover-link-target"
+                    style={{
+                      color: "var(--color-heading)",
+                    }}
+                  >
+                    Ode to Vinyls
+                  </h2>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{
+                      color: "var(--color-text)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Why people still buy records and 30-year-old cars, and what
+                    chosen inconvenience says about efficiency, ownership, and
+                    the code we no longer write ourselves.
+                  </p>
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/writings/building-sota-people-search"
                   className="block hover-link-group"
                 >
