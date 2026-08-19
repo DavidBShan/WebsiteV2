@@ -1,5 +1,6 @@
 import { list } from "@vercel/blob";
 import { unstable_cache } from "next/cache";
+import { getMediaDimensions } from "./getMediaDimensions";
 
 export type LifeMedia = {
   height?: number;
@@ -105,6 +106,22 @@ const shapeMedia = (files: MediaFile[]) => {
   return media;
 };
 
+// the gallery balances its columns by height, so each item carries the size it
+// will render at. reading them here means the columns are packed correctly in
+// the html itself, rather than settling into place as the media loads.
+const withDimensions = async (media: LifeMedia[]): Promise<LifeMedia[]> =>
+  Promise.all(
+    media.map(async (item) => {
+      // a video with a poster renders the poster first, so measure that: it is
+      // a small image rather than a range walk over a whole clip.
+      const dimensions = item.posterSrc
+        ? await getMediaDimensions(item.posterSrc, "image")
+        : await getMediaDimensions(item.src, item.kind);
+
+      return dimensions ? { ...item, ...dimensions } : item;
+    }),
+  );
+
 const getCachedLifeMedia = unstable_cache(
   async (): Promise<LifeMedia[]> => {
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
@@ -131,10 +148,12 @@ const getCachedLifeMedia = unstable_cache(
       cursor = response.hasMore ? response.cursor : undefined;
     } while (cursor);
 
-    return shapeMedia(
-      files
-        .filter((file) => file.name.length > 0)
-        .sort((left, right) => compareNames(left.name, right.name)),
+    return withDimensions(
+      shapeMedia(
+        files
+          .filter((file) => file.name.length > 0)
+          .sort((left, right) => compareNames(left.name, right.name)),
+      ),
     );
   },
   ["life-media"],

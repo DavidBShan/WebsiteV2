@@ -115,14 +115,6 @@ function getMediaHeightRatio(
   return mediaHeightRatios.get(getMediaKey(item)) ?? DEFAULT_MEDIA_HEIGHT_RATIO;
 }
 
-function getInitialMediaHeightRatio(item: LifeMedia) {
-  if (item.width && item.height) {
-    return item.height / item.width;
-  }
-
-  return DEFAULT_MEDIA_HEIGHT_RATIO;
-}
-
 function getMediaSize(item: LifeMedia) {
   if (!item.width || !item.height) {
     return undefined;
@@ -156,7 +148,15 @@ function getLifeGalleryColumnCount() {
   return 1;
 }
 
-function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
+// greedy: each photo goes to whichever column is currently shortest, measured
+// in aspect ratios because every column is the same width. it needs real
+// ratios to work - fed one constant it degenerates into round-robin, which
+// leaves the middle column noticeably longer than its neighbours.
+function getLifeMediaColumns(
+  items: LifeMedia[],
+  columnCount: number,
+  mediaHeightRatios: Map<string, number>,
+) {
   const columns: LifeMediaColumn[] = Array.from(
     { length: columnCount },
     (_, columnIndex) => ({
@@ -168,6 +168,8 @@ function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
 
   items.forEach((item, index) => {
     const mediaKey = getMediaKey(item);
+    // ties keep the earlier column so the order stays stable across renders:
+    // reduce only replaces on a strict improvement.
     const shortestColumn = columns.reduce((shortest, column) =>
       column.estimatedHeight < shortest.estimatedHeight ? column : shortest,
     );
@@ -177,7 +179,10 @@ function getLifeMediaColumns(items: LifeMedia[], columnCount: number) {
       item,
       mediaKey,
     });
-    shortestColumn.estimatedHeight += getInitialMediaHeightRatio(item);
+    shortestColumn.estimatedHeight += getMediaHeightRatio(
+      item,
+      mediaHeightRatios,
+    );
   });
 
   return columns;
@@ -611,7 +616,11 @@ export default function LifeGallery({
     Map<string, number>
   >(() => new Map());
   const columnCount = useLifeGalleryColumnCount();
-  const mediaColumns = getLifeMediaColumns(media, columnCount);
+  const mediaColumns = getLifeMediaColumns(
+    media,
+    columnCount,
+    mediaHeightRatios,
+  );
   const markMediaMeasured = useCallback(
     (mediaKey: string, heightRatio: number) => {
       if (!Number.isFinite(heightRatio) || heightRatio <= 0) {
