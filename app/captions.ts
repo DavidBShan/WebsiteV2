@@ -32,7 +32,7 @@ export const lifeCaptions: Record<string, string> = {
   "0413 (2).png": "Road trip!!!",
   "0413(1).mov": "Jumping into freezing water in the middle of December",
   "1096.JPG": "Scuba Diving in China",
-  "1177.JPG": "My mom took this :)",
+  "7402.JPG": "My mom took this :)",
   "797061460.295818_58941775368665.MP4": "Wipeout :(",
   "797061964.302904_101111775369169.MP4":
     "Rough first double black of the season",
