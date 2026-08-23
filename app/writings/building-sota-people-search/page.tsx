@@ -60,13 +60,13 @@ export default function BuildingSOTAPeopleSearch() {
             style={{ color: textColor }}
           >
             <p>
-              Originally when Clado was first started when it was still called
-              Linkd, there was one database for each school with approximately
-              10k profiles per school. That means that there is a lot of room
-              for inefficiency. However, when we decided to build people search
-              for the entire world and started working with a data provider with
-              over 800M profiles, in order to keep the quality, the standard was
-              a lot higher in terms of optimization.
+              Originally, when Clado was first started and still called Linkd,
+              there was one database for each school with approximately 10k
+              profiles per school. That meant there was a lot of room for
+              inefficiency. However, when we decided to build people search for
+              the entire world and started working with a data provider with
+              over 800M profiles, maintaining quality demanded a much higher
+              standard of optimization.
             </p>
             <p>
               In this blog, I'll go over all the decisions behind our infra to
@@ -124,7 +124,7 @@ export default function BuildingSOTAPeopleSearch() {
                   expensive at 800M profiles.
                 </li>
                 <li>
-                  <strong>Final architecture:</strong> a 8 TB OpenSearch index
+                  <strong>Final architecture:</strong> an 8 TB OpenSearch index
                   backed by a 25 TB Aurora MySQL store, achieving ~4 s
                   end-to-end query latency for global-scale people search.
                 </li>
@@ -204,7 +204,7 @@ export default function BuildingSOTAPeopleSearch() {
               web, and evaluating candidate relevance against user-defined
               criteria. We used Asyncio to orchestrate thousands of concurrent
               requests, while Firecrawl handled large-scale web enrichment for
-              profiles with urls.
+              profiles with URLs.
             </p>
             <p>
               However, this approach quickly became cost-prohibitive. BigQuery's
@@ -218,7 +218,7 @@ export default function BuildingSOTAPeopleSearch() {
               We then migrated to MySQL to take greater control over indexing
               and query performance. While this significantly reduced cost, we
               found that MySQL's native full-text indexing still wasn't
-              sufficient, search latency for 200 million profiles hovered around
+              sufficient: search latency for 200 million profiles hovered around
               one minute per query, far above our real-time target. To address
               this, we introduced OpenSearch as a dedicated retrieval layer:
               MySQL became the system of record, storing full entity data, while
@@ -245,7 +245,7 @@ export default function BuildingSOTAPeopleSearch() {
               This presented a significant engineering challenge: any ingestion
               pipeline would now need to be at least four times faster, or the
               team would be blocked for days without fresh data to test. To
-              maintain iteration velocity, we set an ambitious goal, to design a
+              maintain iteration velocity, we set an ambitious goal: to design a
               pipeline that would complete in one day.
             </p>
             <p>
@@ -592,9 +592,8 @@ export default function BuildingSOTAPeopleSearch() {
               instance registered itself with NGINX using its internal IP, so
               the balancer could automatically distribute load evenly and retry
               failed pods without downtime. This setup allowed us to scale
-              horizontally, thus adding new pods to the pool would immediately
-              expand total throughput without requiring code changes or
-              restarts.
+              horizontally: adding new pods to the pool would immediately expand
+              total throughput without requiring code changes or restarts.
             </p>
             <p>
               Inside each pod, we built a custom dynamic batching system that
@@ -607,7 +606,7 @@ export default function BuildingSOTAPeopleSearch() {
             </p>
             <p>
               Qwen's Matryoshka embedding design made it especially attractive
-              for our use case, we were able to truncate embeddings to 512
+              for our use case: we were able to truncate embeddings to 512
               dimensions, significantly reducing storage and memory usage
               without a major loss in semantic signal. In total, the distributed
               Runpod + NGINX cluster delivered the throughput we needed to
@@ -640,16 +639,16 @@ export default function BuildingSOTAPeopleSearch() {
             </p>
             <p>
               Afterwards, we tried a hybrid approach with Milvus by combining
-              sparse and dense embeddings. However, with Milvus, the issue that
-              we ran into is the fact that as the number of keywords increased,
-              query latency grew significantly. Moreover, the fusion stage
-              between the sparse and dense retrieval results became extremely
-              resource-intensive, since for a corpus of over 800 million
-              profiles, the hybrid search requires retrieving and merging a
-              large number of candidates from both the BM25 (sparse) and vector
-              (dense) indexes. This meant that even with parallel execution, the
-              union and re-ranking process ballooned in cost, making it
-              difficult to sustain real-time latency at scale.
+              sparse and dense embeddings. However, the issue we ran into was
+              that as the number of keywords increased, query latency grew
+              significantly. Moreover, the fusion stage between the sparse and
+              dense retrieval results became extremely resource-intensive, since
+              for a corpus of over 800 million profiles, the hybrid search
+              requires retrieving and merging a large number of candidates from
+              both the BM25 (sparse) and vector (dense) indexes. This meant that
+              even with parallel execution, the union and re-ranking process
+              ballooned in cost, making it difficult to sustain real-time
+              latency at scale.
             </p>
 
             {/* Conclusion */}
@@ -678,11 +677,11 @@ export default function BuildingSOTAPeopleSearch() {
               Looking ahead, our focus is on both expanding data breadth and
               advancing retrieval intelligence. On the data side, we're
               integrating new sources such as organizational charts, academic
-              research via OpenAlex, and richer company datasets like org charts
-              to add more structure and context to each profile. We're also
-              deepening our cross-platform graph, linking GitHub repositories,
-              LinkedIn profiles, and other professional identifiers to better
-              capture true professional relationships.
+              research via OpenAlex, and richer company datasets to add more
+              structure and context to each profile. We're also deepening our
+              cross-platform graph, linking GitHub repositories, LinkedIn
+              profiles, and other professional identifiers to better capture
+              true professional relationships.
             </p>
             <p>
               At the same time, we're continuing to improve our in-house
