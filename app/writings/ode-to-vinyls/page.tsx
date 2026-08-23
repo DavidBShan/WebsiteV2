@@ -65,10 +65,10 @@ export default function OdeToVinyls() {
               about it, it is highly inefficient. When I want to listen to a
               song, I have to take the record out of the sleeve, be extra
               careful not to damage the grooves, carefully place it on the
-              turntable, and lower the needle. If I wanted to listen to a
-              specific song, I didn't have the luxury of just clicking a button
-              on Spotify to switch songs. I had to find it on the record
-              physically and hope I landed somewhere near the beginning.
+              turntable, and lower the needle. If I want to listen to a specific
+              song, I don't have the luxury of just clicking a button on Spotify
+              to switch songs. I have to find it on the record physically and
+              hope I land somewhere near the beginning.
             </p>
             <p>So why do people still own vinyls?</p>
 
@@ -85,18 +85,13 @@ export default function OdeToVinyls() {
 
             <p>
               A similar case came up with a friend of mine who recently bought a
-              1996 car for 20k; for the same price, you can lease a brand-new
+              1996 car for $20k; for the same price, you can lease a brand-new
               Tesla Model 3 for three years. Not to mention, because of its age,
-              half the stuff on the car was broken: the oil tank was leaking
-              after hitting a pothole a bit too hard, the dashboard light
-              doesn't work, and he can't drive it in the winter because the snow
-              and salt are bad for the car. So then why are those cars in such
-              high demand that a purchase like that is actually considered a
-              steal?
-            </p>
-            <p>
-              So why would anyone choose a car that he would have to fix
-              constantly?
+              half the stuff on the car is broken: the oil tank started leaking
+              after he hit a pothole a bit too hard, the dashboard light doesn't
+              work, and he can't drive it in the winter because the snow and
+              salt are bad for the car. So then why are those cars in such high
+              demand that a purchase like that is actually considered a steal?
             </p>
 
             <figure className="flex flex-col gap-3">
@@ -122,10 +117,10 @@ export default function OdeToVinyls() {
               save, how much hassle they remove, and how much more freedom they
               give us. But what exactly do we mean by freedom? If freedom is
               understood merely as freedom from having to perform a task, then
-              every reduction in effort could be an improvement. But then this
+              every reduction in effort could be an improvement. But this
               ignores another kind of freedom, one that could be more meaningful
-              in our lives. The freedom to participate in an activity, to
-              understand it, and to choose how it is done, yourself.
+              in our lives: the freedom to participate in an activity, to
+              understand it, and to choose for yourself how it is done.
             </p>
             <p>
               On a note related to my own work, coding looks so different right
@@ -140,8 +135,8 @@ export default function OdeToVinyls() {
               maybe just faintly how it fits into the system. Is that truly
               better or worse? I don't really know; it does get work done a lot
               faster, but it does feel like I didn't really write the code. I
-              just thought about how it should be written and checked that it is
-              done, but it isn't really mine.
+              just thought about how it should be written and checked that it
+              was done, but it isn't really mine.
             </p>
             <p>
               What does it mean to be mine though? In the legal sense, ownership
@@ -153,14 +148,14 @@ export default function OdeToVinyls() {
               actually working on it yourself with your hands.
             </p>
             <p>
-              What really bothers me about this is not the Claude Code, vinyl,
-              or even cars. It is the possibility that efficiency has stopped
-              being a property of a tool and become a way of evaluating
-              everything. A forest becomes timber. A river becomes hydroelectric
-              potential. Time becomes productivity. The danger of modernity
-              isn't that machines are replacing human beings. It could be that
-              we increasingly learn to look at everything as something that
-              should be optimized.
+              What really bothers me about this is not Claude Code, vinyls, or
+              even cars. It is the possibility that efficiency has stopped being
+              a property of a tool and become a way of evaluating everything. A
+              forest becomes timber. A river becomes hydroelectric potential.
+              Time becomes productivity. The danger of modernity isn't that
+              machines are replacing human beings. It could be that we
+              increasingly learn to look at everything as something that should
+              be optimized.
             </p>
             <p>
               Of course, I am not saying that all inconvenience is inherently
@@ -168,12 +163,12 @@ export default function OdeToVinyls() {
               help us live more meaningful lives and experience the world the
               way WE want to. Nothing is liberating about doing the dishes and
               the laundry by hand or doing math with your brain rather than
-              using a calculator because it feels more "authentic". If I were
+              using a calculator because it feels more "authentic." If I were
               arguing that every form of effort is valuable because it is
               effort, then I would be romanticizing inconvenience for its own
               sake, so I guess the distinction I must make is between effort
               that merely obstructs an activity and effort that constitutes it,
-              yet for everyone they would view that differently.
+              yet everyone would draw that line differently.
             </p>
             <p>
               What if I merely want the experience of taking my vinyl out of the
