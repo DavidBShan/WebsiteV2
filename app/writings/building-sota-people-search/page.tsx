@@ -65,8 +65,8 @@ export default function BuildingSOTAPeopleSearch() {
               profiles per school. That meant there was a lot of room for
               inefficiency. However, when we decided to build people search for
               the entire world and started working with a data provider with
-              over 800M profiles, keeping that quality set a much higher
-              standard for optimization.
+              over 800M profiles, maintaining quality demanded a much higher
+              standard of optimization.
             </p>
             <p>
               In this blog, I'll go over all the decisions behind our infra to
