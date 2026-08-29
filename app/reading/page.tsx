@@ -14,6 +14,10 @@ const currentlyReading = [
     title: "The Autobiography of Benjamin Franklin",
     author: "Benjamin Franklin",
   },
+  {
+    title: "Reinforcement Learning: An Introduction",
+    author: "Richard Sutton & Andrew Barto",
+  },
 ];
 
 const finished = [
@@ -68,6 +72,7 @@ const finished = [
   { title: "The Republic", author: "Plato" },
   { title: "Chip War", author: "Chris Miller" },
   { title: "The Reason for God", author: "Timothy Keller" },
+  { title: "Inference Engineering", author: "Philip Kiely" },
 ];
 
 function SteveJobsAudioTitle({ title }: { title: string }) {
