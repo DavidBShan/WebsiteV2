@@ -240,7 +240,18 @@ export default function Home() {
                   >
                     01
                   </div>
-                  <p>Currently learning golf, tennis, guitar, and piloting</p>
+                  <p>
+                    Currently learning golf, tennis, guitar, piloting, and{" "}
+                    <a
+                      href="https://www.instagram.com/davidbshan/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="href-text"
+                      aria-label="View David Shan's photography on Instagram"
+                    >
+                      photography
+                    </a>
+                  </p>
                 </li>
                 <li
                   className="text-sm leading-loose animate-fade-in delay-1300"
@@ -533,6 +544,15 @@ export default function Home() {
                 >
                   Life
                 </Link>
+                <a
+                  href="https://www.instagram.com/davidbshan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="href-text"
+                  aria-label="View David Shan's photography on Instagram"
+                >
+                  Photography
+                </a>
               </div>
             </div>
           </footer>
