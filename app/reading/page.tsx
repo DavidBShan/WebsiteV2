@@ -8,12 +8,8 @@ const THINK_DIFFERENT_AUDIO_URL =
   "https://rjdgugnxm7szh20r.public.blob.vercel-storage.com/Apple%20_Think%20Different_%20%28Steve%20Jobs%20narrated%29%20%5BcpzvwkR1RYU%5D.mp3";
 
 const currentlyReading = [
-  { title: "Meditations", author: "Marcus Aurelius" },
+  { title: "The Hunchback of Notre Dame", author: "Victor Hugo" },
   { title: "Gödel, Escher, Bach", author: "Douglas Hofstadter" },
-  {
-    title: "The Autobiography of Benjamin Franklin",
-    author: "Benjamin Franklin",
-  },
   {
     title: "Reinforcement Learning: An Introduction",
     author: "Richard Sutton & Andrew Barto",
@@ -21,6 +17,10 @@ const currentlyReading = [
 ];
 
 const finished = [
+  {
+    title: "The Autobiography of Benjamin Franklin",
+    author: "Benjamin Franklin",
+  },
   { title: "The Art of War", author: "Sun Tzu" },
   { title: "Steve Jobs", author: "Walter Isaacson" },
   { title: "Elon Musk", author: "Walter Isaacson" },
