@@ -14,6 +14,7 @@ const currentlyReading = [
     title: "Reinforcement Learning: An Introduction",
     author: "Richard Sutton & Andrew Barto",
   },
+  { title: "Kitchen Confidential", author: "Anthony Bourdain" },
 ];
 
 const finished = [
@@ -48,6 +49,10 @@ const finished = [
   { title: "Outliers", author: "Malcolm Gladwell" },
   { title: "Freakonomics", author: "Steven Levitt & Stephen Dubner" },
   { title: "Sapiens", author: "Yuval Noah Harari" },
+  { title: "The Pathless Path", author: "Paul Millerd" },
+  { title: "The Lord of the Rings Trilogy", author: "J. R. R. Tolkien" },
+  { title: "The Hobbit", author: "J. R. R. Tolkien" },
+  { title: "Rich Dad Poor Dad", author: "Robert T. Kiyosaki" },
   { title: "The Mom Test", author: "Rob Fitzpatrick" },
   { title: "The Hitchhiker's Guide to the Galaxy", author: "Douglas Adams" },
   { title: "The Lean Startup", author: "Eric Ries" },
