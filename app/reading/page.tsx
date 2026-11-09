@@ -18,6 +18,8 @@ const currentlyReading = [
 ];
 
 const finished = [
+  { title: "The Catcher in the Rye", author: "J. D. Salinger" },
+  { title: "To Kill a Mockingbird", author: "Harper Lee" },
   {
     title: "The Autobiography of Benjamin Franklin",
     author: "Benjamin Franklin",
