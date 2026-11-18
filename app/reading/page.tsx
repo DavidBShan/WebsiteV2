@@ -14,10 +14,10 @@ const currentlyReading = [
     title: "Reinforcement Learning: An Introduction",
     author: "Richard Sutton & Andrew Barto",
   },
-  { title: "Kitchen Confidential", author: "Anthony Bourdain" },
 ];
 
 const finished = [
+  { title: "Kitchen Confidential", author: "Anthony Bourdain" },
   { title: "The Catcher in the Rye", author: "J. D. Salinger" },
   { title: "To Kill a Mockingbird", author: "Harper Lee" },
   {
